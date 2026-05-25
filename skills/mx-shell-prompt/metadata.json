@@ -1,0 +1,13 @@
+{
+  "version": "1.0.0",
+  "author": "鱼亦乐 (yuyile)",
+  "date": "May 2026",
+  "abstract": "Structured, cinematic video generation prompt writer for AI video tools like Seedance 2.0, Kling, Sora, Runway, Pika. Transforms rough ideas into production-ready prompts with three pillars: who-where, what-feel, what-happens. Includes shot catalog, cinematic vocabulary, and composition templates.",
+  "references": [
+    "https://seedance.ai",
+    "https://klingai.com",
+    "https://sora.com",
+    "https://runwayml.com",
+    "https://pika.art"
+  ]
+}
