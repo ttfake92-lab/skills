@@ -1,0 +1,6 @@
+{
+  "name": "yuyile-skills",
+  "skills": [
+    "./skills/mx-shell-prompt"
+  ]
+}
