@@ -4,20 +4,51 @@
 
 ## 安装
 
+### 一行命令安装（全局）
+
+安装到 `~/.codebuddy/skills/`，所有项目、所有 Agent 通用：
+
+```bash
+SKILL_BASE_URL=https://github.com/ttfake92-lab/skills/tree/main npx skill skills/mx-shell-prompt && mv .codebuddy/skills/mx-shell-prompt ~/.codebuddy/skills/ && rm -rf .codebuddy
+```
+
+### 仅当前项目
+
+安装到当前目录 `.codebuddy/skills/`：
+
 ```bash
 SKILL_BASE_URL=https://github.com/ttfake92-lab/skills/tree/main npx skill skills/mx-shell-prompt
 ```
 
-或设置别名后使用：
+### 环境变量（推荐长期使用）
+
+在 `~/.zshrc` 或 `~/.bashrc` 中添加：
 
 ```bash
 export SKILL_BASE_URL=https://github.com/ttfake92-lab/skills/tree/main
+```
+
+之后直接：
+
+```bash
 npx skill skills/mx-shell-prompt
 ```
 
+## 支持的 Agent
+
+本 Skill 遵循 [Agent Skills](https://agentskills.io/) 标准格式，支持所有兼容 `.codebuddy/skills/` 的 AI 编程助手：
+
+| Agent | 安装位置 |
+|-------|---------|
+| Claude Code | `~/.claude/skills/` 或项目 `.codebuddy/skills/` |
+| Cursor | 项目 `.codebuddy/skills/` |
+| Windsurf | 项目 `.codebuddy/skills/` |
+| CodeBuddy | `~/.codebuddy/skills/` 或项目 `.codebuddy/skills/` |
+| 其他兼容 Agent | `.codebuddy/skills/` |
+
 ## 使用方式
 
-安装后在 Claude Code 中直接对话即可。触发方式：
+安装后直接对话即可。触发方式：
 
 - 描述一个视频想法
 - 说「帮我写一个视频提示词」
