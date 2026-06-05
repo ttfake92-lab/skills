@@ -1,88 +1,69 @@
-# MX Shell Prompt
+# MX Shell Prompt — 脚本转结构化视频提示词
 
-[English](#english) | [中文](#中文)
+把一段脚本（故事、口播稿、场景描述，甚至一句粗略想法）**自动拆成板块**，每个板块产出一条完整的电影级视频提示词。主战场是结构化分镜类工具：**Seedance 2.0 / Kling / 即梦**。
 
----
+## 安装
 
-## English
+### 一行命令安装（全局）
 
-Write structured, cinematic video generation prompts for AI video tools like Seedance 2.0, Kling, Sora, Runway, Pika, and similar platforms.
-
-### Install
-
-From the repo root:
+安装到 `~/.codebuddy/skills/`，所有项目、所有 Agent 通用：
 
 ```bash
-npx skills@latest add ttfake92-lab/skills
+SKILL_BASE_URL=https://github.com/ttfake92-lab/skills/tree/main npx skill skills/mx-shell-prompt && mv .codebuddy/skills/mx-shell-prompt ~/.codebuddy/skills/ && rm -rf .codebuddy
 ```
 
-Select `mx-shell-prompt` when prompted.
+### 仅当前项目
 
-### How to Use
-
-Just talk to your agent. Triggers:
-
-- Describe a video idea
-- Say "write a video prompt"
-- Mention Seedance, Kling, Sora, Runway, Pika
-- Say "storyboard", "shot list", "camera movement"
-
-### Core Concept
-
-Every good prompt is built on three pillars:
-
-1. **Who & Where** — Character + setting (physical precision, not vague traits)
-2. **What Feel** — Atmosphere & quality (specific camera, lens, color grading)
-3. **What Happens** — Shot content (composition, camera movement, action)
-
-### Included Files
-
-| File | Purpose |
-|------|---------|
-| `SKILL.md` | Skill definition & workflow |
-| `references/template.md` | Prompt structure template |
-| `references/cinematic-vocabulary.md` | Camera, lens, color, lighting reference |
-| `references/shot-catalog.md` | Shot types, composition, camera movement cheat sheet |
-| `references/example-cyber-atom.md` | Full example: Atomic Cyberpunk style |
-
-### License
-
-MIT
-
----
-
-## 中文
-
-把粗略想法转化为结构化的电影级视频提示词，适用于 Seedance 2.0、Kling、Sora、Runway、Pika 等所有文生视频工具。
-
-### 安装
-
-在仓库根目录运行：
+安装到当前目录 `.codebuddy/skills/`：
 
 ```bash
-npx skills@latest add ttfake92-lab/skills
+SKILL_BASE_URL=https://github.com/ttfake92-lab/skills/tree/main npx skill skills/mx-shell-prompt
 ```
 
-按提示选择 `mx-shell-prompt`。
+### 环境变量（推荐长期使用）
 
-### 使用方式
+在 `~/.zshrc` 或 `~/.bashrc` 中添加：
+
+```bash
+export SKILL_BASE_URL=https://github.com/ttfake92-lab/skills/tree/main
+```
+
+之后直接：
+
+```bash
+npx skill skills/mx-shell-prompt
+```
+
+## 支持的 Agent
+
+本 Skill 遵循 [Agent Skills](https://agentskills.io/) 标准格式，支持所有兼容 `.codebuddy/skills/` 的 AI 编程助手：
+
+| Agent | 安装位置 |
+|-------|---------|
+| Claude Code | `~/.claude/skills/` 或项目 `.codebuddy/skills/` |
+| Cursor | 项目 `.codebuddy/skills/` |
+| Windsurf | 项目 `.codebuddy/skills/` |
+| CodeBuddy | `~/.codebuddy/skills/` 或项目 `.codebuddy/skills/` |
+| 其他兼容 Agent | `.codebuddy/skills/` |
+
+## 使用方式
 
 安装后直接对话即可。触发方式：
 
+- 粘贴一整段脚本 / 故事 / 口播稿，说「转成视频提示词」
 - 描述一个视频想法
-- 说「帮我写一个视频提示词」
-- 提到 Seedance、Kling、Sora、Runway、Pika
-- 说「分镜」「视频生成」「运镜」
+- 说「帮我写一个视频提示词」「拆分镜」
+- 提到 Seedance、Kling、即梦 等关键词
 
-### 核心理念
+## 核心理念
 
-每个好提示词由三根支柱构成：
+1. **一个板块 = 一次生成单元**：脚本先按场景/故事节拍/情绪转折自动切成板块，每个板块独立成片。
+2. **每个板块由三根支柱构成**：
+   - **谁在哪** — 基础设定（角色）+ 道具 + 场景 + 声音
+   - **什么感觉** — 氛围与画质（风格 + 摄影机 + 色彩 + 画幅）
+   - **发生什么** — 画面内容（自动判断分镜 or 长镜头，含景别 + 构图 + 运镜 + 动作）
 
-1. **谁在哪** — 角色 + 场景（精确到物理层面，不是模糊标签）
-2. **什么感觉** — 氛围与画质（指定具体摄影机、镜头、色彩方案）
-3. **发生什么** — 画面内容（景别、构图、运镜、动作）
-
-### 包含内容
+## 包含内容
 
 | 文件 | 用途 |
 |------|------|
@@ -92,6 +73,6 @@ npx skills@latest add ttfake92-lab/skills
 | `references/shot-catalog.md` | 景别、构图、运镜速查表 |
 | `references/example-cyber-atom.md` | 完整示例：赛博原子风格 |
 
-### 许可
+## 许可
 
 MIT
