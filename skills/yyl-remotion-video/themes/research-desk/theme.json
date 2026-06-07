@@ -1,0 +1,28 @@
+{
+  "id": "research-desk",
+  "name": "Research Desk",
+  "nameZh": "研究桌面",
+  "description": "Quiet research desk with desaturated paper, ink-blue notes, olive-gray structure, and amber annotation marks. Made for essays, reports, and long-form explainers.",
+  "descriptionZh": "低饱和纸面 + 墨蓝笔记 + 橄榄灰结构线 + 琥珀批注. 适合长文、报告、论文和知识型视频.",
+  "mood": [
+    "light",
+    "research",
+    "editorial",
+    "desk",
+    "quiet",
+    "analytical"
+  ],
+  "bestFor": [
+    "长文改编",
+    "论文解读",
+    "商业分析",
+    "知识型视频",
+    "资料汇总"
+  ],
+  "preview": {
+    "shell": "#dfe3dc",
+    "surface": "#f6f7f1",
+    "text": "#182026",
+    "accent": "#b46a1f"
+  }
+}

@@ -1,0 +1,66 @@
+/* ─────────────────────────────────────────────────────────────────────
+ * Theme · research-desk
+ *   Quiet analytical desk: desaturated paper, ink-blue notes, olive-gray
+ *   structure lines and amber annotation marks. Designed for long-form
+ *   explainers that need calm density.
+ *
+ *   character knobs:
+ *     • hero numbers   — tabular serif figures
+ *     • rule           — fine solid annotation line
+ *     • card radius    — refined 4px document slips
+ *     • surface        — faint ruled-paper overlay
+ *     • motion         — slow, deliberate, documentary
+ * ───────────────────────────────────────────────────────────────────── */
+:root {
+  /* ─── palette ─── */
+  --shell:        #dfe3dc;
+  --surface:      #f6f7f1;
+  --surface-2:    #ffffff;
+  --surface-3:    #e9ece4;
+  --text:         #182026;
+  --text-2:       #37424a;
+  --text-mute:    #71806f;
+  --text-faint:   #a4afa0;
+  --rule:         #cbd3c6;
+  --accent:       #b46a1f;
+  --accent-soft:  rgba(180, 106, 31, 0.12);
+  --accent-glow:  rgba(180, 106, 31, 0.34);
+
+  /* ─── fonts ─── */
+  --font-display-cn: "Noto Serif SC", "Source Han Serif SC", serif;
+  --font-display-en: "Source Serif 4", "Instrument Serif", Georgia, serif;
+  --font-body:       "Inter", "Noto Sans SC", -apple-system, sans-serif;
+  --font-mono:       "IBM Plex Mono", "JetBrains Mono", "SF Mono", ui-monospace, monospace;
+  --font-features:   "tnum", "ss01";
+
+  /* ─── motion: careful research reveal ─── */
+  --dur-base:       620ms;
+  --dur-slow:       980ms;
+  --dur-cinematic:  1480ms;
+
+  /* ─── design identity ─── */
+  --r-card:        4px;
+  --r-stage:       0;
+  --rule-w:        1px;
+  --rule-style:    solid;
+  --hero-num-font:    var(--font-display-en);
+  --hero-num-style:   italic;
+  --hero-num-weight:  500;
+  --hero-num-track:   -0.018em;
+  --stage-pad-x:   132px;
+  --stage-pad-y:   92px;
+  --card-shadow:
+    0 1px 0 rgba(24, 32, 38, 0.04),
+    0 18px 44px rgba(50, 62, 50, 0.12);
+  --shadow-stage:
+    0 52px 150px rgba(66, 78, 68, 0.24),
+    0 0 0 1px rgba(24, 32, 38, 0.04);
+
+  /* ─── decoration: faint research paper ruling ─── */
+  --surface-pattern:
+    linear-gradient(rgba(113, 128, 111, 0.105) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(113, 128, 111, 0.035) 1px, transparent 1px);
+  --surface-pattern-size: 100% 38px, 56px 56px;
+  --surface-pattern-blend: multiply;
+  --surface-pattern-opacity: 1;
+}

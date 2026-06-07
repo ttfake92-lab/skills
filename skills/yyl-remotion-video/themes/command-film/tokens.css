@@ -1,0 +1,67 @@
+/* ─────────────────────────────────────────────────────────────────────
+ * Theme · command-film
+ *   Cinematic developer-tool film: charcoal command room, amber record
+ *   light, cyan telemetry, tight mono details. Not retro hacker green.
+ *
+ *   character knobs:
+ *     • hero numbers   — condensed mono, bright amber
+ *     • rule           — 1px solid dim telemetry line
+ *     • card radius    — precise 6px panels
+ *     • surface        — dark grid + lens vignette
+ *     • motion         — deliberate, mechanical, filmic
+ * ───────────────────────────────────────────────────────────────────── */
+:root {
+  /* ─── palette ─── */
+  --shell:        #07090d;
+  --surface:      #11151c;
+  --surface-2:    #171d27;
+  --surface-3:    #202938;
+  --text:         #eef3f8;
+  --text-2:       #cbd6e2;
+  --text-mute:    #7d8a99;
+  --text-faint:   #485362;
+  --rule:         #2b3545;
+  --accent:       #ffb454;
+  --accent-soft:  rgba(255, 180, 84, 0.13);
+  --accent-glow:  rgba(255, 180, 84, 0.52);
+
+  /* ─── fonts ─── */
+  --font-display-cn: "Noto Sans SC", "Source Han Sans SC", -apple-system, sans-serif;
+  --font-display-en: "IBM Plex Sans Condensed", "Inter", "SF Pro Display", sans-serif;
+  --font-body:       "Inter", "Noto Sans SC", -apple-system, sans-serif;
+  --font-mono:       "JetBrains Mono", "IBM Plex Mono", "SF Mono", ui-monospace, monospace;
+  --font-features:   "ss01", "cv11", "tnum", "zero";
+
+  /* ─── motion: deliberate command-room cuts ─── */
+  --dur-base:       520ms;
+  --dur-slow:       860ms;
+  --dur-cinematic:  1320ms;
+
+  /* ─── design identity ─── */
+  --r-card:        6px;
+  --r-stage:       0;
+  --rule-w:        1px;
+  --rule-style:    solid;
+  --hero-num-font:    var(--font-mono);
+  --hero-num-style:   normal;
+  --hero-num-weight:  700;
+  --hero-num-track:   -0.035em;
+  --stage-pad-x:   108px;
+  --stage-pad-y:   82px;
+  --card-shadow:
+    0 24px 80px rgba(0, 0, 0, 0.36),
+    inset 0 0 0 1px rgba(238, 243, 248, 0.035);
+  --shadow-stage:
+    0 60px 180px rgba(0, 0, 0, 0.72),
+    0 0 0 1px rgba(255, 255, 255, 0.035);
+
+  /* ─── decoration: telemetry grid + cinematic edges ─── */
+  --surface-pattern:
+    linear-gradient(rgba(116, 191, 210, 0.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(116, 191, 210, 0.045) 1px, transparent 1px);
+  --surface-pattern-size: 48px 48px;
+  --surface-pattern-blend: normal;
+  --surface-pattern-opacity: 1;
+  --surface-vignette:
+    radial-gradient(circle at 50% 45%, transparent 0%, rgba(0, 0, 0, 0.48) 100%);
+}

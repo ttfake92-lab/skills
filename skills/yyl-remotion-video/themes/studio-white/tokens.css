@@ -1,0 +1,67 @@
+/* ─────────────────────────────────────────────────────────────────────
+ * Theme · studio-white
+ *   Bright product studio: crisp white stage, graphite typography,
+ *   electric blue accent, precise hairlines and soft product shadows.
+ *
+ *   character knobs:
+ *     • hero numbers   — heavy geometric sans
+ *     • rule           — fine cool-gray hairline
+ *     • card radius    — polished 12px product panels
+ *     • surface        — subtle measurement grid
+ *     • motion         — clean, fast, confidence without bounce
+ * ───────────────────────────────────────────────────────────────────── */
+:root {
+  /* ─── palette ─── */
+  --shell:        #e9edf2;
+  --surface:      #fbfcfe;
+  --surface-2:    #ffffff;
+  --surface-3:    #edf1f6;
+  --text:         #101318;
+  --text-2:       #34404f;
+  --text-mute:    #758195;
+  --text-faint:   #a8b1bf;
+  --rule:         #d8dee8;
+  --accent:       #1769ff;
+  --accent-soft:  rgba(23, 105, 255, 0.10);
+  --accent-glow:  rgba(23, 105, 255, 0.34);
+
+  /* ─── fonts ─── */
+  --font-display-cn: "Noto Sans SC", "Source Han Sans SC", -apple-system, sans-serif;
+  --font-display-en: "Inter", "SF Pro Display", -apple-system, sans-serif;
+  --font-body:       "Inter", "Noto Sans SC", -apple-system, sans-serif;
+  --font-mono:       "JetBrains Mono", "SF Mono", ui-monospace, monospace;
+  --font-features:   "cv11", "ss01", "tnum";
+
+  /* ─── motion: clean product launch ─── */
+  --dur-base:       420ms;
+  --dur-slow:       720ms;
+  --dur-cinematic:  1080ms;
+
+  /* ─── design identity ─── */
+  --r-card:        12px;
+  --r-stage:       0;
+  --rule-w:        1px;
+  --rule-style:    solid;
+  --hero-num-font:    var(--font-display-en);
+  --hero-num-style:   normal;
+  --hero-num-weight:  850;
+  --hero-num-track:   -0.045em;
+  --stage-pad-x:   116px;
+  --stage-pad-y:   86px;
+  --card-shadow:
+    0 1px 2px rgba(16, 19, 24, 0.04),
+    0 26px 70px rgba(32, 45, 63, 0.12);
+  --card-glass-bg:     rgba(255, 255, 255, 0.82);
+  --card-glass-border: rgba(255, 255, 255, 0.96);
+  --shadow-stage:
+    0 50px 150px rgba(53, 72, 96, 0.22),
+    0 0 0 1px rgba(16, 19, 24, 0.045);
+
+  /* ─── decoration: product measurement grid ─── */
+  --surface-pattern:
+    linear-gradient(rgba(32, 45, 63, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(32, 45, 63, 0.04) 1px, transparent 1px);
+  --surface-pattern-size: 56px 56px;
+  --surface-pattern-blend: normal;
+  --surface-pattern-opacity: 1;
+}

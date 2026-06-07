@@ -1,0 +1,8 @@
+interface:
+  display_name: "YYL Remotion Video"
+  short_description: "Create themed Remotion videos and mp4 exports."
+  brand_color: "#ffb454"
+  default_prompt: "Use $yyl-remotion-video to turn this script into a 16:9 Remotion video, render still checks, then export mp4."
+
+policy:
+  allow_implicit_invocation: true

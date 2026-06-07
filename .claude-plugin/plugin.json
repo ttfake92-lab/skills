@@ -1,6 +1,7 @@
 {
   "name": "yuyile-skills",
   "skills": [
-    "./skills/mx-shell-prompt"
+    "./skills/mx-shell-prompt",
+    "./skills/yyl-remotion-video"
   ]
 }

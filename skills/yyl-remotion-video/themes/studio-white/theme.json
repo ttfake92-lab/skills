@@ -1,0 +1,28 @@
+{
+  "id": "studio-white",
+  "name": "Studio White",
+  "nameZh": "白棚发布",
+  "description": "Clean product-studio white with graphite typography, electric blue accent, and precision hairlines. Built for polished launches and SaaS demos.",
+  "descriptionZh": "白色产品摄影棚 + 石墨黑排版 + 电蓝强调色 + 精密发丝线. 适合产品发布和 SaaS 演示.",
+  "mood": [
+    "light",
+    "studio",
+    "product",
+    "precise",
+    "launch",
+    "premium"
+  ],
+  "bestFor": [
+    "产品发布",
+    "SaaS demo",
+    "课程封面级视频",
+    "工具教程",
+    "品牌介绍"
+  ],
+  "preview": {
+    "shell": "#e9edf2",
+    "surface": "#fbfcfe",
+    "text": "#101318",
+    "accent": "#1769ff"
+  }
+}

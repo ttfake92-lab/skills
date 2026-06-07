@@ -1,0 +1,28 @@
+{
+  "id": "command-film",
+  "name": "Command Film",
+  "nameZh": "命令行电影",
+  "description": "Cinematic charcoal command room with amber record light, cool cyan telemetry, and disciplined mono details. A developer-tool film look without retro hacker green.",
+  "descriptionZh": "电影级炭黑命令室 + 琥珀录制灯 + 冷青遥测线. 不是复古黑客绿, 而是克制的开发者工具电影感.",
+  "mood": [
+    "dark",
+    "cinematic",
+    "developer",
+    "command",
+    "precise",
+    "instrumented"
+  ],
+  "bestFor": [
+    "Claude / agent 演示",
+    "自动化工作流",
+    "开发者工具",
+    "终端教程",
+    "技术产品发布"
+  ],
+  "preview": {
+    "shell": "#07090d",
+    "surface": "#11151c",
+    "text": "#eef3f8",
+    "accent": "#ffb454"
+  }
+}
