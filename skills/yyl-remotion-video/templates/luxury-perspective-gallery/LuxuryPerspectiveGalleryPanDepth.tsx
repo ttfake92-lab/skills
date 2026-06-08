@@ -70,6 +70,24 @@ const slots = {
     blur: 0,
     glow: 1,
   },
+  exitFrontLeft: {
+    x: -250,
+    y: 650,
+    width: 760,
+    height: 1010,
+    opacity: 0,
+    blur: 0,
+    glow: 0.65,
+  },
+  exitFrontRight: {
+    x: 2170,
+    y: 650,
+    width: 760,
+    height: 1010,
+    opacity: 0,
+    blur: 0,
+    glow: 0.65,
+  },
   midLeft: {
     x: 810,
     y: 510,
@@ -143,6 +161,20 @@ const getSlot = (projectIndex: number, stageIndex: number): DepthSlot => {
   return slots.deepestBack;
 };
 
+const getTransitionTargetSlot = (
+  projectIndex: number,
+  stageIndex: number,
+): DepthSlot => {
+  const relation = (projectIndex - stageIndex + projects.length) % projects.length;
+  const focusOnLeft = stageIndex % 2 === 0;
+
+  if (relation === 0) {
+    return focusOnLeft ? slots.exitFrontLeft : slots.exitFrontRight;
+  }
+
+  return getSlot(projectIndex, (stageIndex + 1) % projects.length);
+};
+
 export const LuxuryPerspectiveGalleryPanDepth: React.FC = () => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
@@ -202,13 +234,13 @@ const PanCard: React.FC<{
   moveProgress,
 }) => {
   const currentSlot = getSlot(projectIndex, stageIndex);
-  const nextSlot = getSlot(projectIndex, (stageIndex + 1) % projects.length);
+  const nextSlot = getTransitionTargetSlot(projectIndex, stageIndex);
   const { x, y, width, height, opacity, blur, glow } = mixSlot(
     currentSlot,
     nextSlot,
     moveProgress,
   );
-  const depth = width * opacity;
+  const depth = width * (opacity + glow * 0.2);
 
   return (
     <article
