@@ -1,8 +1,8 @@
 import React from "react";
 import {
   AbsoluteFill,
-  Easing,
   interpolate,
+  spring,
   useCurrentFrame,
   useVideoConfig,
 } from "remotion";
@@ -13,10 +13,9 @@ type Project = {
   title: string;
   meta: string;
   kind: ProjectKind;
-  keyframes: DepthKeyframe[];
 };
 
-type DepthKeyframe = {
+type DepthSlot = {
   x: number;
   y: number;
   width: number;
@@ -26,79 +25,172 @@ type DepthKeyframe = {
   glow: number;
 };
 
-const times = [0, 1, 2, 3];
+const holdSeconds = 2;
+const moveSeconds = 0.8;
 
 const projects: Project[] = [
   {
     title: "Droppable",
     meta: "DESKTOP APP * 2023",
     kind: "transfer",
-    keyframes: [
-      { x: 1708, y: 582, width: 760, height: 880, opacity: 1, blur: 0, glow: 1 },
-      { x: 2240, y: 582, width: 760, height: 880, opacity: 0, blur: 3, glow: 0.4 },
-      { x: 2380, y: 582, width: 760, height: 880, opacity: 0, blur: 5, glow: 0 },
-      { x: 2380, y: 582, width: 760, height: 880, opacity: 0, blur: 5, glow: 0 },
-    ],
   },
   {
     title: "SummerRain",
     meta: "DTC BRAND * 2022",
     kind: "matcha",
-    keyframes: [
-      { x: 700, y: 460, width: 286, height: 382, opacity: 1, blur: 0, glow: 0.8 },
-      { x: 210, y: 500, width: 760, height: 900, opacity: 1, blur: 0, glow: 0.95 },
-      { x: -430, y: 500, width: 760, height: 900, opacity: 0.18, blur: 2, glow: 0.35 },
-      { x: -720, y: 500, width: 760, height: 900, opacity: 0, blur: 4, glow: 0 },
-    ],
   },
   {
     title: "Wunderflats App",
     meta: "MOBILE APP * 2022",
     kind: "mobile",
-    keyframes: [
-      { x: 1030, y: 462, width: 168, height: 248, opacity: 0.82, blur: 1.4, glow: 0.4 },
-      { x: 1210, y: 470, width: 218, height: 318, opacity: 1, blur: 0, glow: 0.8 },
-      { x: 1262, y: 505, width: 360, height: 505, opacity: 1, blur: 0, glow: 0.9 },
-      { x: 1185, y: 510, width: 390, height: 520, opacity: 1, blur: 0, glow: 0.9 },
-    ],
   },
   {
     title: "Landlord Dashboard",
     meta: "WEB APP * 2019-2022",
     kind: "dashboard",
-    keyframes: [
-      { x: 830, y: 470, width: 150, height: 230, opacity: 0, blur: 7, glow: 0 },
-      { x: 830, y: 470, width: 150, height: 230, opacity: 0.22, blur: 6, glow: 0.1 },
-      { x: 760, y: 500, width: 260, height: 370, opacity: 1, blur: 0, glow: 0.7 },
-      { x: 700, y: 510, width: 350, height: 490, opacity: 1, blur: 0, glow: 0.8 },
-    ],
   },
 ];
 
-const sample = (progress: number, values: number[]) =>
-  interpolate(progress, times, values, {
+const slots = {
+  featuredRight: {
+    x: 1710,
+    y: 590,
+    width: 760,
+    height: 880,
+    opacity: 1,
+    blur: 0,
+    glow: 1,
+  },
+  featuredLeft: {
+    x: 210,
+    y: 510,
+    width: 760,
+    height: 900,
+    opacity: 1,
+    blur: 0,
+    glow: 0.95,
+  },
+  midLeft: {
+    x: 700,
+    y: 462,
+    width: 286,
+    height: 382,
+    opacity: 1,
+    blur: 0,
+    glow: 0.75,
+  },
+  midRight: {
+    x: 1210,
+    y: 470,
+    width: 218,
+    height: 318,
+    opacity: 0.95,
+    blur: 0.4,
+    glow: 0.65,
+  },
+  centerBack: {
+    x: 1018,
+    y: 465,
+    width: 166,
+    height: 246,
+    opacity: 0.62,
+    blur: 4,
+    glow: 0.28,
+  },
+  hiddenLeft: {
+    x: -520,
+    y: 520,
+    width: 740,
+    height: 880,
+    opacity: 0,
+    blur: 6,
+    glow: 0,
+  },
+  hiddenRight: {
+    x: 2360,
+    y: 590,
+    width: 760,
+    height: 880,
+    opacity: 0,
+    blur: 6,
+    glow: 0,
+  },
+} satisfies Record<string, DepthSlot>;
+
+const mix = (from: number, to: number, progress: number) =>
+  interpolate(progress, [0, 1], [from, to], {
     extrapolateLeft: "clamp",
     extrapolateRight: "clamp",
-    easing: Easing.bezier(0.65, 0, 0.35, 1),
   });
+
+const mixSlot = (from: DepthSlot, to: DepthSlot, progress: number): DepthSlot => ({
+  x: mix(from.x, to.x, progress),
+  y: mix(from.y, to.y, progress),
+  width: mix(from.width, to.width, progress),
+  height: mix(from.height, to.height, progress),
+  opacity: mix(from.opacity, to.opacity, progress),
+  blur: mix(from.blur, to.blur, progress),
+  glow: mix(from.glow, to.glow, progress),
+});
+
+const getSlot = (projectIndex: number, stageIndex: number): DepthSlot => {
+  const relation = (projectIndex - stageIndex + projects.length) % projects.length;
+  const featuredOnRight = stageIndex % 2 === 0;
+
+  if (relation === 0) {
+    return featuredOnRight ? slots.featuredRight : slots.featuredLeft;
+  }
+
+  if (relation === 1) {
+    return featuredOnRight ? slots.midLeft : slots.midRight;
+  }
+
+  if (relation === 2) {
+    return slots.centerBack;
+  }
+
+  return featuredOnRight ? slots.hiddenLeft : slots.hiddenRight;
+};
 
 export const LuxuryPerspectiveGalleryPanDepth: React.FC = () => {
   const frame = useCurrentFrame();
-  const { durationInFrames } = useVideoConfig();
-  const progress = interpolate(frame, [0, durationInFrames - 1], [0, 3], {
-    extrapolateLeft: "clamp",
-    extrapolateRight: "clamp",
-    easing: Easing.bezier(0.6, 0, 0.2, 1),
-  });
+  const { fps } = useVideoConfig();
+  const holdFrames = Math.round(fps * holdSeconds);
+  const moveFrames = Math.round(fps * moveSeconds);
+  const stageFrames = holdFrames + moveFrames;
+  const loopFrames = projects.length * stageFrames;
+  const loopFrame = frame % loopFrames;
+  const stageIndex = Math.floor(loopFrame / stageFrames);
+  const stageFrame = loopFrame % stageFrames;
+  const rawMoveFrame = Math.max(0, stageFrame - holdFrames);
+  const moving = stageFrame >= holdFrames;
+  const moveProgress = moving
+    ? spring({
+        frame: rawMoveFrame,
+        fps,
+        durationInFrames: moveFrames,
+        config: {
+          damping: 28,
+          mass: 1.15,
+          stiffness: 70,
+        },
+      })
+    : 0;
 
   return (
     <AbsoluteFill className="overflow-hidden bg-[#090D12] text-white">
       <PanStageBackground />
       <PanHeader />
-      <Pointer progress={progress} />
+      <Pointer stageIndex={stageIndex} moveProgress={moveProgress} />
       <main className="absolute inset-0 overflow-hidden">
-        {projects.map((project) => (
-          <PanCard key={project.title} project={project} progress={progress} />
+        {projects.map((project, projectIndex) => (
+          <PanCard
+            key={project.title}
+            project={project}
+            projectIndex={projectIndex}
+            stageIndex={stageIndex}
+            moveProgress={moveProgress}
+          />
         ))}
       </main>
       <button className="absolute bottom-[32px] left-1/2 z-[2000] h-[58px] w-[174px] -translate-x-1/2 rounded-[18px] border border-white/[0.65] bg-[linear-gradient(180deg,#edf4ff_0%,#b8c2d9_100%)] text-[13px] font-black tracking-[0.10em] text-[#171d2a] shadow-[0_0_28px_rgba(159,178,255,0.30),inset_0_1px_0_rgba(255,255,255,0.9)]">
@@ -108,37 +200,23 @@ export const LuxuryPerspectiveGalleryPanDepth: React.FC = () => {
   );
 };
 
-const PanCard: React.FC<{ project: Project; progress: number }> = ({
+const PanCard: React.FC<{
+  project: Project;
+  projectIndex: number;
+  stageIndex: number;
+  moveProgress: number;
+}> = ({
   project,
-  progress,
+  projectIndex,
+  stageIndex,
+  moveProgress,
 }) => {
-  const x = sample(
-    progress,
-    project.keyframes.map((keyframe) => keyframe.x),
-  );
-  const y = sample(
-    progress,
-    project.keyframes.map((keyframe) => keyframe.y),
-  );
-  const width = sample(
-    progress,
-    project.keyframes.map((keyframe) => keyframe.width),
-  );
-  const height = sample(
-    progress,
-    project.keyframes.map((keyframe) => keyframe.height),
-  );
-  const opacity = sample(
-    progress,
-    project.keyframes.map((keyframe) => keyframe.opacity),
-  );
-  const blur = sample(
-    progress,
-    project.keyframes.map((keyframe) => keyframe.blur),
-  );
-  const glow = sample(
-    progress,
-    project.keyframes.map((keyframe) => keyframe.glow),
+  const currentSlot = getSlot(projectIndex, stageIndex);
+  const nextSlot = getSlot(projectIndex, (stageIndex + 1) % projects.length);
+  const { x, y, width, height, opacity, blur, glow } = mixSlot(
+    currentSlot,
+    nextSlot,
+    moveProgress,
   );
   const depth = width * opacity;
 
@@ -258,9 +336,21 @@ const PanStageBackground: React.FC = () => {
   );
 };
 
-const Pointer: React.FC<{ progress: number }> = ({ progress }) => {
-  const x = sample(progress, [952, 970, 955, 940]);
-  const y = sample(progress, [414, 410, 412, 414]);
+const pointerSlots = [
+  { x: 950, y: 414 },
+  { x: 1030, y: 410 },
+  { x: 980, y: 414 },
+  { x: 920, y: 416 },
+];
+
+const Pointer: React.FC<{ stageIndex: number; moveProgress: number }> = ({
+  stageIndex,
+  moveProgress,
+}) => {
+  const current = pointerSlots[stageIndex % pointerSlots.length];
+  const next = pointerSlots[(stageIndex + 1) % pointerSlots.length];
+  const x = mix(current.x, next.x, moveProgress);
+  const y = mix(current.y, next.y, moveProgress);
   return (
     <div
       className="absolute z-[1800] h-9 w-9"

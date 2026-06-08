@@ -1,6 +1,5 @@
 import { Composition } from "remotion";
 import { LuxuryPerspectiveGallery } from "./LuxuryPerspectiveGallery";
-import { LuxuryPerspectiveGalleryHeroDepth } from "./LuxuryPerspectiveGalleryHeroDepth";
 import { LuxuryPerspectiveGalleryPanDepth } from "./LuxuryPerspectiveGalleryPanDepth";
 
 export const RemotionRoot: React.FC = () => {
@@ -15,17 +14,9 @@ export const RemotionRoot: React.FC = () => {
         height={1080}
       />
       <Composition
-        id="LuxuryPerspectiveGalleryHeroDepth"
-        component={LuxuryPerspectiveGalleryHeroDepth}
-        durationInFrames={360}
-        fps={60}
-        width={1920}
-        height={1080}
-      />
-      <Composition
         id="LuxuryPerspectiveGalleryPanDepth"
         component={LuxuryPerspectiveGalleryPanDepth}
-        durationInFrames={124}
+        durationInFrames={672}
         fps={60}
         width={1920}
         height={1080}

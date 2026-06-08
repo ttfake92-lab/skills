@@ -7,25 +7,23 @@ specific visual mechanism, not as general themes.
 
 | id | Use When | Files |
 |---|---|---|
-| `luxury-perspective-gallery` | Luxury dark portfolio, 3D horizontal carousel, premium agency work showcase, cyber-minimal gallery slider | `templates/luxury-perspective-gallery/LuxuryPerspectiveGallery.tsx`, `LuxuryPerspectiveGalleryHeroDepth.tsx`, `LuxuryPerspectiveGalleryPanDepth.tsx`, `Root.snippet.tsx` |
+| `luxury-perspective-gallery` | Luxury dark portfolio, 3D horizontal carousel, premium agency work showcase, cyber-minimal gallery slider | `templates/luxury-perspective-gallery/LuxuryPerspectiveGallery.tsx`, `LuxuryPerspectiveGalleryPanDepth.tsx`, `Root.snippet.tsx` |
 
 ## `luxury-perspective-gallery`
 
 Variants:
 
 - `ring-carousel` / `LuxuryPerspectiveGallery`: centered carousel ring with overlapping cards.
-- `hero-depth-stage` / `LuxuryPerspectiveGalleryHeroDepth`: reference-style stage with a huge cropped hero card on the right, smaller cards floating in depth on the left / center, star field, and perspective grid floor.
-- `pan-depth-stage` / `LuxuryPerspectiveGalleryPanDepth`: closer to the supplied browser reference video. Cards mostly face the camera; the 3D feeling comes from lateral camera pan, large offscreen cropping, scale, blur, and layered depth rather than strong card rotation.
+- `pan-depth-stage` / `LuxuryPerspectiveGalleryPanDepth`: loopable stage based on the supplied browser reference video. Cards mostly face the camera; each featured card holds for about 2 seconds, then a smooth lateral pan moves the next card into focus. Depth comes from large offscreen cropping, scale, blur, and layered z-index rather than strong card rotation.
 
 Visual target:
 
 - Dark navy / charcoal space gradient with indigo glow and perspective grid floor.
 - Minimal header: left index pill, centered Roman profile, right Subscribe button.
 - `ring-carousel`: centered horizontal project-card carousel.
-- `hero-depth-stage`: right-side oversized foreground card, mid-left card, smaller blurred background card.
-- `pan-depth-stage`: flat-facing cards distributed across a horizontal stage; huge cards slide partly off the left / right edges as the camera pans.
+- `pan-depth-stage`: flat-facing cards distributed across a horizontal stage; huge cards slide partly off the left / right edges as the camera pans, with a 2-second hold per card and a seamless loop.
 - Bottom `SAY HELLO` neon pill.
-- Cards interpolate horizontal position, `translateZ`, `rotateY`, `scale`, opacity, blur, and z-index from `useCurrentFrame()`.
+- Cards interpolate horizontal position, size, opacity, blur, and z-index from `useCurrentFrame()`.
 - Card examples: SummerRain packaging, Landlord Dashboard, Wunderflats App.
 
 Technical rules:
@@ -45,7 +43,7 @@ Copy pattern:
 1. Copy the chosen variant TSX into `remotion/src/`.
 2. Register it in `src/Root.tsx` using the values from `Root.snippet.tsx`.
 3. Run `npm run lint`.
-4. Render still checks around frames `0`, `90`, `180`, and `270`.
+4. Render still checks around frames `0`, `120`, `168`, `336`, `504`, and `671` for `pan-depth-stage`.
 
 Suggested still check:
 
