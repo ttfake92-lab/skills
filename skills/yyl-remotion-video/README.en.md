@@ -4,6 +4,10 @@ An agent skill for Claude Code, Codex, and similar local coding-agent environmen
 
 This skill is Remotion-only. It does not create click-driven web presentations and does not synthesize voiceover. The agent estimates video duration from narration length and visual complexity; voiceover, subtitles, and audio mixing are left for post-production.
 
+It includes one copyable Remotion template:
+
+- **luxury-perspective-gallery**: a dark, high-end 3D horizontal portfolio carousel for product showcases, premium agency reels, and cyber-minimal interface animations.
+
 ## Install
 
 ```bash
@@ -55,8 +59,9 @@ Create a product demo video from this outline using the studio-white theme. No v
 3. Save content into `article.md`, `script.md`, `outline.md`, and `notes.md`.
 4. Reuse an existing `remotion/` project, or create one only when missing.
 5. Select one bundled theme. Do not import themes from other skills.
-6. Build frame-driven animation with `useCurrentFrame()`, `interpolate()`, `Easing`, and `Sequence`.
-7. Run `npm run lint`, render still checks, then render mp4.
+6. Read `references/TEMPLATES.md` when the user asks for a known visual mechanism such as `luxury-perspective-gallery`.
+7. Build frame-driven animation with `useCurrentFrame()`, `interpolate()`, `Easing`, and `Sequence`.
+8. Run `npm run lint`, render still checks, then render mp4.
 
 ## Fits / Does Not Fit
 

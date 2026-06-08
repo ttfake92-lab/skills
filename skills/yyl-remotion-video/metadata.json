@@ -2,7 +2,7 @@
   "version": "1.0.0",
   "author": "鱼亦乐 (yuyile)",
   "date": "June 2026",
-  "abstract": "Remotion video production skill for 16:9 mp4-first explainers, product demos, command-line films, and research videos. Ingests a script, article, notes, or clear outline; chooses Quick/Standard/Strict execution strength; creates or reuses a Remotion project; estimates duration without synthesizing audio; builds frame-driven React/TypeScript animation; renders still checks; and exports mp4. Includes command-film, studio-white, and research-desk themes.",
+  "abstract": "Remotion video production skill for 16:9 mp4-first explainers, product demos, command-line films, and research videos. Ingests a script, article, notes, or clear outline; chooses Quick/Standard/Strict execution strength; creates or reuses a Remotion project; estimates duration without synthesizing audio; builds frame-driven React/TypeScript animation; renders still checks; and exports mp4. Includes command-film, studio-white, and research-desk themes, plus a luxury-perspective-gallery template for dark 3D portfolio carousel videos.",
   "references": [
     "https://www.remotion.dev/"
   ]

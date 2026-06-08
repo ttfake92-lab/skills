@@ -25,7 +25,7 @@ npx skills@latest add ttfake92-lab/skills
 #### Content Creation
 
 - **[mx-shell-prompt](./skills/mx-shell-prompt/SKILL.md)** — Write structured, cinematic video generation prompts for AI video tools like Seedance 2.0, Kling, Sora, Runway, Pika. Transforms rough ideas into production-ready prompts with three pillars: who-where, what-feel, what-happens. Includes shot catalog, cinematic vocabulary, and composition templates.
-- **[yyl-remotion-video](./skills/yyl-remotion-video/SKILL.md)** — Build 16:9 Remotion video projects from scripts, articles, notes, or outlines. Creates frame-driven React/TypeScript animations, estimates duration without synthesizing audio, renders still checks, and exports mp4 with built-in themes for command-line films, product demos, and research explainers.
+- **[yyl-remotion-video](./skills/yyl-remotion-video/SKILL.md)** — Build 16:9 Remotion video projects from scripts, articles, notes, or outlines. Creates frame-driven React/TypeScript animations, estimates duration without synthesizing audio, renders still checks, and exports mp4 with built-in themes plus a dark 3D luxury gallery template.
 
 ### Skills Overview
 
@@ -75,7 +75,7 @@ npx skills@latest add ttfake92-lab/skills
 #### 内容创作
 
 - **[mx-shell-prompt](./skills/mx-shell-prompt/SKILL.md)** — 视频提示词写作。把粗略想法转化为结构化的电影级视频提示词，适用于 Seedance 2.0、Kling、Sora、Runway、Pika 等所有文生视频工具。核心理念：每个好提示词由三根支柱构成 —— 谁在哪、什么感觉、发生什么。内含景别速查表、电影词汇库和构图模板。
-- **[yyl-remotion-video](./skills/yyl-remotion-video/SKILL.md)** — Remotion 视频制作。把口播稿、文章、资料摘要或明确大纲做成 16:9、逐帧可控、可直接导出 mp4 的视频项目。内置 command-film、studio-white、research-desk 三套主题，不在流程内合成音频，适合后期统一配音。
+- **[yyl-remotion-video](./skills/yyl-remotion-video/SKILL.md)** — Remotion 视频制作。把口播稿、文章、资料摘要或明确大纲做成 16:9、逐帧可控、可直接导出 mp4 的视频项目。内置三套主题和深色 3D 高端画廊模板，不在流程内合成音频，适合后期统一配音。
 
 ### Skills 概览
 

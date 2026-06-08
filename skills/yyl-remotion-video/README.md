@@ -19,6 +19,10 @@
 - **studio-white / 白棚发布**：干净白棚产品感，适合 SaaS demo、课程、产品发布。
 - **research-desk / 研究桌面**：纸面研究桌，适合报告、论文、长文和知识型视频。
 
+内置 1 个可复制模板：
+
+- **luxury-perspective-gallery**：深色高端作品集 3D 横向画廊，适合 portfolio、产品 showcase、agency 风格动画。
+
 ## 30 秒开始
 
 ### 一行命令安装（推荐）
@@ -85,8 +89,9 @@ SKILL_BASE_URL=https://github.com/ttfake92-lab/skills/tree/main npx skill skills
 3. **内容落盘**：整理 `article.md`、`script.md`、`outline.md`、`notes.md`。
 4. **Remotion 项目**：复用已有 `remotion/`；缺失时用 `npx create-video@latest --blank --no-tailwind remotion` 创建。
 5. **主题选择**：只使用本 skill 的 `command-film`、`studio-white`、`research-desk`。
-6. **逐帧实现**：用 `useCurrentFrame()`、`interpolate()`、`Easing`、`Sequence`，不使用 CSS animation / transition / GSAP 驱动主动画。
-7. **验证交付**：先 `npm run lint`，再渲染 still 检查帧，确认后导出 mp4。
+6. **模板选择**：需要特定画面机制时读取 `references/TEMPLATES.md`，例如 `luxury-perspective-gallery`。
+7. **逐帧实现**：用 `useCurrentFrame()`、`interpolate()`、`Easing`、`Sequence`，不使用 CSS animation / transition / GSAP 驱动主动画。
+8. **验证交付**：先 `npm run lint`，再渲染 still 检查帧，确认后导出 mp4。
 
 ## 目录结构
 
@@ -98,7 +103,10 @@ yyl-remotion-video/
 ├── agents/openai.yaml
 ├── references/
 │   ├── REMOTION-CRAFT.md
-│   └── THEMES.md
+│   ├── THEMES.md
+│   └── TEMPLATES.md
+├── templates/
+│   └── luxury-perspective-gallery/
 ├── themes/
 │   ├── command-film/
 │   ├── studio-white/

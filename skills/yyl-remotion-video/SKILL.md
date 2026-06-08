@@ -29,6 +29,14 @@ my-video/
     └── out/
 ```
 
+Bundled skill resources:
+
+```
+themes/       # color / typography systems
+templates/    # copyable Remotion TSX starting points
+references/   # craft, theme, and template guidance
+```
+
 ## Execution Strength
 
 Decide before writing files:
@@ -63,28 +71,37 @@ I will use <Quick/Standard/Strict> because <length / risk / target>.
      `themes/studio-white`, `themes/research-desk`.
    - Do not reuse or import themes from `web-video-presentation`.
 
-4. **Remotion Project**
+4. **Template Choice**
+   - If the user asks for a known layout or animation mechanism, read
+     [references/TEMPLATES.md](references/TEMPLATES.md).
+   - Use `templates/luxury-perspective-gallery` for luxury dark portfolio,
+     3D perspective horizontal carousel, or premium agency gallery requests.
+
+5. **Remotion Project**
    - Reuse existing `remotion/` if present.
    - Create only if missing:
      ```bash
      npx create-video@latest --yes --blank --no-tailwind remotion
      ```
+   - If a selected template requires Tailwind, create the project with Tailwind
+     support or add Tailwind before copying template files.
    - Install dependencies only if `remotion/node_modules` is missing or Remotion
      commands fail because dependencies are absent.
 
-5. **Timing**
+6. **Timing**
    - Do not synthesize audio.
    - Estimate durations from narration and visual complexity.
    - Default `fps = 30`, `width = 1920`, `height = 1080`.
    - Store text in `narrations.ts`; store estimated `durationFrames` in `timing.ts`.
 
-6. **Implementation**
+7. **Implementation**
    - Read [references/REMOTION-CRAFT.md](references/REMOTION-CRAFT.md) before each
      chapter.
    - Animate with `useCurrentFrame()`, `interpolate()`, `Easing`, and `Sequence`.
    - Do not use CSS transition / CSS animation / GSAP for primary animation.
+   - Tailwind may style static layout, but Tailwind animation utilities are not allowed.
 
-7. **Verification**
+8. **Verification**
    - Run:
      ```bash
      cd remotion
@@ -99,7 +116,7 @@ I will use <Quick/Standard/Strict> because <length / risk / target>.
      npx remotion render <composition-id> out/<name>.mp4
      ```
 
-8. **Notes**
+9. **Notes**
    - Update `notes.md` with fps, resolution, total frames, estimated duration,
      checked stills, rendered mp4 path, and that audio/subtitles are post-production.
 
@@ -112,6 +129,14 @@ I will use <Quick/Standard/Strict> because <length / risk / target>.
 | `research-desk` | essays, reports, papers, business analysis | calm analytical desk |
 
 For full theme notes, read [references/THEMES.md](references/THEMES.md).
+
+## Template Selection
+
+| Template | Best For | Feel |
+|---|---|---|
+| `luxury-perspective-gallery` | premium portfolio, product showcase, 3D horizontal carousel | dark cyber-minimal agency slider |
+
+For full template notes, read [references/TEMPLATES.md](references/TEMPLATES.md).
 
 ## Remotion Rules
 
