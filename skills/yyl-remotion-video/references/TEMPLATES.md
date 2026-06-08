@@ -23,6 +23,10 @@ Visual target:
 Technical rules:
 
 - This template uses Tailwind class names for static layout and surface styling.
+- The Remotion project must import Tailwind in `src/index.css`:
+  ```css
+  @import "tailwindcss";
+  ```
 - Do not use Tailwind animation utilities.
 - Main motion must remain frame-driven with `useCurrentFrame()`, `interpolate()`, `spring()`, and `Easing`.
 - Keep 16:9 composition at `1920x1080`; use `fps=60` for this template unless the project requires 30fps.
