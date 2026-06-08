@@ -14,14 +14,14 @@ specific visual mechanism, not as general themes.
 Variants:
 
 - `ring-carousel` / `LuxuryPerspectiveGallery`: centered carousel ring with overlapping cards.
-- `pan-depth-stage` / `LuxuryPerspectiveGalleryPanDepth`: loopable stage based on the supplied browser reference video. Cards mostly face the camera; each featured card holds for about 2 seconds, then a smooth lateral pan moves the next card into focus. Depth comes from large offscreen cropping, scale, blur, and layered z-index rather than strong card rotation.
+- `pan-depth-stage` / `LuxuryPerspectiveGalleryPanDepth`: loopable stage based on the supplied browser reference video. Cards mostly face the camera; each featured card holds for about 2 seconds, then a smooth lateral pan grows the next card from the background into focus. Depth comes from scale, blur, and layered z-index rather than strong card rotation or side-entry motion.
 
 Visual target:
 
 - Dark navy / charcoal space gradient with indigo glow and perspective grid floor.
-- Minimal header: left index pill, centered Roman profile, right Subscribe button.
+- Minimal centered `鱼亦乐` brand mark.
 - `ring-carousel`: centered horizontal project-card carousel.
-- `pan-depth-stage`: flat-facing cards distributed across a horizontal stage; huge cards slide partly off the left / right edges as the camera pans, with a 2-second hold per card and a seamless loop.
+- `pan-depth-stage`: flat-facing cards distributed across a horizontal stage; the hold frame uses a large left focal card plus a smaller mid-right card, with a 2-second hold per card and a seamless loop.
 - Bottom `SAY HELLO` neon pill.
 - Cards interpolate horizontal position, size, opacity, blur, and z-index from `useCurrentFrame()`.
 - Card examples: SummerRain packaging, Landlord Dashboard, Wunderflats App.

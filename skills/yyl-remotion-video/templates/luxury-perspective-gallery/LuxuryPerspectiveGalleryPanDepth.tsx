@@ -52,67 +52,40 @@ const projects: Project[] = [
 ];
 
 const slots = {
-  featuredRight: {
-    x: 1710,
-    y: 590,
-    width: 760,
-    height: 880,
+  featuredLeft: {
+    x: 386,
+    y: 450,
+    width: 520,
+    height: 690,
     opacity: 1,
     blur: 0,
     glow: 1,
   },
-  featuredLeft: {
-    x: 210,
-    y: 510,
-    width: 760,
-    height: 900,
-    opacity: 1,
-    blur: 0,
-    glow: 0.95,
-  },
-  midLeft: {
-    x: 700,
-    y: 462,
-    width: 286,
-    height: 382,
-    opacity: 1,
-    blur: 0,
-    glow: 0.75,
-  },
   midRight: {
-    x: 1210,
-    y: 470,
-    width: 218,
-    height: 318,
-    opacity: 0.95,
-    blur: 0.4,
-    glow: 0.65,
+    x: 1110,
+    y: 510,
+    width: 238,
+    height: 330,
+    opacity: 0.92,
+    blur: 0,
+    glow: 0.7,
   },
   centerBack: {
-    x: 1018,
-    y: 465,
-    width: 166,
-    height: 246,
-    opacity: 0.62,
-    blur: 4,
-    glow: 0.28,
+    x: 955,
+    y: 440,
+    width: 138,
+    height: 205,
+    opacity: 0.26,
+    blur: 8,
+    glow: 0.12,
   },
-  hiddenLeft: {
-    x: -520,
-    y: 520,
-    width: 740,
-    height: 880,
+  hiddenBack: {
+    x: 1000,
+    y: 440,
+    width: 112,
+    height: 168,
     opacity: 0,
-    blur: 6,
-    glow: 0,
-  },
-  hiddenRight: {
-    x: 2360,
-    y: 590,
-    width: 760,
-    height: 880,
-    opacity: 0,
-    blur: 6,
+    blur: 10,
     glow: 0,
   },
 } satisfies Record<string, DepthSlot>;
@@ -135,21 +108,20 @@ const mixSlot = (from: DepthSlot, to: DepthSlot, progress: number): DepthSlot =>
 
 const getSlot = (projectIndex: number, stageIndex: number): DepthSlot => {
   const relation = (projectIndex - stageIndex + projects.length) % projects.length;
-  const featuredOnRight = stageIndex % 2 === 0;
 
   if (relation === 0) {
-    return featuredOnRight ? slots.featuredRight : slots.featuredLeft;
+    return slots.featuredLeft;
   }
 
   if (relation === 1) {
-    return featuredOnRight ? slots.midLeft : slots.midRight;
+    return slots.midRight;
   }
 
   if (relation === 2) {
     return slots.centerBack;
   }
 
-  return featuredOnRight ? slots.hiddenLeft : slots.hiddenRight;
+  return slots.hiddenBack;
 };
 
 export const LuxuryPerspectiveGalleryPanDepth: React.FC = () => {
@@ -181,7 +153,6 @@ export const LuxuryPerspectiveGalleryPanDepth: React.FC = () => {
     <AbsoluteFill className="overflow-hidden bg-[#090D12] text-white">
       <PanStageBackground />
       <PanHeader />
-      <Pointer stageIndex={stageIndex} moveProgress={moveProgress} />
       <main className="absolute inset-0 overflow-hidden">
         {projects.map((project, projectIndex) => (
           <PanCard
@@ -244,9 +215,9 @@ const PanCard: React.FC<{
       <div className="absolute inset-x-0 bottom-0 flex h-[104px] flex-col items-center justify-center bg-[#59636f] px-5 text-center">
         <h2
           className={
-            width > 520
-              ? "font-serif text-[62px] font-black leading-none tracking-[-0.04em]"
-              : "text-[24px] font-black leading-none tracking-[-0.04em]"
+            width >= 500
+              ? "font-serif text-[46px] font-black leading-none tracking-[-0.04em]"
+              : "text-[22px] font-black leading-none tracking-[-0.04em]"
           }
         >
           {project.title}
@@ -261,12 +232,11 @@ const PanCard: React.FC<{
 
 const PanHeader: React.FC = () => (
   <header className="absolute left-0 right-0 top-[42px] z-[2000] flex justify-center">
-    <div className="flex items-center gap-3 text-[16px] font-black tracking-[-0.02em] text-white">
-      <div className="grid h-[32px] w-[32px] place-items-center rounded-[10px] border border-white/[0.22] bg-[#f2f4f8] text-[19px] shadow-[0_0_20px_rgba(208,222,255,0.20)]">
-        🧑
+    <div className="flex items-center gap-3 text-[18px] font-black tracking-[0.04em] text-white">
+      <div className="grid h-[36px] w-[36px] place-items-center rounded-[12px] border border-white/[0.22] bg-[#f2f4f8] text-[18px] font-black text-[#141a25] shadow-[0_0_20px_rgba(208,222,255,0.20)]">
+        鱼
       </div>
-      <span>Roman</span>
-      <span className="text-[18px] leading-none text-white/[0.88]">≡</span>
+      <span>鱼亦乐</span>
     </div>
   </header>
 );
@@ -333,31 +303,6 @@ const PanStageBackground: React.FC = () => {
       </svg>
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_48%,transparent_0%,rgba(0,0,0,0.36)_100%)]" />
     </AbsoluteFill>
-  );
-};
-
-const pointerSlots = [
-  { x: 950, y: 414 },
-  { x: 1030, y: 410 },
-  { x: 980, y: 414 },
-  { x: 920, y: 416 },
-];
-
-const Pointer: React.FC<{ stageIndex: number; moveProgress: number }> = ({
-  stageIndex,
-  moveProgress,
-}) => {
-  const current = pointerSlots[stageIndex % pointerSlots.length];
-  const next = pointerSlots[(stageIndex + 1) % pointerSlots.length];
-  const x = mix(current.x, next.x, moveProgress);
-  const y = mix(current.y, next.y, moveProgress);
-  return (
-    <div
-      className="absolute z-[1800] h-9 w-9"
-      style={{ left: x, top: y, transform: "translate(-50%, -50%) rotate(-28deg)" }}
-    >
-      <div className="h-full w-full [clip-path:polygon(50%_0%,100%_100%,54%_76%,0_100%)] bg-[linear-gradient(145deg,#ffcc58_0%,#ff7b32_62%,#9059ff_100%)] shadow-[0_0_18px_rgba(255,137,60,0.36)]" />
-    </div>
   );
 };
 
