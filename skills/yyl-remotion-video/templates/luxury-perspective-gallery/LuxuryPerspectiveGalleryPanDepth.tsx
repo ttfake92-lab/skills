@@ -61,6 +61,24 @@ const slots = {
     blur: 0,
     glow: 1,
   },
+  featuredRight: {
+    x: 1534,
+    y: 450,
+    width: 520,
+    height: 690,
+    opacity: 1,
+    blur: 0,
+    glow: 1,
+  },
+  midLeft: {
+    x: 810,
+    y: 510,
+    width: 238,
+    height: 330,
+    opacity: 0.92,
+    blur: 0,
+    glow: 0.7,
+  },
   midRight: {
     x: 1110,
     y: 510,
@@ -71,21 +89,21 @@ const slots = {
     glow: 0.7,
   },
   centerBack: {
-    x: 955,
-    y: 440,
+    x: 960,
+    y: 430,
     width: 138,
     height: 205,
     opacity: 0.26,
     blur: 8,
     glow: 0.12,
   },
-  hiddenBack: {
-    x: 1000,
-    y: 440,
-    width: 112,
-    height: 168,
+  deepestBack: {
+    x: 960,
+    y: 350,
+    width: 54,
+    height: 82,
     opacity: 0,
-    blur: 10,
+    blur: 16,
     glow: 0,
   },
 } satisfies Record<string, DepthSlot>;
@@ -108,20 +126,21 @@ const mixSlot = (from: DepthSlot, to: DepthSlot, progress: number): DepthSlot =>
 
 const getSlot = (projectIndex: number, stageIndex: number): DepthSlot => {
   const relation = (projectIndex - stageIndex + projects.length) % projects.length;
+  const focusOnLeft = stageIndex % 2 === 0;
 
   if (relation === 0) {
-    return slots.featuredLeft;
+    return focusOnLeft ? slots.featuredLeft : slots.featuredRight;
   }
 
   if (relation === 1) {
-    return slots.midRight;
+    return focusOnLeft ? slots.midRight : slots.midLeft;
   }
 
   if (relation === 2) {
     return slots.centerBack;
   }
 
-  return slots.hiddenBack;
+  return slots.deepestBack;
 };
 
 export const LuxuryPerspectiveGalleryPanDepth: React.FC = () => {
