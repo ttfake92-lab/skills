@@ -7,17 +7,23 @@ specific visual mechanism, not as general themes.
 
 | id | Use When | Files |
 |---|---|---|
-| `luxury-perspective-gallery` | Luxury dark portfolio, 3D horizontal carousel, premium agency work showcase, cyber-minimal gallery slider | `templates/luxury-perspective-gallery/LuxuryPerspectiveGallery.tsx`, `Root.snippet.tsx` |
+| `luxury-perspective-gallery` | Luxury dark portfolio, 3D horizontal carousel, premium agency work showcase, cyber-minimal gallery slider | `templates/luxury-perspective-gallery/LuxuryPerspectiveGallery.tsx`, `LuxuryPerspectiveGalleryHeroDepth.tsx`, `Root.snippet.tsx` |
 
 ## `luxury-perspective-gallery`
+
+Variants:
+
+- `ring-carousel` / `LuxuryPerspectiveGallery`: centered carousel ring with overlapping cards.
+- `hero-depth-stage` / `LuxuryPerspectiveGalleryHeroDepth`: reference-style stage with a huge cropped hero card on the right, smaller cards floating in depth on the left / center, star field, and perspective grid floor.
 
 Visual target:
 
 - Dark navy / charcoal space gradient with indigo glow and perspective grid floor.
 - Minimal header: left index pill, centered Roman profile, right Subscribe button.
-- Centered horizontal project-card carousel.
+- `ring-carousel`: centered horizontal project-card carousel.
+- `hero-depth-stage`: right-side oversized foreground card, mid-left card, smaller blurred background card.
 - Bottom `SAY HELLO` neon pill.
-- Cards interpolate horizontal position, `rotateY`, `scale`, opacity, blur, and z-index from `useCurrentFrame()`.
+- Cards interpolate horizontal position, `translateZ`, `rotateY`, `scale`, opacity, blur, and z-index from `useCurrentFrame()`.
 - Card examples: SummerRain packaging, Landlord Dashboard, Wunderflats App.
 
 Technical rules:
@@ -34,7 +40,7 @@ Technical rules:
 
 Copy pattern:
 
-1. Copy `LuxuryPerspectiveGallery.tsx` into `remotion/src/`.
+1. Copy the chosen variant TSX into `remotion/src/`.
 2. Register it in `src/Root.tsx` using the values from `Root.snippet.tsx`.
 3. Run `npm run lint`.
 4. Render still checks around frames `0`, `90`, `180`, and `270`.

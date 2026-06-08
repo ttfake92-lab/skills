@@ -50,7 +50,7 @@ const clampInput = {
   extrapolateRight: "clamp" as const,
 };
 
-export const LuxuryPerspectiveGallery: React.FC = () => {
+export const LuxuryPerspectiveGalleryRingCarousel: React.FC = () => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const holdFrames = fps * 1.2;
@@ -131,6 +131,8 @@ export const LuxuryPerspectiveGallery: React.FC = () => {
     </AbsoluteFill>
   );
 };
+
+export const LuxuryPerspectiveGallery = LuxuryPerspectiveGalleryRingCarousel;
 
 const Header: React.FC = () => {
   return (
