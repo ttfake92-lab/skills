@@ -7,7 +7,7 @@ specific visual mechanism, not as general themes.
 
 | id | Use When | Files |
 |---|---|---|
-| `luxury-perspective-gallery` | Luxury dark portfolio, 3D horizontal carousel, premium agency work showcase, cyber-minimal gallery slider | `templates/luxury-perspective-gallery/LuxuryPerspectiveGallery.tsx`, `LuxuryPerspectiveGalleryHeroDepth.tsx`, `Root.snippet.tsx` |
+| `luxury-perspective-gallery` | Luxury dark portfolio, 3D horizontal carousel, premium agency work showcase, cyber-minimal gallery slider | `templates/luxury-perspective-gallery/LuxuryPerspectiveGallery.tsx`, `LuxuryPerspectiveGalleryHeroDepth.tsx`, `LuxuryPerspectiveGalleryPanDepth.tsx`, `Root.snippet.tsx` |
 
 ## `luxury-perspective-gallery`
 
@@ -15,6 +15,7 @@ Variants:
 
 - `ring-carousel` / `LuxuryPerspectiveGallery`: centered carousel ring with overlapping cards.
 - `hero-depth-stage` / `LuxuryPerspectiveGalleryHeroDepth`: reference-style stage with a huge cropped hero card on the right, smaller cards floating in depth on the left / center, star field, and perspective grid floor.
+- `pan-depth-stage` / `LuxuryPerspectiveGalleryPanDepth`: closer to the supplied browser reference video. Cards mostly face the camera; the 3D feeling comes from lateral camera pan, large offscreen cropping, scale, blur, and layered depth rather than strong card rotation.
 
 Visual target:
 
@@ -22,6 +23,7 @@ Visual target:
 - Minimal header: left index pill, centered Roman profile, right Subscribe button.
 - `ring-carousel`: centered horizontal project-card carousel.
 - `hero-depth-stage`: right-side oversized foreground card, mid-left card, smaller blurred background card.
+- `pan-depth-stage`: flat-facing cards distributed across a horizontal stage; huge cards slide partly off the left / right edges as the camera pans.
 - Bottom `SAY HELLO` neon pill.
 - Cards interpolate horizontal position, `translateZ`, `rotateY`, `scale`, opacity, blur, and z-index from `useCurrentFrame()`.
 - Card examples: SummerRain packaging, Landlord Dashboard, Wunderflats App.
