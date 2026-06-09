@@ -8,6 +8,7 @@ specific visual mechanism, not as general themes.
 | id | Use When | Files |
 |---|---|---|
 | `luxury-perspective-gallery` | Luxury dark portfolio, 3D horizontal carousel, premium agency work showcase, cyber-minimal gallery slider | `templates/luxury-perspective-gallery/LuxuryPerspectiveGallery.tsx`, `LuxuryPerspectiveGalleryPanDepth.tsx`, `Root.snippet.tsx` |
+| `charity-doodle-poster` | Editorial nonprofit poster, rough ink animal illustration, line-boil stop-motion texture, hand-drawn web hero | `templates/charity-doodle-poster/CharityDoodlePoster.tsx`, `Root.snippet.tsx` |
 
 ## `luxury-perspective-gallery`
 
@@ -49,4 +50,37 @@ Suggested still check:
 
 ```bash
 npx remotion still LuxuryPerspectiveGallery --frame=90 --scale=0.5 --output=preview-stills/luxury-gallery-090.png
+```
+
+## `charity-doodle-poster`
+
+Visual target:
+
+- Solid retro background colors, defaulting to pale zoo yellow `#E8F582`.
+- Huge black headline as SVG text. Keep text and illustration in the same filtered SVG group so the title line-boil matches the animal drawing.
+- Organic custom `O` forms in `ZOO`, drawn as rough overlapping ellipses rather than regular font glyphs.
+- Minimal left editorial paragraph block and white circular plus button.
+- Giant black ink-brush animal illustration entering from the center and bottom of the frame.
+
+Motion / texture rules:
+
+- Use the SVG `line-boil` filter in the template: `feTurbulence` + `feDisplacementMap` for organic shaking, then `feGaussianBlur` + `feComponentTransfer` for rough ink edges.
+- Bind `feTurbulence.seed` to `Math.floor(frame / 3)` or a similarly stepped value. Do not update the seed every frame.
+- Wrap headline, paragraph, and illustration in one filtered `<g>` so the whole poster shares the same stop-motion hand-drawn language.
+- Do not use CSS animation or Tailwind animation utilities.
+
+Built-in palette ids:
+
+- `zoo-yellow`
+- `sky-blue`
+- `soft-peach`
+- `lime-green`
+- `rose-pink`
+
+Suggested still checks:
+
+```bash
+npx remotion still CharityDoodlePoster --frame=0 --scale=0.5 --output=preview-stills/charity-doodle-000.png
+npx remotion still CharityDoodlePoster --frame=42 --scale=0.5 --output=preview-stills/charity-doodle-042.png
+npx remotion still CharityDoodlePoster --frame=96 --scale=0.5 --output=preview-stills/charity-doodle-096.png
 ```

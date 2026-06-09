@@ -135,6 +135,7 @@ For full theme notes, read [references/THEMES.md](references/THEMES.md).
 | Template | Best For | Feel |
 |---|---|---|
 | `luxury-perspective-gallery` | premium portfolio, product showcase, 3D horizontal carousel | dark cyber-minimal agency slider |
+| `charity-doodle-poster` | nonprofit posters, hand-drawn animal heroes, line-boil editorial web effects | retro ink-brush stop-motion poster |
 
 For full template notes, read [references/TEMPLATES.md](references/TEMPLATES.md).
 
