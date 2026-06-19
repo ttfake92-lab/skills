@@ -10,7 +10,7 @@ A collection of skills for AI coding agents. Skills are packaged instructions th
 
 ### Quickstart (30-second setup)
 
-1. Run the skills installer:
+1. Run the skills installer. This command reads this repository's skill manifest and lets you install all listed skills:
 
 ```bash
 npx skills@latest add ttfake92-lab/skills
@@ -24,19 +24,27 @@ npx skills@latest add ttfake92-lab/skills
 
 #### Content Creation
 
+- **[AI-video-prompt](./skills/AI-video-prompt/SKILL.md)** — Write image-reference video prompts with reference binding, time-coded action, sound design, camera movement, and hard constraints. Best for multi-image reference workflows such as 多图参考, 首尾帧, 全能参考, and script-to-video prompt generation.
 - **[mx-shell-prompt](./skills/mx-shell-prompt/SKILL.md)** — Write structured, cinematic video generation prompts for AI video tools like Seedance 2.0, Kling, Sora, Runway, Pika. Transforms rough ideas into production-ready prompts with three pillars: who-where, what-feel, what-happens. Includes shot catalog, cinematic vocabulary, and composition templates.
 - **[yyl-remotion-video](./skills/yyl-remotion-video/SKILL.md)** — Build 16:9 Remotion video projects from scripts, articles, notes, or outlines. Creates frame-driven React/TypeScript animations, estimates duration without synthesizing audio, renders still checks, and exports mp4 with built-in themes plus a dark 3D luxury gallery template.
 
+### New Skill
+
+- `AI-video-prompt` has been added to the repository manifest, so `npx skills@latest add ttfake92-lab/skills` can discover it together with the existing skills.
+
 ### Skills Overview
 
-This repository currently includes two content-creation skills. They cover two adjacent stages of an AI video workflow:
+This repository currently includes three content-creation skills. They cover adjacent stages of an AI video workflow:
 
 | Skill | What It Does | Best For |
 |------|--------------|----------|
+| `AI-video-prompt` | Turns scripts or story beats into image-reference prompts with second-by-second action, sound, and hard constraints. | Seedance 2.0, multi-image reference prompts, first/end frame continuity, production control prompts. |
 | `mx-shell-prompt` | Turns scripts, stories, voiceovers, or rough ideas into structured cinematic prompts. | Text-to-video tools, storyboard prompts, shot lists, camera language. |
 | `yyl-remotion-video` | Turns scripts, articles, notes, or outlines into Remotion projects that can render mp4. | Frame-accurate explainers, product demos, command-line films, silent clips for post-production voiceover. |
 
 ### How To Choose
+
+Use **AI-video-prompt** when your next step is generating footage in image-reference workflows such as Seedance-style multi-image generation. It focuses on locking image roles, character continuity, time-coded motion, sound design, spatial logic, and hard failure-prevention constraints.
 
 Use **mx-shell-prompt** when your next step is sending prompts to video generation tools such as Seedance 2.0, Kling, Jimeng, Sora, Runway, or Pika. It focuses on cinematic language: characters, props, scenes, sound, mood, shot sizes, composition, and camera movement.
 
@@ -45,8 +53,9 @@ Use **yyl-remotion-video** when your next step is building a real Remotion proje
 ### Example Workflow
 
 1. Use `mx-shell-prompt` to break a script into cinematic blocks and shot ideas.
-2. Use `yyl-remotion-video` when you want a deterministic 16:9 Remotion clip instead of model-generated footage.
-3. Add voiceover, subtitles, sound design, and final edits in post-production.
+2. Use `AI-video-prompt` when the output needs image-reference prompts with precise constraints.
+3. Use `yyl-remotion-video` when you want a deterministic 16:9 Remotion clip instead of model-generated footage.
+4. Add voiceover, subtitles, sound design, and final edits in post-production.
 
 ### License
 
@@ -60,7 +69,7 @@ AI Agent 技能集合 — 面向内容创作者、视频制作人和提示词工
 
 ### 快速安装（30 秒搞定）
 
-1. 运行安装命令：
+1. 运行安装命令。这个命令会读取仓库里的 skill 清单，并允许你安装清单中的所有 skill：
 
 ```bash
 npx skills@latest add ttfake92-lab/skills
@@ -74,19 +83,27 @@ npx skills@latest add ttfake92-lab/skills
 
 #### 内容创作
 
+- **[AI-video-prompt](./skills/AI-video-prompt/SKILL.md)** — 图片参考型视频提示词生成。把脚本或故事节拍转成带图片参考绑定、秒级动作、声音设计、运镜和硬约束的完整提示词，适合多图参考、首尾帧、全能参考和脚本转视频提示词。
 - **[mx-shell-prompt](./skills/mx-shell-prompt/SKILL.md)** — 视频提示词写作。把粗略想法转化为结构化的电影级视频提示词，适用于 Seedance 2.0、Kling、Sora、Runway、Pika 等所有文生视频工具。核心理念：每个好提示词由三根支柱构成 —— 谁在哪、什么感觉、发生什么。内含景别速查表、电影词汇库和构图模板。
 - **[yyl-remotion-video](./skills/yyl-remotion-video/SKILL.md)** — Remotion 视频制作。把口播稿、文章、资料摘要或明确大纲做成 16:9、逐帧可控、可直接导出 mp4 的视频项目。内置三套主题和深色 3D 高端画廊模板，不在流程内合成音频，适合后期统一配音。
 
+### 新增说明
+
+- 已新增 `AI-video-prompt`，并加入仓库 skill 清单。现在使用 `npx skills@latest add ttfake92-lab/skills` 时，可以和已有 skill 一起被发现与安装。
+
 ### Skills 概览
 
-这个仓库目前有 2 个内容创作类 skills，覆盖 AI 视频工作流里相邻但不同的两个阶段：
+这个仓库目前有 3 个内容创作类 skills，覆盖 AI 视频工作流里相邻但不同的阶段：
 
 | Skill | 做什么 | 适合场景 |
 |------|--------|----------|
+| `AI-video-prompt` | 把脚本或故事节拍转成图片参考型提示词，包含图片参考、秒级动作、声音和硬约束。 | Seedance 2.0、多图参考、首尾帧连续、强控制视频生成提示词。 |
 | `mx-shell-prompt` | 把脚本、故事、口播稿或粗略想法转成结构化电影级视频提示词。 | 文生视频工具、分镜提示词、镜头语言、AI 视频生成。 |
 | `yyl-remotion-video` | 把口播稿、文章、资料摘要或明确大纲做成可渲染 mp4 的 Remotion 项目。 | 逐帧可控讲解视频、产品 demo、命令行电影、后期统一配音的视频片段。 |
 
 ### 怎么选择
+
+如果你的下一步是 Seedance 这类依赖图片参考的视频生成工作流，用 **AI-video-prompt**。它关注的是图片角色绑定、人物连续性、秒级动作、声音设计、空间逻辑和防跑偏硬约束。
 
 如果你的下一步是把提示词发给 Seedance 2.0、Kling、即梦、Sora、Runway、Pika 等视频生成工具，用 **mx-shell-prompt**。它关注的是电影语言：角色、道具、场景、声音、氛围、景别、构图和运镜。
 
@@ -95,7 +112,7 @@ npx skills@latest add ttfake92-lab/skills
 ### 推荐工作流
 
 1. 用 `mx-shell-prompt` 把脚本拆成电影化板块和镜头想法。
-2. 如果你想要模型生成画面，就把提示词送进视频生成工具。
+2. 如果要用 Seedance 等图片参考型视频工具生成画面，用 `AI-video-prompt` 写成带图片参考和硬约束的生产型提示词。
 3. 如果你想要可控的 16:9 动态讲解片段，就用 `yyl-remotion-video` 做 Remotion 视频。
 4. 最后在后期软件里加入口播、字幕、音效和剪辑。
 

@@ -1,76 +1,76 @@
 ---
 name: AI-video-prompt
-description: "Turn a script, story beat, or shot idea into NeoWOW-style AI video prompts with image-reference binding, timeline action, sound, and hard constraints. Use when the user asks for AI video prompts, NeoWOW/Seedance prompts, image-reference video generation, script-to-video prompts, 多图参考, 首尾帧, 全能参考, 视频提示词, or wants a script converted into complete copy-paste video prompts."
+description: "把脚本、故事节拍或镜头想法转成图片参考型 AI 视频提示词，包含图片参考绑定、秒级动作、声音设计和硬约束。使用场景：用户需要 AI 视频提示词、Seedance 提示词、图片参考视频生成、脚本转视频提示词、多图参考、首尾帧、全能参考、视频提示词，或希望把脚本转成可直接复制使用的完整视频提示词。"
 ---
 
-# AI Video Prompt
+# AI 视频提示词
 
-Generate complete video prompts in the observed NeoWOW workflow style: **image references first, dense single-block prompt, time-coded action, sound design, and explicit constraints**.
+生成图片参考型视频工作流的完整提示词：**先定义图片参考，再写高密度单段提示词，包含秒级动作、声音设计和明确约束**。
 
-## Quick Start
+## 快速开始
 
-When the user provides a script, story, voiceover, or rough idea:
+当用户提供脚本、故事、口播稿或粗略想法时：
 
-1. Split it into 8-15 second generation units by scene, location, time jump, action beat, or emotional turn.
-2. For each unit, choose a reference mode: `多图参考` for several image anchors, `首尾帧` for start/end continuity, `全能参考` for mixed character/scene/prop anchors, or `动作模仿` only when a reference video drives motion.
-3. Output a complete prompt pack for each unit:
+1. 按场景、地点、时间跳跃、动作节拍或情绪转折，把内容拆成 8-15 秒的生成单元。
+2. 为每个单元选择参考模式：多张图片锚定时用 `多图参考`，需要首尾连续时用 `首尾帧`，角色/场景/道具混合锚定时用 `全能参考`，只有动作由参考视频驱动时才用 `动作模仿`。
+3. 为每个单元输出一组完整提示词：
 
 ```md
-片段一：[one-line beat]
+片段一：[一句话节拍]
 生成模式：[多图参考 / 首尾帧 / 全能参考]
 模型参数：Seedance 2.0 | 720p | 16:9 | [10s/12s/15s]
 参考图片：
-图片1：[role, e.g. character look / location DNA / prop]
-图片2：[role]
+图片1：[用途，例如人物造型 / 场景视觉基因 / 道具]
+图片2：[用途]
 
 提示词：
-[copy-paste-ready NeoWOW prompt]
+[可直接复制使用的图片参考型完整视频提示词]
 ```
 
-If no reference images are provided, still generate placeholders (`图片1`, `图片2`) and state exactly what each image should be before the prompt.
+如果用户没有提供参考图，也要生成 `图片1`、`图片2` 等占位说明，并在提示词前明确每张图应该是什么。
 
-## Prompt Formula
+## 提示词结构
 
-Write one dense prompt block, not a loose storyboard. Use Chinese labels with `【】` only when they improve control.
+写成一段高密度提示词，不写松散分镜表。只有当 `【】` 标签能增强控制力时才使用。
 
-Order the content like this:
+内容顺序如下：
 
-1. **Opening control sentence**: duration, shot form, core style, camera/film look, aspect ratio.
-2. **Image binding**: define each image's job before action starts.
-3. **Scene / spatial structure**: geography, subject placement, depth layers, crowd/traffic/props.
-4. **Time-coded action**: use `【0-2秒】`, `【2-4秒】`, etc. for 10-15s clips; use exact second marks for reveals, occlusions, hard cuts, or transformations.
-5. **Camera motion**: distance, height, lens behavior, tracking direction, handheld/stabilizer, when the frame must not move.
-6. **Sound design**: environment bed first, then event sounds by time; specify distance and clarity.
-7. **Style / light / color**: concrete film stock, camera, lens, color palette, light direction, grain, contrast.
-8. **Hard constraints**: mark must-follow rules with `必须严格遵守`, especially scale, spatial logic, continuity, performance, and forbidden failure modes.
+1. **开场控制句**：时长、镜头形式、核心风格、摄影/胶片质感、画幅比例。
+2. **图片绑定**：动作开始前先定义每张图片的用途。
+3. **场景 / 空间结构**：地理位置、主体位置、纵深层次、人群/车流/道具。
+4. **秒级动作**：10-15 秒片段用 `【0-2秒】`、`【2-4秒】` 等时间段；揭示、遮挡、硬切、变装等关键事件要写准确秒点。
+5. **运镜**：距离、高度、镜头行为、跟拍方向、手持/稳定器、什么时候机位不能动。
+6. **声音设计**：先写环境声底，再按时间写事件音；说明收音距离和清晰度。
+7. **风格 / 光影 / 色彩**：具体胶片、摄影机、镜头、色彩方案、光线方向、颗粒、对比度。
+8. **硬约束**：用 `必须严格遵守` 标记关键规则，尤其是比例、空间逻辑、连续性、表演尺度和禁止失败项。
 
-## Image Reference Rules
+## 图片参考规则
 
-- Use NeoWOW-style references: `图片1`, `图片2`, `图片3`, and `@图片1` when binding must be explicit.
-- Assign one job per image: character identity, outfit/look, first frame, end frame, location DNA, prop, creature/mecha/object, or style plate.
-- Bind identity with concrete locked attributes: face, hair, clothing, body scale, object silhouette, colors, texture, and relation to the scene.
-- Bind scene images as visual DNA: lighting, composition, wall/road layout, color temperature, atmosphere.
-- Do not say only "参考图片". Say what is locked and what can change.
-- If a prompt uses multiple images, mention them inside the action where they matter: "参考图片1的造型", "首帧锁定图片2", "票图片3从画面顶部飘入".
+- 使用清晰的图片引用：`图片1`、`图片2`、`图片3`；需要强绑定时使用 `@图片1`。
+- 每张图只承担一个明确任务：人物身份、服装造型、首帧、尾帧、场景视觉基因、道具、生物/机甲/物体或风格参考。
+- 绑定人物时写清锁定项：脸、发型、服装、身体比例、物体轮廓、颜色、材质、和场景的关系。
+- 绑定场景时把图片当作视觉基因：光线、构图、墙面/道路布局、色温、氛围。
+- 不要只写“参考图片”。必须说明锁定什么、允许变化什么。
+- 多图提示词要在动作发生处再次点名图片作用，例如“参考图片1的造型”“首帧锁定图片2”“票图片3从画面顶部飘入”。
 
-## Constraint Rules
+## 约束规则
 
-Use constraints as production controls, not decoration:
+约束是生产控制，不是装饰词：
 
-- **Scale**: full body / half body / close-up, exact subject size in frame.
-- **Spatial logic**: where characters, roads, vehicles, props, and background layers are allowed to be.
-- **Motion logic**: action order, speed changes, occlusion timing, hard cut timing, incomplete actions.
-- **Performance**: real, restrained, not theatrical unless requested.
-- **Sound**: no music unless requested; specify distant street capture, muffled dialogue, or clear event sounds.
-- **Continuity**: character, outfit, prop state, first/end frame, and next-shot handoff.
-- **Negative controls**: avoid empty streets, staged extras, CG/game look, over-close framing, broken anatomy, impossible object movement, clear dialogue when dialogue must be muffled.
+- **比例**：全身 / 半身 / 特写，主体在画面中占多大。
+- **空间逻辑**：人物、道路、车辆、道具、背景层次分别在哪里。
+- **动作逻辑**：动作顺序、速度变化、遮挡时机、硬切时机、未完成动作。
+- **表演尺度**：真实、克制；除非用户要求，否则不要戏剧化。
+- **声音**：用户没要求配乐时默认无配乐；要说明远距离街拍、对白模糊或事件音清晰。
+- **连续性**：人物、服装、道具状态、首尾帧和下一镜头衔接。
+- **负面控制**：避免空街、摆拍群演、游戏 CG 感、镜头过近、肢体错误、物体运动不可能、需要模糊的对白变得清晰。
 
-## Output Style
+## 输出风格
 
-- Make every prompt copy-paste-ready.
-- Prefer one strong paragraph with `【】` sections over many Markdown bullets inside the prompt.
-- Use exact physical action: body weight, hand position, gaze, breath, cloth friction, object path.
-- Make sound as specific as visuals.
-- End each segment with model settings and any image upload notes.
+- 每条提示词都必须可直接复制使用。
+- 提示词内部优先使用一段强控制文本和 `【】` 分区，不要写成一堆 Markdown 项目符号。
+- 动作要有物理精度：重心、手的位置、视线、呼吸、衣料摩擦、物体路径。
+- 声音要像画面一样具体。
+- 每个片段结尾保留模型参数和图片上传说明。
 
-See [verification-sample.md](references/verification-sample.md) for a script-to-prompt example.
+脚本转完整提示词示例见 [verification-sample.md](references/verification-sample.md)。
