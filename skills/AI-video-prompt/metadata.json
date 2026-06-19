@@ -1,0 +1,9 @@
+{
+  "version": "1.0.0",
+  "author": "Codex",
+  "date": "June 2026",
+  "abstract": "Script-to-NeoWOW video prompt skill based on observed NeoWOW workflow prompts. Produces complete AI video prompts with image reference roles, time-coded action, sound design, camera movement, style controls, and hard constraints for tools such as Seedance 2.0.",
+  "references": [
+    "https://neowow.cn/video-works-view?id=147"
+  ]
+}
