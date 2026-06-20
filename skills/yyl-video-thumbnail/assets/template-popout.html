@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<style>
+/* ============================================================
+   pop-out 技法：底层=暗化原图(留环境真实感)，中层=文字，顶层=全亮抠图人物(原位对齐)
+   品牌令牌见 references/brand-system.md
+   ============================================================ */
+:root{
+  --ink:#FFFFFF;
+  --hi:#FFE14D;          /* 招牌色块（黄） */
+  --hi-ink:#0A0E16;
+  --accent:#3B82F6;       /* 强调色统一为蓝（不用青） */
+  --kicker:#DCE6F7;
+  --font-zh:"PingFang SC","Source Han Sans SC","Noto Sans SC",sans-serif;
+  --font-en:"Archivo Black","Archivo Expanded","Archivo","Helvetica Neue",sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;height:100%;overflow:hidden;background:#05070C}
+.stage{position:relative;width:100%;height:100%;overflow:hidden;container-type:size;font-family:var(--font-zh)}
+
+/* ---------- z0 底层：原图，压暗 + 降饱和（保留环境元素，但退后） ---------- */
+.bg-photo{position:absolute;inset:0;z-index:0;width:100%;height:100%;object-fit:cover;
+  filter:brightness(.66) saturate(.95) contrast(1.02);}
+.bg-grad{position:absolute;inset:0;z-index:0;
+  background:radial-gradient(120% 90% at 80% 12%,rgba(99,102,241,.28),transparent 55%),
+             linear-gradient(160deg,#0E1A2E,#070A12 72%);}
+/* z1 幕布：文字侧再压暗，保证可读 */
+.bg-veil{position:absolute;inset:0;z-index:1;
+  background:linear-gradient(90deg,rgba(5,7,12,.62) 0%,rgba(5,7,12,.26) 42%,rgba(5,7,12,0) 70%),
+             linear-gradient(0deg,rgba(5,7,12,.32),rgba(5,7,12,.05) 38%);}
+.person-left .bg-veil{background:linear-gradient(270deg,rgba(5,7,12,.62) 0%,rgba(5,7,12,.26) 42%,rgba(5,7,12,0) 70%),
+             linear-gradient(0deg,rgba(5,7,12,.32),rgba(5,7,12,.05) 38%);}
+
+/* ---------- z2 文字（压在暗化原图上，会被顶层人物盖一点） ---------- */
+.copy{position:absolute;z-index:2;display:flex;flex-direction:column;}
+.kicker{font-family:var(--font-en);color:var(--kicker);font-weight:400;letter-spacing:.14em;
+  text-transform:uppercase;width:max-content;padding:.4em .75em;border-radius:.45em;
+  background:rgba(5,7,12,.5);border:1px solid rgba(220,230,247,.22);backdrop-filter:blur(4px);}
+.title{color:var(--ink);font-weight:600;line-height:1.0;letter-spacing:-.01em;display:flex;flex-direction:column;gap:.18em;}
+.title .tline{white-space:nowrap;width:max-content;
+  -webkit-text-stroke:.018em var(--ink);                 /* 加重中文字重（系统无 Heavy 中文） */
+  text-shadow:0 3px 16px rgba(0,0,0,.7),0 1px 3px rgba(0,0,0,.85);}
+.title .hi{font-family:var(--font-en);font-weight:400;-webkit-text-stroke:0;
+  background:var(--hi);color:var(--hi-ink);padding:.04em .18em .0em;border-radius:.05em;margin:0 .04em;
+  -webkit-box-decoration-break:clone;box-decoration-break:clone;
+  text-shadow:none;box-shadow:0 8px 22px rgba(0,0,0,.45);}
+.subtitle{color:#E2EAF7;font-weight:600;width:max-content;text-shadow:0 2px 10px rgba(0,0,0,.8)}
+.person-left .title .tline,.person-left .subtitle{align-self:flex-end}
+
+/* ---------- z5 顶层：抠图人物，全亮、原位对齐（object-position 与底层一致） ---------- */
+.person{position:absolute;inset:0;z-index:5;width:100%;height:100%;object-fit:cover;
+  filter:contrast(1.04) saturate(1.06)
+    drop-shadow(2px 0 0 rgba(255,255,255,.5)) drop-shadow(-2px 0 0 rgba(255,255,255,.5))
+    drop-shadow(0 2px 0 rgba(255,255,255,.5)) drop-shadow(0 -2px 0 rgba(255,255,255,.5))
+    drop-shadow(0 22px 34px rgba(0,0,0,.5));}
+.grade-mono .person{filter:grayscale(1) contrast(1.08)
+    drop-shadow(2px 0 0 rgba(255,255,255,.6)) drop-shadow(-2px 0 0 rgba(255,255,255,.6))
+    drop-shadow(0 2px 0 rgba(255,255,255,.6)) drop-shadow(0 -2px 0 rgba(255,255,255,.6))
+    drop-shadow(0 22px 34px rgba(0,0,0,.55));}
+
+/* ---------- z6 钩子组件（可选，在人物后/前依排版） ---------- */
+.hook{position:absolute;z-index:3;background:rgba(13,20,34,.82);border:1px solid rgba(120,160,220,.22);
+  border-radius:1cqh;backdrop-filter:blur(8px);overflow:hidden;box-shadow:0 12px 40px rgba(0,0,0,.45);
+  font-family:"JetBrains Mono","SF Mono",monospace;}
+.hook .bar{display:flex;align-items:center;gap:.5em;padding:.7em .9em;border-bottom:1px solid rgba(120,160,220,.22);color:var(--kicker);font-size:1.6cqh}
+.hook .dot{width:.7em;height:.7em;border-radius:50%}.hook .dot.r{background:#ff5f57}.hook .dot.y{background:#febc2e}.hook .dot.g{background:#28c840}
+.hook .body{padding:.9em 1.1em;color:#D4E2F7;font-size:1.7cqh;line-height:1.7;white-space:pre-wrap}
+
+/* ---------- z7 品牌签名：只出现「鱼亦乐」三个字，小，无 logo ---------- */
+.brand{position:absolute;z-index:7;left:4.5cqw;bottom:4.5cqh;
+  color:#EAF1FF;font-weight:700;letter-spacing:.16em;font-size:2.5cqh;
+  text-shadow:0 2px 10px rgba(0,0,0,.85);opacity:.92}
+.person-left .brand{left:auto;right:4.5cqw}
+
+.grain{position:absolute;inset:0;z-index:8;pointer-events:none;opacity:.05;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");}
+
+/* ============================================================
+   多比例：文字版面随比例重排；人物与原图用同一 object-position 对齐
+   ============================================================ */
+.ratio-16x9 .copy{left:4.5cqw;top:47%;transform:translateY(-50%);gap:2.4cqh;width:58cqw}
+.ratio-16x9 .kicker{font-size:2.2cqh;margin-bottom:.6cqh}
+.ratio-16x9 .title{font-size:13cqh}
+.ratio-16x9 .subtitle{font-size:3.2cqh}
+.ratio-16x9 .hook{left:4.5cqw;bottom:14cqh;width:30cqw}
+
+.ratio-4x3 .copy{left:4.5cqw;top:44%;transform:translateY(-50%);gap:2.2cqh;width:52cqw}
+.ratio-4x3 .kicker{font-size:2.4cqh;margin-bottom:.6cqh}
+.ratio-4x3 .title{font-size:10.5cqh}
+.ratio-4x3 .subtitle{font-size:3cqh}
+
+/* 3:4：横图来源(.src-wide)用上方标题带 + 下方照片带，避免裁竖图放大撞脸；竖图来源全铺 */
+.src-wide.ratio-3x4 .bg-photo,.src-wide.ratio-3x4 .person{top:auto;bottom:0;height:76%}
+.src-wide.ratio-3x4 .bg-veil{background:
+  linear-gradient(180deg,#05070C 0%,#05070C 20%,rgba(5,7,12,.2) 36%,transparent 46%),
+  linear-gradient(0deg,rgba(5,7,12,.4),transparent 30%);}
+.ratio-3x4 .copy{left:6cqw;right:6cqw;top:4.5cqh;gap:1.6cqh;align-items:flex-start;width:auto}
+.ratio-3x4 .kicker{font-size:2.8cqw}
+.ratio-3x4 .title{font-size:11cqw}      /* 竖版按宽度算，防长行溢出 */
+.ratio-3x4 .subtitle{font-size:3.4cqw}
+.ratio-3x4 .brand{left:50%;transform:translateX(-50%)}
+
+/* 无原图时退化为科技渐变背景 */
+.no-photo .bg-photo{display:none}
+</style>
+</head>
+<body class="{{BODY_CLASS}}">
+  <div class="stage">
+    {{BGPHOTO_HTML}}
+    <div class="bg-veil"></div>
+    <div class="copy">
+      {{KICKER_HTML}}
+      <h1 class="title">{{TITLE_HTML}}</h1>
+      {{SUBTITLE_HTML}}
+    </div>
+    {{COMPONENT_HTML}}
+    {{PERSON_HTML}}
+    <div class="brand">{{BRAND_NAME}}</div>
+    <div class="grain"></div>
+  </div>
+</body>
+</html>

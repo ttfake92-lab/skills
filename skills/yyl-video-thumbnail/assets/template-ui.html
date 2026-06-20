@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<style>
+/* ============================================================
+   template-ui —— 命令面板风：标题=在 AI 工具里输入的查询；chip 是结构本体。
+   与 template-popout 共享 pop-out 三层（暗化原图 / 人物全亮 / 品牌签名）。
+   ============================================================ */
+:root{
+  --ink:#FFFFFF;
+  --hi:#FFE14D;
+  --accent:#3B82F6;       /* 强调色：只用蓝，克制 */
+  --accent2:#2563EB;      /* 结果选中行实色蓝 */
+  --kicker:#C7D4EA;
+  --font-zh:"PingFang SC","Source Han Sans SC","Noto Sans SC",sans-serif;
+  --font-en:"Archivo Black","Archivo Expanded","Archivo","Helvetica Neue",sans-serif;
+  --mono:"JetBrains Mono","SF Mono","IBM Plex Mono",monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;height:100%;overflow:hidden;background:#05070C}
+.stage{position:relative;width:100%;height:100%;overflow:hidden;container-type:size;font-family:var(--font-zh)}
+
+/* z0 底层原图（压暗，留环境） */
+.bg-photo{position:absolute;inset:0;z-index:0;width:100%;height:100%;object-fit:cover;
+  filter:brightness(.6) saturate(.9) contrast(1.02);}
+.bg-grad{position:absolute;inset:0;z-index:0;
+  background:radial-gradient(120% 90% at 80% 12%,rgba(99,102,241,.28),transparent 55%),linear-gradient(160deg,#0E1A2E,#070A12 72%);}
+.bg-veil{position:absolute;inset:0;z-index:1;
+  background:linear-gradient(90deg,rgba(5,7,12,.7) 0%,rgba(5,7,12,.3) 46%,rgba(5,7,12,0) 72%),
+             linear-gradient(0deg,rgba(5,7,12,.36),rgba(5,7,12,.05) 38%);}
+.person-left .bg-veil{background:linear-gradient(270deg,rgba(5,7,12,.7) 0%,rgba(5,7,12,.3) 46%,rgba(5,7,12,0) 72%),
+             linear-gradient(0deg,rgba(5,7,12,.36),rgba(5,7,12,.05) 38%);}
+
+/* z2 命令面板（hero）—— 在人物后，人物压住一点边缘形成纵深 */
+.cmd{position:absolute;z-index:2;display:flex;flex-direction:column;gap:1.6cqh;}
+.cmd-kicker{font-family:var(--mono);color:var(--kicker);letter-spacing:.16em;text-transform:uppercase;
+  width:max-content;display:inline-flex;align-items:center;gap:.5em;}
+.cmd-kicker::before{content:"";width:.55em;height:.55em;border-radius:50%;background:var(--accent)}
+.cmd-bar{display:flex;align-items:center;gap:.55em;width:max-content;max-width:100%;background:rgba(10,14,22,.92);
+  border:1.5px solid rgba(140,170,220,.35);border-radius:.55em;padding:.55em .7em;
+  box-shadow:0 24px 60px rgba(0,0,0,.55),inset 0 1px 0 rgba(255,255,255,.05);backdrop-filter:blur(10px);}
+.cmd-bar .ic{color:var(--accent);line-height:1;flex:none}
+.cmd-bar .q{color:var(--ink);font-weight:700;line-height:1.1;letter-spacing:-.01em;white-space:nowrap}
+.cmd-bar .q .hi{color:var(--accent)}                 /* 关键词=青色（区别于 popout 的黄块） */
+.cmd-bar .q .tline{display:inline}
+.cmd-bar .caret{width:.09em;height:1.05em;background:var(--accent);border-radius:1px;flex:none}
+.cmd-bar .kbd{margin-left:.4em;color:#9FB4D6;font-family:var(--mono);border:1px solid rgba(140,170,220,.35);
+  border-radius:.35em;padding:.12em .5em;flex:none}
+/* 结果行（autocomplete 选中态） */
+.cmd-list{display:flex;flex-direction:column;gap:.5cqh;align-self:stretch}  /* 拉满面板宽 → 选中蓝条压到人物后面 */
+.cmd-row{display:flex;align-items:center;gap:.6em;padding:.5em .75em;border-radius:.45em;
+  font-weight:600;color:#D7E2F3;background:rgba(10,14,22,.6);border:1px solid rgba(140,170,220,.18)}
+.cmd-row.sel{background:var(--accent2);color:#fff;border-color:transparent}
+.cmd-row .ic{color:var(--accent)}.cmd-row.sel .ic{color:#fff}
+
+/* z5 顶层人物（全亮、原位对齐） */
+.person{position:absolute;inset:0;z-index:5;width:100%;height:100%;object-fit:cover;
+  filter:contrast(1.04) saturate(1.06)
+    drop-shadow(2px 0 0 rgba(255,255,255,.5)) drop-shadow(-2px 0 0 rgba(255,255,255,.5))
+    drop-shadow(0 2px 0 rgba(255,255,255,.5)) drop-shadow(0 -2px 0 rgba(255,255,255,.5))
+    drop-shadow(0 22px 34px rgba(0,0,0,.5));}
+.grade-mono .person{filter:grayscale(1) contrast(1.08)
+    drop-shadow(2px 0 0 rgba(255,255,255,.6)) drop-shadow(-2px 0 0 rgba(255,255,255,.6))
+    drop-shadow(0 2px 0 rgba(255,255,255,.6)) drop-shadow(0 -2px 0 rgba(255,255,255,.6)) drop-shadow(0 22px 34px rgba(0,0,0,.55));}
+
+/* z7 品牌签名 */
+.brand{position:absolute;z-index:7;left:4.5cqw;bottom:4.5cqh;color:#EAF1FF;font-weight:700;
+  letter-spacing:.16em;font-size:2.5cqh;text-shadow:0 2px 10px rgba(0,0,0,.85);opacity:.92}
+.person-left .brand{left:auto;right:4.5cqw}
+
+.grain{position:absolute;inset:0;z-index:8;pointer-events:none;opacity:.05;mix-blend-mode:overlay;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");}
+
+/* ---------- 多比例 ---------- */
+.ratio-16x9 .cmd{left:4.5cqw;top:50%;transform:translateY(-50%);width:60cqw}
+.ratio-16x9 .cmd-kicker{font-size:2.2cqh}
+.ratio-16x9 .cmd-bar .q,.ratio-16x9 .cmd-bar .ic{font-size:8.2cqh}   /* 标题整体放大 */
+.ratio-16x9 .cmd-bar .kbd,.ratio-16x9 .cmd-row{font-size:2.7cqh}     /* 小字不放大 */
+
+.ratio-4x3 .cmd{left:4.5cqw;top:48%;transform:translateY(-50%);width:54cqw}
+.ratio-4x3 .cmd-kicker{font-size:2.4cqh}
+.ratio-4x3 .cmd-bar .q,.ratio-4x3 .cmd-bar .ic{font-size:7cqh}
+.ratio-4x3 .cmd-bar .kbd,.ratio-4x3 .cmd-row{font-size:2.7cqh}
+
+/* 3:4：命令面板压上方，横图来源人物用下方照片带 */
+.src-wide.ratio-3x4 .bg-photo,.src-wide.ratio-3x4 .person{top:auto;bottom:0;height:76%}
+.src-wide.ratio-3x4 .bg-veil{background:linear-gradient(180deg,#05070C 0%,#05070C 22%,rgba(5,7,12,.2) 38%,transparent 48%),linear-gradient(0deg,rgba(5,7,12,.4),transparent 30%)}
+.ratio-3x4 .cmd{left:6cqw;right:6cqw;top:5cqh;width:auto}
+.ratio-3x4 .cmd-kicker{font-size:2.8cqw}
+.ratio-3x4 .cmd-bar{flex-wrap:wrap}
+.ratio-3x4 .cmd-bar .q,.ratio-3x4 .cmd-bar .ic{font-size:8.5cqw}
+.ratio-3x4 .cmd-bar .q{white-space:normal}
+.ratio-3x4 .cmd-bar .kbd,.ratio-3x4 .cmd-row{font-size:3.1cqw}
+.ratio-3x4 .brand{left:50%;transform:translateX(-50%)}
+
+.no-photo .bg-photo{display:none}
+</style>
+</head>
+<body class="{{BODY_CLASS}}">
+  <div class="stage">
+    {{BGPHOTO_HTML}}
+    <div class="bg-veil"></div>
+    <div class="cmd">
+      {{UI_KICKER_HTML}}
+      <div class="cmd-bar">
+        <span class="ic">✦</span>
+        <span class="q">{{TITLE_HTML}}</span>
+        <span class="caret"></span>
+        <span class="kbd">⌘↵</span>
+      </div>
+      {{UI_LIST_HTML}}
+    </div>
+    {{PERSON_HTML}}
+    <div class="brand">{{BRAND_NAME}}</div>
+    <div class="grain"></div>
+  </div>
+</body>
+</html>

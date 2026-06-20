@@ -1,0 +1,11 @@
+{
+  "name": "codex-cover",
+  "kicker": "CODEX · SKILL",
+  "title": "我把 [Codex]\n做成封面 [Skill]",
+  "subtitle": "一个动作，生成三种比例封面",
+  "photo": "input/person.jpg",
+  "person_image": "input/person-cut.png",
+  "person_side": "right",
+  "brand_name": "@鱼亦乐",
+  "ratios": ["16x9", "4x3", "3x4"]
+}

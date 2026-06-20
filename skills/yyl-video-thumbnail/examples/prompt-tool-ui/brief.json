@@ -1,0 +1,16 @@
+{
+  "name": "prompt-tool-ui",
+  "template": "ui",
+  "kicker": "AI VIDEO PROMPT",
+  "title": "视频[提示词]工具",
+  "results": [
+    { "icon": "✦", "label": "开箱即用，复制粘贴就能用", "sel": true },
+    { "icon": "↳", "label": "一键导出 16:9 / 4:3 / 3:4" }
+  ],
+  "photo": "input/photo2.jpg",
+  "person_image": "input/person-cut2.png",
+  "person_side": "right",
+  "brand_name": "@鱼亦乐",
+  "focus": { "16x9": "50% 50%", "4x3": "52% 50%", "3x4": "60% 40%" },
+  "ratios": ["16x9", "4x3", "3x4"]
+}

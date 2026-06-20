@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<style>
+/* ============================================================
+   template-paper —— 胶片编辑风：褪色(近黑白)照片 + 胶片颗粒 + 半调网点（中性，不发黄）。
+   关键词用 iOS 文本选中（黄底 + 蓝手柄），右键菜单浮层紧贴选中上方。
+   ============================================================ */
+:root{
+  --paper-0:#ECEBE7;     /* 中性纸白（微暖、不黄） */
+  --paper-1:#D5D4CF;     /* 暗部 */
+  --ink:#1E1B16;         /* 深墨标题 */
+  --ink-soft:#56514A;
+  --sel:#FFD23F;         /* iOS 选中高亮黄 */
+  --grip:#2563EB;        /* iOS 选中手柄蓝 */
+  --font-zh:"PingFang SC","Source Han Sans SC","Noto Sans SC",sans-serif;
+  --font-en:"Archivo","Helvetica Neue",sans-serif;
+  --mono:"SF Mono","JetBrains Mono",monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;height:100%;overflow:hidden;background:var(--paper-0)}
+.stage{position:relative;width:100%;height:100%;overflow:hidden;container-type:size;font-family:var(--font-zh)}
+
+/* z0 中性纸底 */
+.paper-base{position:absolute;inset:0;z-index:0;background:radial-gradient(120% 100% at 50% 32%,var(--paper-0),var(--paper-1));}
+/* z0 照片：褪色为近黑白（不加暖黄），multiply 融入 */
+.bg-photo{position:absolute;inset:0;z-index:0;width:100%;height:100%;object-fit:cover;
+  filter:saturate(.45) contrast(1.03) brightness(1.05);mix-blend-mode:multiply;opacity:.78;}
+.bg-grad{position:absolute;inset:0;z-index:0;background:var(--paper-1)}
+/* z1 半调网点（halftone screen）：经典印刷网纹 */
+.halftone{position:absolute;inset:-30%;z-index:1;mix-blend-mode:multiply;opacity:.07;
+  background-image:radial-gradient(circle,rgba(10,10,10,1) 0.5px,transparent 0.9px);
+  background-size:2.4px 2.4px;transform:rotate(15deg) scale(1.5);}
+/* z1 胶片颗粒（film grain）：细噪点，主纹理 */
+.film{position:absolute;inset:0;z-index:1;mix-blend-mode:overlay;opacity:.26;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.1' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23g)'/%3E%3C/svg%3E");}
+/* z1 幕布：文字侧提亮（中性）+ 中性暗角 */
+.bg-veil{position:absolute;inset:0;z-index:1;pointer-events:none;
+  background:radial-gradient(130% 100% at 50% 42%,transparent 56%,rgba(30,28,24,.26)),
+            linear-gradient(90deg,rgba(236,235,231,.72) 0%,rgba(236,235,231,.22) 40%,transparent 62%);}
+.person-left .bg-veil{background:radial-gradient(130% 100% at 50% 42%,transparent 56%,rgba(30,28,24,.26)),
+            linear-gradient(270deg,rgba(236,235,231,.72) 0%,rgba(236,235,231,.22) 40%,transparent 62%);}
+
+/* z2 文字 */
+.copy{position:absolute;z-index:2;display:flex;flex-direction:column;}
+.kicker{font-family:var(--mono);color:var(--ink-soft);letter-spacing:.18em;text-transform:uppercase;width:max-content;}
+.title{color:var(--ink);font-weight:700;line-height:1.18;letter-spacing:-.005em;display:flex;flex-direction:column;gap:.26em;}
+.title .tline{white-space:nowrap;width:max-content}
+/* iOS 文本选中：黄底 + 两端蓝手柄 */
+.title .hi{position:relative;background:var(--sel);padding:.06em .04em;border-radius:.02em;
+  box-decoration-break:clone;-webkit-box-decoration-break:clone;}
+.title .hi .grip{position:absolute;top:-.16em;bottom:-.16em;width:.06em;background:var(--grip)}
+.title .hi .grip.s{left:-.05em}.title .hi .grip.e{right:-.05em}
+.title .hi .grip::before{content:"";position:absolute;left:50%;transform:translateX(-50%);
+  width:.34em;height:.34em;border-radius:50%;background:var(--grip)}
+.title .hi .grip.s::before{top:-.28em}.title .hi .grip.e::before{bottom:-.28em}
+/* 右键菜单浮层：紧贴选中上方，向左展开（避开右侧人物），箭头朝下 */
+.title .hi .cmenu{position:absolute;left:-.05em;bottom:100%;margin-bottom:.55em;z-index:6;
+  display:flex;background:#2B2B2E;border-radius:.55em;box-shadow:0 14px 34px rgba(0,0,0,.4);
+  white-space:nowrap;font-weight:600;letter-spacing:0;-webkit-text-stroke:0;}
+.title .hi .cmenu .ci{display:flex;align-items:center;padding:.5em .8em;color:#F2F2F4;
+  border-right:1px solid rgba(255,255,255,.13)}
+.title .hi .cmenu .ci:last-child{border-right:0}
+.title .hi .cmenu::after{content:"";position:absolute;left:1.4em;top:100%;margin-top:-.42em;
+  width:.84em;height:.84em;background:#2B2B2E;transform:rotate(45deg)}
+/* 人物在左时镜像：高亮在右、菜单向左展开 */
+.person-left .title .hi .cmenu{left:auto;right:-.05em}
+.person-left .title .hi .cmenu::after{left:auto;right:1.4em}
+.subtitle{color:var(--ink-soft);font-weight:600;text-align:right;width:max-content}
+
+/* z5 人物：褪色近黑白，软投影脱离纸面（不跳出，做氛围） */
+.person{position:absolute;inset:0;z-index:5;width:100%;height:100%;object-fit:cover;
+  filter:saturate(.55) contrast(1.04) brightness(1.02) drop-shadow(0 16px 26px rgba(40,36,28,.4));}
+
+/* z7 品牌 + 落款 */
+.brand{position:absolute;z-index:7;left:4.5cqw;bottom:4.5cqh;color:var(--ink);font-weight:700;
+  letter-spacing:.14em;font-size:2.5cqh;opacity:.8}
+.person-left .brand{left:auto;right:4.5cqw}
+
+/* ---------- 多比例 ---------- */
+.ratio-16x9 .copy{left:5cqw;top:50%;transform:translateY(-50%);gap:2.4cqh;width:56cqw}
+.ratio-16x9 .kicker{font-size:2.1cqh}
+.ratio-16x9 .title{font-size:10.2cqh}
+.ratio-16x9 .cmenu{font-size:2.3cqh}
+.ratio-16x9 .subtitle{font-size:2.5cqh;right:5cqw;bottom:5cqh;position:absolute}
+
+.ratio-4x3 .copy{left:5cqw;top:48%;transform:translateY(-50%);gap:2.2cqh;width:48cqw}
+.ratio-4x3 .kicker{font-size:2.3cqh}
+.ratio-4x3 .title{font-size:8.2cqh}
+.ratio-4x3 .cmenu{font-size:2.4cqh}
+.ratio-4x3 .subtitle{font-size:2.6cqh;right:5cqw;bottom:5cqh;position:absolute}
+
+/* 3:4：标题压上方，照片在下；横图来源用下方照片带 */
+.src-wide.ratio-3x4 .bg-photo,.src-wide.ratio-3x4 .person{top:auto;bottom:0;height:74%}
+.ratio-3x4 .copy{left:6cqw;right:6cqw;top:13cqh;gap:2cqh;width:auto}
+.ratio-3x4 .kicker{font-size:2.8cqw}
+.ratio-3x4 .title{font-size:8.4cqw}
+.ratio-3x4 .cmenu{font-size:3cqw}
+.ratio-3x4 .subtitle{font-size:3cqw;right:6cqw;bottom:13cqh;position:absolute}
+.ratio-3x4 .brand{left:50%;transform:translateX(-50%)}
+
+.no-photo .bg-photo{display:none}
+</style>
+</head>
+<body class="{{BODY_CLASS}}">
+  <div class="stage">
+    <div class="paper-base"></div>
+    {{BGPHOTO_HTML}}
+    <div class="halftone"></div>
+    <div class="film"></div>
+    <div class="bg-veil"></div>
+    <div class="copy">
+      {{KICKER_HTML}}
+      <h1 class="title">{{TITLE_HTML}}</h1>
+    </div>
+    {{PERSON_HTML}}
+    {{SUBTITLE_HTML}}
+    <div class="brand">{{BRAND_NAME}}</div>
+  </div>
+</body>
+</html>

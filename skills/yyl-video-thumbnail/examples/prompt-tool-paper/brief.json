@@ -1,0 +1,14 @@
+{
+  "name": "prompt-tool-paper",
+  "template": "paper",
+  "kicker": "PROMPT TOOL",
+  "title": "[开箱即用]\n视频提示词工具",
+  "menu": ["拷贝", "询问 AI", "朗读", "分享"],
+  "subtitle": "复制粘贴，一句话出片",
+  "photo": "input/photo2.jpg",
+  "person_image": "input/person-cut2.png",
+  "person_side": "right",
+  "brand_name": "@鱼亦乐",
+  "focus": { "16x9": "50% 50%", "4x3": "52% 50%", "3x4": "60% 40%" },
+  "ratios": ["16x9", "4x3", "3x4"]
+}
