@@ -3,6 +3,7 @@
   "skills": [
     "./skills/AI-video-prompt",
     "./skills/mx-shell-prompt",
-    "./skills/yyl-remotion-video"
+    "./skills/yyl-remotion-video",
+    "./skills/yyl-video-thumbnail"
   ]
 }
