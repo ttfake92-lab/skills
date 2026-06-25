@@ -1,0 +1,213 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>高考志愿填报信息表</title>
+  <style>
+    :root { color-scheme: light; --ink:#17211b; --muted:#657169; --paper:#f3f0e7; --card:#fffdf8; --line:#d8d4c9; --accent:#176b4d; --accent-soft:#dcebe4; --warn:#9a5b12; --danger:#a33e35; --shadow:0 14px 38px rgba(34,45,38,.06); }
+    * { box-sizing: border-box; }
+    body { margin:0; color:var(--ink); background:var(--paper); font:16px/1.65 ui-sans-serif, system-ui, -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif; }
+    .shell { width:min(1080px, calc(100% - 28px)); margin:24px auto 72px; }
+    .hero,.card { border:1px solid var(--line); border-radius:22px; background:var(--card); box-shadow:var(--shadow); }
+    .hero { padding:28px; }
+    .eyebrow { color:var(--accent); font-size:12px; font-weight:800; letter-spacing:.1em; text-transform:uppercase; }
+    h1 { margin:8px 0 10px; font:700 clamp(30px,5vw,52px)/1.08 ui-serif, "Songti SC", serif; }
+    h2 { margin:0 0 12px; font-size:23px; }
+    p { margin:0 0 12px; }
+    .muted { color:var(--muted); }
+    .disclaimer { margin-top:14px; padding:10px 12px; border:1px solid rgba(216,212,201,.75); border-radius:14px; color:rgba(101,113,105,.82); background:rgba(251,247,236,.58); font-size:12px; line-height:1.55; }
+    .disclaimer strong { color:rgba(23,33,27,.68); font-weight:700; }
+    .disclaimer p { margin:0; }
+    .grid { display:grid; grid-template-columns:1fr; gap:16px; margin-top:18px; }
+    .card { padding:22px; }
+    .fields { display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:14px; }
+    label { display:block; font-weight:750; }
+    .field { display:grid; gap:7px; }
+    input, select, textarea { width:100%; min-height:44px; padding:10px 12px; border:1px solid var(--line); border-radius:12px; background:#fbf7ec; color:var(--ink); font:inherit; }
+    textarea { min-height:90px; resize:vertical; }
+    input:focus-visible, select:focus-visible, textarea:focus-visible, button:focus-visible { outline:3px solid rgba(23,107,77,.25); outline-offset:2px; }
+    .hint { color:var(--muted); font-size:13px; }
+    .wide { grid-column:1 / -1; }
+    .checkbox-group { display:flex; gap:12px; flex-wrap:wrap; }
+    .checkbox-group label { display:flex; gap:8px; align-items:center; min-height:40px; padding:8px 10px; border:1px solid var(--line); border-radius:10px; background:#fbf7ec; }
+    .toolbar { position:sticky; bottom:12px; z-index:5; display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-top:18px; padding:14px; border:1px solid var(--line); border-radius:18px; background:rgba(255,253,248,.94); backdrop-filter:blur(14px); box-shadow:var(--shadow); }
+    button { min-height:44px; padding:10px 16px; border:0; border-radius:12px; color:white; background:var(--accent); font-weight:750; cursor:pointer; }
+    button.secondary { color:var(--accent); background:var(--accent-soft); }
+    .progress { flex:1 1 240px; height:10px; overflow:hidden; border-radius:999px; background:#e4e0d5; }
+    .progress span { display:block; width:0%; height:100%; background:var(--accent); transition:width .2s ease; }
+    .error { color:var(--danger); font-weight:750; }
+    .ok { color:var(--accent); font-weight:750; }
+    @media (max-width:760px) { .fields { grid-template-columns:1fr; } .wide { grid-column:auto; } }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <section class="hero">
+      <div class="eyebrow">College Application Input 02</div>
+      <h1>高考志愿填报信息表</h1>
+      <p class="muted">填写后点击下载，把结果文件发给 Agent。页面离线可用，不会上传任何数据。</p>
+      <div class="disclaimer"><p><strong>隐私与使用说明：</strong>本页面离线运行，填写内容不会上传网络；数据只保存在你的浏览器下载文件或本地工作区中，请不要填写不必要的敏感信息。本表不是正式志愿表，正式填报前请以省教育考试院、高校招生章程和官方志愿填报系统为准逐项核对。</p></div>
+    </section>
+
+    <section class="grid">
+      <article class="card">
+        <h2>A. 基本信息</h2>
+        <div class="fields">
+          <div class="field"><label>考生姓名/代号</label><input id="student_alias" placeholder="可写昵称或代号"></div>
+          <div class="field"><label>招生省份 *</label><input id="province" required placeholder="如：广东、浙江、四川"></div>
+          <div class="field"><label>填报年份 *</label><input id="application_year" type="number" min="2020" max="2100" required placeholder="如：2026"></div>
+          <div class="field"><label>考生类别</label><select id="candidate_type"><option value="">请选择</option><option>普通类</option><option>艺术类</option><option>体育类</option><option>综合评价</option><option>其他</option></select></div>
+          <div class="field"><label>批次</label><select id="batch"><option value="">请选择</option><option>本科批</option><option>专科批</option><option>提前批</option><option>不确定</option></select></div>
+        </div>
+      </article>
+
+      <article class="card">
+        <h2>B. 考试模式与选科</h2>
+        <div class="fields">
+          <div class="field"><label>考试模式</label><select id="exam_mode"><option value="">不确定</option><option>3+3</option><option>3+1+2</option><option>老高考</option></select><div class="hint">Agent 会根据省份和官方公告复核。</div></div>
+          <div class="field"><label>首选科目（3+1+2）</label><select id="primary_subject"><option value="">不适用/不确定</option><option>物理</option><option>历史</option></select></div>
+          <div class="field"><label>再选科目（3+1+2）</label><div class="hint">从化学、生物、政治、地理中选择 2 科</div><div class="checkbox-group"><label><input type="checkbox" class="secondary-subject" value="化学"> 化学</label><label><input type="checkbox" class="secondary-subject" value="生物"> 生物</label><label><input type="checkbox" class="secondary-subject" value="政治"> 政治</label><label><input type="checkbox" class="secondary-subject" value="地理"> 地理</label></div><input type="hidden" id="secondary_subjects"></div>
+          <div class="field"><label>3+3 选科</label><input id="three_plus_three_subjects" placeholder="如：物理、化学、生物；浙江可含技术"></div>
+          <div class="field"><label>外语语种</label><input id="foreign_language" placeholder="如：英语、日语"></div>
+        </div>
+      </article>
+
+      <article class="card">
+        <h2>C. 分数与位次</h2>
+        <p class="hint">至少填写一项；如果都有，优先填写全省位次。</p>
+        <div class="fields">
+          <div class="field"><label>高考总分</label><input id="score" type="number" min="0" placeholder="与位次至少填一项"></div>
+          <div class="field"><label>全省位次</label><input id="rank" type="number" min="1" placeholder="强烈建议填写，位次优先"></div>
+          <div class="field wide"><label>单科成绩</label><textarea id="subject_scores" placeholder="如：语文 110，数学 125，英语 130，物理 85"></textarea></div>
+          <div class="field wide"><label>一分一段表来源</label><input id="rank_table_source" placeholder="官方链接或文件名；没有可留空"></div>
+        </div>
+      </article>
+
+      <details class="card">
+        <summary>D. 地区与现实约束（不填也可以继续；填写后报告更准确）</summary>
+
+        <div class="fields">
+          <div class="field wide"><label>意向填报地区</label><input id="preferred_regions" placeholder="如：广州、深圳、长三角、北京、成都"></div>
+          <div class="field"><label>地区约束强度</label><select id="region_constraint"><option value="">请选择</option><option>必须满足</option><option>优先但可妥协</option><option>无所谓</option></select></div>
+          <div class="field"><label>明确不去的地区</label><input id="excluded_regions" placeholder="可留空"></div>
+          <div class="field"><label>学费上限</label><input id="tuition_limit" placeholder="如：8000 元以内 / 可接受中外合作"></div>
+          <div class="field wide"><label>家庭约束</label><textarea id="family_constraints" placeholder="离家距离、就业城市、家庭建议等；可不填"></textarea></div>
+          <div class="field wide"><p class="hint">隐私提示：本表不主动收集健康/体检信息。涉及色弱、色盲、身高、视力等限制的专业，请在最终填报前自行查看高校招生章程和体检标准。</p></div>
+        </div>
+      </details>
+
+      <details class="card">
+        <summary>E. 特殊资格、意向与附件（增强选项；不填也可以继续）</summary>
+        <div class="fields">
+          <div class="field"><label>专项计划资格</label><input id="special_programs" placeholder="国家专项/地方专项/高校专项/无/不确定"></div>
+          <div class="field"><label>加分政策</label><input id="bonus_policy" placeholder="没有写无"></div>
+          <div class="field wide"><label>强基/综评/港澳/中外合作意向</label><textarea id="special_tracks" placeholder="有/无/不确定，并写原因；如没有可不填"></textarea></div>
+          <div class="field wide"><label>已感兴趣的专业/职业</label><textarea id="interested_majors_careers" placeholder="没有写不确定；可不填"></textarea></div>
+          <div class="field wide"><label>明确不想学的专业</label><textarea id="excluded_majors" placeholder="没有写暂无；可不填"></textarea></div>
+          <div class="field wide"><label>官方资料链接或备注</label><textarea id="official_sources" placeholder="请填写一分一段表、招生计划、历年投档线、高校招生章程等官方链接或页面名；本表不能上传 PDF/Excel，只能记录链接和备注"></textarea></div>
+        </div>
+      </details>
+    </section>
+
+    <section class="toolbar" aria-live="polite">
+      <div class="progress"><span id="progressBar"></span></div>
+      <span id="statusText" class="muted">待填写</span>
+      <button type="button" id="downloadJson">下载给 Agent 的 JSON</button>
+      <button type="button" class="secondary" id="downloadMd">下载 Markdown 备份</button>
+    </section>
+  </main>
+
+  <script>
+    const fields = ['student_alias','province','application_year','candidate_type','batch','exam_mode','primary_subject','secondary_subjects','three_plus_three_subjects','foreign_language','score','rank','subject_scores','rank_table_source','preferred_regions','region_constraint','excluded_regions','tuition_limit','family_constraints','special_programs','bonus_policy','special_tracks','interested_majors_careers','excluded_majors','official_sources'];
+    const requiredFields = ['province','application_year'];
+
+    function value(id) { return document.getElementById(id).value.trim(); }
+    function splitList(text) { return text ? text.split(/[、,，;；\n]/).map(s => s.trim()).filter(Boolean) : []; }
+    function selectedSecondarySubjects() { return Array.from(document.querySelectorAll('.secondary-subject:checked')).map(el => el.value); }
+    function syncSecondarySubjectsHidden() { document.getElementById('secondary_subjects').value = selectedSecondarySubjects().join('、'); }
+    function collect() {
+      syncSecondarySubjectsHidden();
+      const data = {};
+      for (const id of fields) data[id] = value(id);
+      data.subjects = splitList(data.three_plus_three_subjects || [data.primary_subject, data.secondary_subjects].filter(Boolean).join('、'));
+      data.preferred_regions_list = splitList(data.preferred_regions);
+      data.excluded_regions_list = splitList(data.excluded_regions);
+      return data;
+    }
+    function validate(data) {
+      const errors = [];
+      for (const id of requiredFields) if (!data[id]) errors.push(`${labelFor(id)} 是必填项`);
+      if (!data.score && !data.rank) errors.push('高考总分和全省位次至少填写一项；建议优先填写位次');
+      if (data.exam_mode === '3+1+2') {
+        if (!data.primary_subject) errors.push('3+1+2 模式需要填写首选科目');
+        if (!data.secondary_subjects) errors.push('3+1+2 模式需要填写再选科目');
+      }
+      if (data.exam_mode === '3+3' && !data.three_plus_three_subjects) errors.push('3+3 模式需要填写三门选科');
+      if (data.primary_subject && data.three_plus_three_subjects) errors.push('请不要同时填写 3+1+2 首选科目和 3+3 选科');
+      return errors;
+    }
+    function labelFor(id) {
+      const input = document.getElementById(id);
+      const label = input.closest('.field')?.querySelector('label')?.textContent || id;
+      return label.replace('*','').trim();
+    }
+    function updateProgress() {
+      const data = collect();
+      const filled = fields.filter(id => data[id]).length;
+      document.getElementById('progressBar').style.width = `${Math.round(filled / fields.length * 100)}%`;
+      const errors = validate(data);
+      const status = document.getElementById('statusText');
+      status.textContent = errors.length ? `还有 ${errors.length} 项需要处理` : '必填信息已满足';
+      status.className = errors.length ? 'error' : 'ok';
+    }
+    function buildPayload() {
+      const candidate = collect();
+      return {
+        schema: 'college-application.admission-info.v1',
+        generated_at: new Date().toISOString(),
+        instructions: 'Send this JSON file back to the Agent. The Agent will validate province/exam mode/subjects and use official sources for admission analysis.',
+        candidate,
+        validation_errors: validate(candidate)
+      };
+    }
+    function buildMarkdown(payload) {
+      const c = payload.candidate;
+      const rows = Object.entries(c).filter(([key]) => !key.endsWith('_list') && key !== 'subjects');
+      return ['# 高考志愿填报信息结果', '', `生成时间：${payload.generated_at}`, '', '## 信息', '', '| 字段 | 内容 |', '|---|---|', ...rows.map(([k,v]) => `| ${k} | ${String(v || '').replace(/\n/g, '<br>')} |`), '', payload.validation_errors.length ? `待补充/待修正：${payload.validation_errors.join('；')}` : '必填信息已满足。', '', '请把此文件发给 Agent 继续分析。'].join('\n');
+    }
+    function download(filename, content, type) {
+      const blob = new Blob([content], {type});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    }
+    function requireValid(payload) {
+      if (!payload.validation_errors.length) return true;
+      alert(`请先处理以下问题：\n\n${payload.validation_errors.join('\n')}`);
+      return false;
+    }
+    document.addEventListener('input', updateProgress);
+    document.addEventListener('change', event => {
+      if (event.target.classList.contains('secondary-subject')) syncSecondarySubjectsHidden();
+      updateProgress();
+    });
+    document.getElementById('downloadJson').addEventListener('click', () => {
+      const payload = buildPayload();
+      if (!requireValid(payload)) return;
+      download('admission-info-result.json', JSON.stringify(payload, null, 2), 'application/json;charset=utf-8');
+    });
+    document.getElementById('downloadMd').addEventListener('click', () => {
+      const payload = buildPayload();
+      if (!requireValid(payload)) return;
+      download('admission-info-result.md', buildMarkdown(payload), 'text/markdown;charset=utf-8');
+    });
+    updateProgress();
+  </script>
+</body>
+</html>

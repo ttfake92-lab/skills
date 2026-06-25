@@ -1,0 +1,11 @@
+{
+  "version": "1.0.0",
+  "author": "鱼亦乐 (yuyile)",
+  "date": "June 2026",
+  "abstract": "高考志愿决策辅助 Skill。通过 Agent 对话帮助中国高考考生完成志愿填报：先做 RIASEC + Big Five 性格与职业兴趣测评，再研究适合的职业、专业和行业，最后结合省份、选科、分数/位次与官方招生数据生成可追溯来源的 HTML 报告。适用于高考志愿、选大学、选专业、性格测试、职业方向、行业前景、投档线、录取概率、冲稳保等场景。",
+  "references": [
+    "https://www.onetonline.org/",
+    "https://ipip.ori.org/",
+    "https://gaokao.chsi.com.cn/"
+  ]
+}

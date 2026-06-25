@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{report_title}}</title>
+  <style>
+    :root { color-scheme: light; --ink:#17211b; --muted:#657169; --paper:#f3f0e7; --card:#fffdf8; --line:#d8d4c9; --accent:#176b4d; --accent-soft:#dcebe4; --warn:#9a5b12; --danger:#a33e35; --shadow:0 14px 38px rgba(34,45,38,.06); }
+    * { box-sizing: border-box; }
+    body { margin:0; color:var(--ink); background:var(--paper); font:16px/1.7 ui-sans-serif, system-ui, -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif; }
+    .shell { width:min(1080px, calc(100% - 28px)); margin:24px auto 72px; }
+    .hero,.card { border:1px solid var(--line); border-radius:24px; background:var(--card); box-shadow:var(--shadow); }
+    .hero { padding:30px; }
+    .eyebrow { color:var(--accent); font-size:12px; font-weight:800; letter-spacing:.1em; text-transform:uppercase; }
+    h1 { margin:8px 0 10px; font:700 clamp(30px,5vw,52px)/1.08 ui-serif, "Songti SC", serif; }
+    h2 { margin:0 0 12px; font-size:24px; }
+    h3 { margin:18px 0 8px; font-size:18px; }
+    p { margin:0 0 12px; }
+    .muted { color:var(--muted); }
+    .disclaimer { margin-top:14px; padding:10px 12px; border:1px solid rgba(216,212,201,.75); border-radius:14px; color:rgba(101,113,105,.82); background:rgba(251,247,236,.58); font-size:12px; line-height:1.55; }
+    .disclaimer strong { color:rgba(23,33,27,.68); font-weight:700; }
+    .disclaimer p { margin:0; }
+    .grid { display:grid; grid-template-columns:repeat(12, 1fr); gap:16px; margin-top:18px; }
+    .card { grid-column:span 12; padding:24px; }
+    .half { grid-column:span 6; }
+    .metric { display:inline-flex; flex-direction:column; min-width:140px; margin:0 10px 10px 0; padding:12px 14px; border:1px solid var(--line); border-radius:16px; background:#fbf7ec; }
+    .metric b { font-size:22px; }
+    .summary { font-size:20px; line-height:1.55; }
+    .tag { display:inline-block; padding:3px 9px; border-radius:999px; background:var(--accent-soft); color:var(--accent); font-size:12px; font-weight:800; }
+    table { width:100%; border-collapse:collapse; margin-top:10px; }
+    th,td { padding:10px 12px; border-bottom:1px solid var(--line); text-align:left; vertical-align:top; }
+    th { color:var(--muted); font-size:12px; letter-spacing:.05em; }
+    details { margin-top:12px; border:1px solid var(--line); border-radius:16px; background:#fbf7ec; }
+    summary { cursor:pointer; padding:13px 15px; font-weight:800; color:var(--accent); }
+    details > div { padding:0 15px 15px; }
+    canvas { width:100%; max-width:280px; height:auto; max-height:220px; background:rgba(251,247,236,.72); border:1px solid var(--line); border-radius:16px; padding:10px; }
+    canvas.chart-short { max-height:180px; }
+    @media (max-width:760px) { .half { grid-column:span 12; } table { display:block; overflow-x:auto; } }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <main class="shell">
+    <section class="hero">
+      <div class="eyebrow">Personality & Career Interest Report</div>
+      <h1>{{report_title}}</h1>
+      <p class="muted">生成时间：{{generated_at}}</p>
+      <p class="summary">{{plain_summary}}</p>
+      <div class="disclaimer"><p><strong>隐私与使用说明：</strong>本页面离线运行，填写内容不会上传网络；数据只保存在你的浏览器下载文件或本地工作区中，请不要填写不必要的敏感信息。本报告只用于生成职业和专业研究假设，不是心理诊断，也不能单独决定志愿，后续还要结合真实经历、行业研究、分数/位次和官方招生数据交叉验证。</p></div>
+    </section>
+
+    <section class="grid">
+      <article class="card half">
+        <h2>你当前最明显的倾向</h2>
+        <canvas id="riasecChart" class="chart-short" height="160" aria-label="RIASEC radar chart"></canvas>
+        <div class="metric"><span>RIASEC</span><b>{{riasec_code}}</b></div>
+        <div class="metric"><span>开放性</span><b>{{openness}}</b></div>
+        <div class="metric"><span>尽责性</span><b>{{conscientiousness}}</b></div>
+        <div class="metric"><span>外向性</span><b>{{extraversion}}</b></div>
+        <p>{{personality_summary}}</p>
+      </article>
+
+      <article class="card half">
+        <h2>先看这几个方向</h2>
+        {{career_direction_cards}}
+      </article>
+
+      <article class="card">
+        <h2>如何理解这个结果</h2>
+        <canvas id="bigFiveChart" class="chart-short" height="120" aria-label="Big Five bar chart"></canvas>
+        <p>{{interpretation}}</p>
+        <details open>
+          <summary>完整得分表</summary>
+          <div>{{score_tables}}</div>
+        </details>
+        <details>
+          <summary>局限与需要验证的问题</summary>
+          <div>{{limitations}}</div>
+        </details>
+      </article>
+    </section>
+  </main>
+  <script>
+    const riasecScores = {{riasec_json}};
+    const bigFiveScores = {{bigfive_json}};
+    const riasecLabels = Object.keys(riasecScores);
+    const riasecData = Object.values(riasecScores);
+    new Chart(document.getElementById('riasecChart'), {
+      type: 'radar',
+      data: {
+        labels: riasecLabels,
+        datasets: [{
+          label: '得分',
+          data: riasecData,
+          borderColor: '#176b4d',
+          backgroundColor: 'rgba(23, 107, 77, 0.16)',
+          pointBackgroundColor: '#176b4d'
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: { r: { beginAtZero: true, suggestedMax: 10 } },
+        plugins: { legend: { display: false } }
+      }
+    });
+    const bigLabels = Object.keys(bigFiveScores);
+    const bigData = Object.values(bigFiveScores);
+    new Chart(document.getElementById('bigFiveChart'), {
+      type: 'bar',
+      options: {
+        indexAxis: 'y',
+        responsive: true,
+        maintainAspectRatio: false,
+        scales: { x: { beginAtZero: true, suggestedMax: 20 }, y: { ticks: { autoSkip: false } } },
+        plugins: { legend: { display: false } }
+      },
+      data: {
+        labels: bigLabels,
+        datasets: [{
+          label: '得分',
+          data: bigData,
+          backgroundColor: ['#176b4d','#315c85','#9a5b12','#a33e35','#657169']
+        }]
+      }
+    });
+  </script>
+</body>
+</html>

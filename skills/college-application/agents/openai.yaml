@@ -1,0 +1,4 @@
+interface:
+  display_name: "College Application"
+  short_description: "对话式高考志愿辅助：性格测评、职业专业行业分析、录取估算与 HTML 报告"
+  default_prompt: "使用 $college-application 通过 Agent 对话完成性格与职业兴趣测评、职业/专业/行业研究、高考信息收集，并生成带完整来源链接、仅供参考提示和交叉验证建议的 HTML 报告。"

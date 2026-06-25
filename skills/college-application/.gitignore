@@ -1,0 +1,36 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+dist/
+build/
+*.egg
+.venv/
+venv/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Workspace (user data — never commit)
+workspace-*/
+
+# Environment / secrets
+.env
+.env.*
+*.key
+*.pem
+
+# OS
+Thumbs.db
+Desktop.ini

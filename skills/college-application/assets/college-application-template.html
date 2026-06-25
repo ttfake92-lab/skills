@@ -1,0 +1,1172 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>College Application · 决策工作台</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #17211b;
+      --muted: #657169;
+      --paper: #f3f0e7;
+      --card: #fffdf8;
+      --line: #d8d4c9;
+      --accent: #176b4d;
+      --accent-soft: #dcebe4;
+      --blue: #315c85;
+      --warn: #9a5b12;
+      --danger: #a33e35;
+      --shadow: 0 14px 38px rgba(34, 45, 38, .06);
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--paper);
+      font: 15px/1.65 ui-sans-serif, system-ui, -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif;
+    }
+    button, input, textarea, select { font: inherit; }
+    a { color: var(--blue); }
+    .shell { width: min(1180px, calc(100% - 28px)); margin: 24px auto 80px; }
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      gap: 18px;
+      align-items: flex-start;
+      padding: 26px;
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      background: var(--card);
+      box-shadow: var(--shadow);
+    }
+    .eyebrow { color: var(--accent); font-size: 12px; font-weight: 800; letter-spacing: .1em; }
+    h1 { margin: 5px 0 8px; font: 700 clamp(28px, 5vw, 48px)/1.12 ui-serif, "Songti SC", serif; }
+    h2 { margin: 0 0 5px; font-size: 21px; }
+    h3 { margin: 0 0 4px; font-size: 16px; }
+    p { margin: 0 0 12px; }
+    .muted { color: var(--muted); }
+    .version { flex: none; text-align: right; color: var(--muted); }
+    .progress { height: 7px; margin-top: 18px; overflow: hidden; border-radius: 99px; background: #e4e0d5; }
+    .progress span { display: block; width: 14%; height: 100%; background: var(--accent); transition: width .2s; }
+    .layout { display: grid; grid-template-columns: 230px 1fr; gap: 18px; margin-top: 18px; }
+    nav {
+      position: sticky;
+      top: 18px;
+      align-self: start;
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: var(--card);
+    }
+    nav button {
+      width: 100%;
+      padding: 11px 12px;
+      border: 0;
+      border-radius: 10px;
+      background: transparent;
+      color: var(--muted);
+      text-align: left;
+      cursor: pointer;
+    }
+    nav button.active { color: var(--accent); background: var(--accent-soft); font-weight: 750; }
+    .panel { display: none; }
+    .panel.active { display: block; }
+    .card {
+      margin-bottom: 14px;
+      padding: 22px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: var(--card);
+      box-shadow: var(--shadow);
+    }
+    .question { padding: 16px 0; border-top: 1px solid var(--line); }
+    .question:first-of-type { border-top: 0; }
+    label.option {
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      padding: 10px 12px;
+      margin: 7px 0;
+      border: 1px solid var(--line);
+      border-radius: 11px;
+      cursor: pointer;
+    }
+    label.option:has(input:checked) { border-color: var(--accent); background: var(--accent-soft); }
+    input[type="radio"], input[type="checkbox"] { margin-top: 5px; accent-color: var(--accent); }
+    textarea, input[type="search"], input[type="text"] {
+      width: 100%;
+      padding: 11px 12px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      background: white;
+      color: var(--ink);
+    }
+    textarea { min-height: 86px; resize: vertical; }
+    .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+    .mini-card { padding: 15px; border: 1px solid var(--line); border-radius: 13px; background: #fff; }
+    .badge {
+      display: inline-flex;
+      padding: 3px 8px;
+      border-radius: 99px;
+      background: var(--accent-soft);
+      color: var(--accent);
+      font-size: 12px;
+      font-weight: 750;
+    }
+    .badge.warn { color: var(--warn); background: #f7ead5; }
+    .badge.danger { color: var(--danger); background: #f8dfdc; }
+    .source {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 10px;
+      align-items: start;
+      padding: 11px 0;
+      border-top: 1px solid var(--line);
+    }
+    .source:first-child { border-top: 0; }
+    .source-meta { color: var(--muted); font-size: 13px; }
+    .table-wrap { overflow-x: auto; }
+    table { width: 100%; border-collapse: collapse; min-width: 720px; }
+    th, td { padding: 11px 9px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; }
+    th { color: var(--muted); font-size: 12px; letter-spacing: .04em; }
+    .empty { padding: 22px; border: 1px dashed var(--line); border-radius: 12px; color: var(--muted); text-align: center; }
+    .actions { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 16px; }
+    button.action {
+      padding: 10px 15px;
+      border: 1px solid var(--accent);
+      border-radius: 999px;
+      background: var(--accent);
+      color: white;
+      font-weight: 750;
+      cursor: pointer;
+    }
+    button.action.secondary { background: transparent; color: var(--accent); }
+    button.action.danger { border-color: var(--danger); background: transparent; color: var(--danger); }
+    #guidance-box[hidden] { display: none; }
+    .timeline { display: grid; gap: 10px; margin-top: 14px; }
+    .event { padding: 13px 15px; border-left: 3px solid var(--accent); background: #fff; border-radius: 0 11px 11px 0; }
+    .event time { color: var(--muted); font-size: 12px; }
+    .notice { padding: 12px 14px; border-radius: 11px; background: #f7ead5; color: #6e4514; }
+    .audit-state { display: flex; gap: 12px; align-items: center; padding: 16px; border: 1px solid var(--line); border-radius: 13px; }
+    footer { margin-top: 22px; color: var(--muted); font-size: 13px; }
+    @media (max-width: 820px) {
+      .layout { grid-template-columns: 1fr; }
+      nav { position: static; display: flex; overflow-x: auto; }
+      nav button { width: auto; white-space: nowrap; }
+      .grid { grid-template-columns: 1fr; }
+      .topbar { display: block; }
+      .version { margin-top: 12px; text-align: left; }
+    }
+  </style>
+</head>
+<body>
+<main class="shell">
+  <header class="topbar">
+    <div>
+      <div class="eyebrow">COLLEGE APPLICATION WORKSPACE</div>
+      <h1>从“我是谁”开始，而不是从分数开始</h1>
+      <p class="muted">先理解热爱与人生愿景，再研究专业和行业，最后用权威录取数据校准可行性。</p>
+      <div class="progress" aria-label="整体进度"><span id="progress-bar"></span></div>
+    </div>
+    <div class="version">
+      当前版本 <strong id="version-label">v1</strong><br>
+      <span id="save-state">已自动保存</span>
+    </div>
+  </header>
+  <p class="notice" id="connection-status" style="margin-top:14px">正在连接真实工作区……</p>
+  <div class="agent-line" style="display:flex;align-items:center;gap:8px;margin-top:8px">
+    <span id="agent-dot" style="width:9px;height:9px;border-radius:50%;background:#bdb9ad;flex:none"></span>
+    <span id="agent-online" class="muted">正在检测 Agent 在线状态……</span>
+  </div>
+  <p class="notice" id="agent-status" style="margin-top:8px">Agent 任务状态：尚未提交</p>
+  <div class="card" id="agent-progress-card" style="display:none;margin-top:8px">
+    <div style="display:flex;justify-content:space-between;gap:12px;align-items:center">
+      <strong id="agent-progress-step">等待任务</strong>
+      <span id="agent-progress-percent">0%</span>
+    </div>
+    <div class="progress"><span id="agent-progress-bar"></span></div>
+    <p class="muted" id="agent-progress-message" style="margin-top:10px"></p>
+    <p class="source-meta" id="agent-progress-heartbeat"></p>
+    <div class="actions" style="margin-top:10px">
+      <button class="action secondary" id="retry-request" type="button" style="display:none">重新排队这个任务</button>
+    </div>
+  </div>
+
+  <div class="layout">
+    <nav aria-label="决策阶段">
+      <button class="active" data-panel="self">1. 认识自己</button>
+      <button data-panel="majors">2. 专业与行业</button>
+      <button data-panel="admission">3. 录取建议</button>
+      <button data-panel="simulation">4. 确认快照</button>
+      <button data-panel="audit">5. 独立审计</button>
+      <button data-panel="history">历史记录</button>
+    </nav>
+
+    <div>
+      <section class="panel active" id="panel-self">
+        <div class="card">
+          <span class="badge">自我探索</span>
+          <h2>什么事情会让你愿意主动投入？</h2>
+          <p class="muted">请写具体经历。比“我喜欢计算机”更有用的是“我曾连续三晚改一个小游戏，因为想让规则更有趣”。</p>
+
+          <div class="question">
+            <h3>最近一次做什么时，你忘了时间？</h3>
+            <textarea data-field="flow_experience" placeholder="发生了什么？你具体在做什么？"></textarea>
+          </div>
+          <div class="question">
+            <h3>你想尝试做什么，即使暂时还不会？</h3>
+            <textarea data-field="want_to_try" placeholder="可以是一个项目、一种工作、一种生活方式……"></textarea>
+          </div>
+          <div class="question">
+            <h3>你想成为怎样的人？</h3>
+            <textarea data-field="future_self" placeholder="别人将来会因为什么事情信任你、需要你或记住你？"></textarea>
+          </div>
+          <div class="question">
+            <h3>现在能描述自己的喜好吗？</h3>
+            <label class="option"><input type="radio" name="clarity" value="clear"><span>有一些清晰线索，可以继续深挖</span></label>
+            <label class="option"><input type="radio" name="clarity" value="uncertain"><span>不太确定，请进入引导模式</span></label>
+            <label class="option"><input type="radio" name="clarity" value="unknown"><span>完全不知道，从具体情境带我探索</span></label>
+          </div>
+        </div>
+
+        <div class="card" id="guidance-box" hidden>
+          <span class="badge warn">引导模式</span>
+          <h2>不需要现在就知道专业名称</h2>
+          <p class="muted">先判断你愿不愿意长期做这些具体活动。可多选。</p>
+          <div class="grid">
+            <label class="option"><input type="checkbox" name="scenarios" value="解释复杂问题"><span>把复杂问题解释给别人听</span></label>
+            <label class="option"><input type="checkbox" name="scenarios" value="设计和创造"><span>设计、写作、拍摄或创造新东西</span></label>
+            <label class="option"><input type="checkbox" name="scenarios" value="分析规律"><span>从数字或现象中找规律</span></label>
+            <label class="option"><input type="checkbox" name="scenarios" value="帮助具体的人"><span>倾听并帮助一个具体的人改善处境</span></label>
+            <label class="option"><input type="checkbox" name="scenarios" value="动手实现"><span>动手搭建、修理或让系统运行起来</span></label>
+            <label class="option"><input type="checkbox" name="scenarios" value="组织协作"><span>组织人和资源，把一件事推进完成</span></label>
+          </div>
+          <div class="question">
+            <h3>下一步现实探索</h3>
+            <p class="muted">页面生成时应根据选择给出 3–5 个低成本任务，并在完成后回来记录感受。</p>
+            <div class="empty">等待根据你的选择生成微项目、访谈或公开课任务。</div>
+          </div>
+        </div>
+
+        <div class="card">
+          <span class="badge">城市偏好</span>
+          <h2>有没有特别想去 / 不想去的城市？</h2>
+          <p class="muted">家庭、气候、产业聚集、未来生活想象——这些都是合理的考虑。直接告诉系统，会作为录取建议的硬约束或加权因素。</p>
+          <div class="question">
+            <h3>偏好城市或区域（多个用空格、顿号或逗号分隔）</h3>
+            <input type="text" data-profile="preferred_cities" placeholder="例如：上海、长三角、有海的城市、北方">
+          </div>
+          <div class="question">
+            <h3>这个偏好有多强？</h3>
+            <label class="option"><input type="radio" name="city_constraint" value="hard"><span>必须满足（不在这些范围内的不要推荐）</span></label>
+            <label class="option"><input type="radio" name="city_constraint" value="soft"><span>优先但可妥协（合适的好学校仍可考虑）</span></label>
+            <label class="option"><input type="radio" name="city_constraint" value="none"><span>无所谓（不要因为城市筛掉好选项）</span></label>
+          </div>
+          <div class="question">
+            <h3>明确不去的城市（可选）</h3>
+            <input type="text" data-profile="excluded_cities" placeholder="例如：海拔高的城市、太冷的地方">
+          </div>
+        </div>
+
+        <div class="card">
+          <h2>本阶段结论</h2>
+          <div id="self-summary" class="empty">填写后将形成“喜欢做什么 / 想做什么 / 想成为什么样的人”的可追溯摘要。</div>
+          <div class="actions">
+            <button class="action" id="save-self" type="button">保存本阶段</button>
+            <button class="action secondary" data-go="majors" type="button">进入专业研究</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel" id="panel-majors">
+        <div class="card">
+          <span class="badge">专业与行业</span>
+          <h2>从你的证据出发研究专业簇</h2>
+          <p class="muted">每个方向都要同时展示匹配理由、反证、课程、真实工作、行业变化和来源。</p>
+          <div id="major-cards" class="empty">完成自我探索并保存后，Agent 将查询真实培养方案与行业来源，并把结果写回这里。</div>
+        </div>
+        <div class="card">
+          <h2>行业前景来源</h2>
+          <div id="industry-sources" class="empty">尚未开始真实研究。</div>
+        </div>
+      </section>
+
+      <section class="panel" id="panel-admission">
+        <div class="card">
+          <span class="badge">招生信息</span>
+          <h2>先确定数据口径</h2>
+          <p class="muted">选省份后，考试模式和可选科目会自动联动。成绩与位次至少填一项即可。</p>
+          <div class="grid">
+            <label>招生省份
+              <select data-candidate="province" id="province-select">
+                <option value="">— 请选择 —</option>
+              </select>
+            </label>
+            <label>填报年份
+              <select data-candidate="year" id="year-select">
+                <option value="">— 请选择 —</option>
+              </select>
+            </label>
+            <label>考试模式
+              <input type="text" data-candidate="exam_mode" id="exam-mode-field" readonly placeholder="先选省份">
+            </label>
+          </div>
+          <div class="question" id="subjects-block">
+            <h3>选科</h3>
+            <p class="muted" id="subjects-hint">先选省份。3+1+2 模式先选物理或历史，再从 4 科中选 2 科；3+3 模式直接从可选科目中选 3 科。</p>
+            <div id="subjects-options" class="grid"></div>
+          </div>
+          <div class="grid">
+            <label>高考成绩（与位次至少填一项）
+              <input type="number" min="0" max="750" data-candidate="score" id="score-field" placeholder="例如 620">
+            </label>
+            <label>全省位次（与成绩至少填一项；位次更精确）
+              <input type="number" min="1" data-candidate="rank" id="rank-field" placeholder="例如 32000">
+            </label>
+          </div>
+          <div class="actions">
+            <button class="action" id="generate-recommendation" type="button">生成填报建议</button>
+          </div>
+          <p class="notice" style="margin-top:10px" id="candidate-validation"></p>
+          <p class="muted" style="margin-top:6px">生成的建议是冲 / 有机会 / 较稳 / 兜底四档候选志愿。如果你能提供本省考试院官方近 3 年投档线 PDF/Excel，建议会更精确，否则只给定性等级。</p>
+        </div>
+      </section>
+
+      <section class="panel" id="panel-simulation">
+        <div class="card">
+          <span class="badge">填报建议</span>
+          <h2>看建议、调整、最后冻结</h2>
+          <p class="muted">每条候选都标明匹配的专业簇、城市契合度、风险层和来源。你可以删除不要的、调整顺序，满意后再确认快照。</p>
+          <div id="application-list" class="empty">点击上一步的『生成填报建议』后，候选志愿会写在这里。</div>
+          <div class="actions">
+            <button class="action" id="simulate-submit" type="button">确认并冻结快照</button>
+          </div>
+          <p class="notice" style="margin-top:16px">这不是官方填报。确认后将生成只读快照，并由一个全新的 subagent 独立审计。后续修改会产生新版本快照，旧的保留。</p>
+        </div>
+      </section>
+
+      <section class="panel" id="panel-audit">
+        <div class="card">
+          <span class="badge danger">独立审计</span>
+          <h2>由未参与推荐的全新 subagent 复核</h2>
+          <div class="audit-state">
+            <span class="badge warn" id="audit-badge">尚未提交</span>
+            <div id="audit-message">完成模拟提交后，冻结快照将进入独立审计。</div>
+          </div>
+          <div id="audit-results" class="empty" style="margin-top:14px">审计结果将逐项展示链接可访问性、机构与年份口径、数据抄录、概率复算和风险遗漏。</div>
+        </div>
+      </section>
+
+      <section class="panel" id="panel-history">
+        <div class="card">
+          <span class="badge">历史记录</span>
+          <h2>查询每一次重要变化</h2>
+          <input id="history-search" type="search" placeholder="搜索阶段、关键词、版本或日期">
+          <div id="history-list" class="timeline"></div>
+          <div class="actions">
+            <button class="action secondary" id="copy-summary" type="button">复制当前摘要</button>
+            <button class="action danger" id="clear-local" type="button">清空浏览器缓存</button>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <footer>
+    所有招生数据和行业事实都应紧邻显示可点击来源。录取机会是基于历史可比数据的模型估算，不构成录取承诺。
+  </footer>
+</main>
+
+<script>
+  const emptyState = {
+    version: 1, stage: "self", profile: {}, candidate: {}, major_preferences: {},
+    application_order: [], requests: {}, submissions: [], audit: null
+  };
+  const emptyResearch = {
+    status: "not_started", major_clusters: [], industry_sources: [],
+    admission_records: [], applications: [], sources: [], methodology: null, audit: null
+  };
+  let state = structuredClone(emptyState);
+  let research = structuredClone(emptyResearch);
+  let historyEvents = [];
+  let agentRequests = [];
+  let agentProgress = null;
+  let agentListener = null;
+  let connected = false;
+  // 页面正在编辑、尚未保存的字段，轮询时不会被磁盘 state 覆盖。
+  const LOCAL_KEYS = ["stage", "profile", "candidate", "major_preferences", "application_order", "requests"];
+
+  async function api(path, options = {}) {
+    const response = await fetch(path, {
+      headers: { "Content-Type": "application/json", ...(options.headers || {}) },
+      ...options
+    });
+    if (!response.ok) {
+      let detail = "";
+      try { detail = (await response.json()).error || ""; } catch (_) {}
+      throw new Error(detail || `${response.status} ${response.statusText}`);
+    }
+    return response.json();
+  }
+
+  function setConnection(ok, message) {
+    connected = ok;
+    const box = document.querySelector("#connection-status");
+    box.textContent = message;
+    box.style.background = ok ? "" : "#f8dfdc";
+    box.style.color = ok ? "" : "#6e4514";
+  }
+
+  function escapeHtml(value) {
+    return String(value ?? "").replace(/[&<>"']/g, char => (
+      { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[char]
+    ));
+  }
+
+  function sourceById(id) {
+    return research.sources.find(source => source.id === id);
+  }
+
+  function sourceLinks(ids = []) {
+    return ids.map(id => sourceById(id)).filter(Boolean).map(source =>
+      `<a href="${escapeHtml(source.url)}" target="_blank" rel="noreferrer">${escapeHtml(source.publisher)} · ${escapeHtml(source.published_or_data_year || "")}</a>`
+    ).join("<br>") || "待核验";
+  }
+
+  async function saveState() {
+    document.querySelector("#save-state").textContent = "正在保存……";
+    // 以磁盘最新 state 为底，只覆盖页面拥有的字段，避免冲掉 Agent 回写的 audit / version 等。
+    const disk = await api("/api/state").catch(() => ({}));
+    const payload = { ...disk };
+    for (const key of LOCAL_KEYS) payload[key] = state[key];
+    state = await api("/api/state", { method: "PUT", body: JSON.stringify(payload) });
+    document.querySelector("#version-label").textContent = `v${state.version || 1}`;
+    document.querySelector("#save-state").textContent = `已保存到真实工作区 · ${new Date().toLocaleTimeString("zh-CN", { hour: "2-digit", minute: "2-digit" })}`;
+  }
+
+  async function addEvent(stage, type, summary, relatedIds = []) {
+    await api("/api/events", {
+      method: "POST",
+      body: JSON.stringify({ stage, type, summary, version: state.version, related_ids: relatedIds })
+    });
+    await loadHistory();
+  }
+
+  function showPanel(name) {
+    document.querySelectorAll(".panel").forEach(element =>
+      element.classList.toggle("active", element.id === `panel-${name}`)
+    );
+    document.querySelectorAll("nav button").forEach(element =>
+      element.classList.toggle("active", element.dataset.panel === name)
+    );
+    state.stage = name;
+    const stages = ["self", "majors", "admission", "simulation", "audit"];
+    const index = Math.max(0, stages.indexOf(name));
+    document.querySelector("#progress-bar").style.width = `${Math.min(100, (index + 1) / stages.length * 100)}%`;
+  }
+
+  function readProfile() {
+    document.querySelectorAll("[data-field]").forEach(element => {
+      state.profile[element.dataset.field] = element.value.trim();
+    });
+    document.querySelectorAll("[data-profile]").forEach(element => {
+      state.profile[element.dataset.profile] = element.value.trim();
+    });
+    state.profile.clarity = document.querySelector('input[name="clarity"]:checked')?.value || "";
+    state.profile.scenarios = [...document.querySelectorAll('input[name="scenarios"]:checked')].map(element => element.value);
+    state.profile.city_constraint = document.querySelector('input[name="city_constraint"]:checked')?.value || "";
+  }
+
+  function restoreInputs() {
+    document.querySelectorAll("[data-field]").forEach(element => {
+      element.value = state.profile[element.dataset.field] || "";
+    });
+    document.querySelectorAll("[data-profile]").forEach(element => {
+      element.value = state.profile[element.dataset.profile] || "";
+    });
+    if (state.profile.clarity) {
+      const clarity = document.querySelector(`input[name="clarity"][value="${state.profile.clarity}"]`);
+      if (clarity) clarity.checked = true;
+    }
+    if (state.profile.city_constraint) {
+      const cc = document.querySelector(`input[name="city_constraint"][value="${state.profile.city_constraint}"]`);
+      if (cc) cc.checked = true;
+    }
+    (state.profile.scenarios || []).forEach(value => {
+      const scenario = document.querySelector(`input[name="scenarios"][value="${value}"]`);
+      if (scenario) scenario.checked = true;
+    });
+    document.querySelectorAll("[data-candidate]").forEach(element => {
+      if (element.tagName === "SELECT") return; // 下拉由 candidate 模块单独还原
+      element.value = state.candidate[element.dataset.candidate] || "";
+    });
+    toggleGuidance();
+    renderSelfSummary();
+    initCandidateForm();
+  }
+
+  function toggleGuidance() {
+    const clarity = document.querySelector('input[name="clarity"]:checked')?.value;
+    document.querySelector("#guidance-box").hidden = !(clarity === "uncertain" || clarity === "unknown");
+  }
+
+  // ========== 省份-模式-选科联动 ==========
+  // 与 references/province-exam-mode.md 保持一致。
+  const PROVINCE_3PLUS3 = {
+    "上海": ["物理", "化学", "生物", "政治", "历史", "地理"],
+    "浙江": ["物理", "化学", "生物", "政治", "历史", "地理", "技术"],
+    "北京": ["物理", "化学", "生物", "政治", "历史", "地理"],
+    "天津": ["物理", "化学", "生物", "政治", "历史", "地理"],
+    "山东": ["物理", "化学", "生物", "政治", "历史", "地理"],
+    "海南": ["物理", "化学", "生物", "政治", "历史", "地理"],
+  };
+  const PROVINCE_3PLUS1PLUS2 = [
+    "河北", "辽宁", "江苏", "福建", "湖北", "湖南", "广东", "重庆",
+    "甘肃", "黑龙江", "吉林", "安徽", "江西", "贵州", "广西",
+    "内蒙古", "山西", "河南", "四川", "云南", "陕西", "青海", "宁夏", "新疆", "西藏",
+  ];
+  const PROVINCE_ORDER = [
+    "安徽","北京","重庆","福建","甘肃","广东","广西","贵州","海南","河北","河南",
+    "黑龙江","湖北","湖南","吉林","江苏","江西","辽宁","内蒙古","宁夏","青海",
+    "山东","山西","陕西","上海","四川","天津","西藏","新疆","云南","浙江",
+  ];
+
+  function provinceMode(province) {
+    if (PROVINCE_3PLUS3[province]) return "3+3";
+    if (PROVINCE_3PLUS1PLUS2.includes(province)) return "3+1+2";
+    return "";
+  }
+
+  function fillProvinceOptions() {
+    const select = document.querySelector("#province-select");
+    if (!select || select.options.length > 1) return;
+    PROVINCE_ORDER.forEach(province => {
+      const option = document.createElement("option");
+      option.value = province;
+      option.textContent = province;
+      select.appendChild(option);
+    });
+  }
+
+  function fillYearOptions() {
+    const select = document.querySelector("#year-select");
+    if (!select || select.options.length > 1) return;
+    const now = new Date().getFullYear();
+    [now - 1, now, now + 1].forEach(year => {
+      const option = document.createElement("option");
+      option.value = String(year);
+      option.textContent = String(year);
+      select.appendChild(option);
+    });
+  }
+
+  function renderSubjects(province) {
+    const block = document.querySelector("#subjects-options");
+    const hint = document.querySelector("#subjects-hint");
+    block.innerHTML = "";
+    if (!province) {
+      hint.textContent = "先选省份。3+1+2 模式先选物理或历史，再从 4 科中选 2 科；3+3 模式直接从可选科目中选 3 科。";
+      return;
+    }
+    const mode = provinceMode(province);
+    const selected = new Set(Array.isArray(state.candidate.subjects)
+      ? state.candidate.subjects
+      : (state.candidate.subjects || "").split(/[,，、\s]+/).filter(Boolean));
+    if (mode === "3+3") {
+      const pool = PROVINCE_3PLUS3[province];
+      hint.textContent = `${province}（3+3 模式，${pool.length} 选 3）。注意：物理与历史按招生大类划分，只能二选一。`;
+      pool.forEach(subject => {
+        const label = document.createElement("label");
+        label.className = "option";
+        label.innerHTML = `<input type="checkbox" name="subject-3plus3" value="${subject}" ${selected.has(subject) ? "checked" : ""}><span>${subject}</span>`;
+        block.appendChild(label);
+      });
+      // 恢复互斥：state 里已选物理就把历史置灰，反之亦然
+      const phy = block.querySelector('input[name="subject-3plus3"][value="物理"]');
+      const his = block.querySelector('input[name="subject-3plus3"][value="历史"]');
+      if (phy && his) {
+        if (phy.checked) his.disabled = true;
+        if (his.checked) phy.disabled = true;
+      }
+    } else if (mode === "3+1+2") {
+      hint.textContent = `${province}（3+1+2 模式）。先选物理或历史，再从化学/生物/政治/地理中选 2 科。`;
+      const primary = document.createElement("div");
+      primary.innerHTML = `
+        <p class="muted" style="margin:6px 0">首选（二选一）</p>
+        <label class="option"><input type="radio" name="subject-primary" value="物理" ${selected.has("物理") ? "checked" : ""}><span>物理</span></label>
+        <label class="option"><input type="radio" name="subject-primary" value="历史" ${selected.has("历史") ? "checked" : ""}><span>历史</span></label>
+        <p class="muted" style="margin:10px 0 6px">再选 2 科</p>`;
+      block.appendChild(primary);
+      ["化学", "生物", "政治", "地理"].forEach(subject => {
+        const label = document.createElement("label");
+        label.className = "option";
+        label.innerHTML = `<input type="checkbox" name="subject-secondary" value="${subject}" ${selected.has(subject) ? "checked" : ""}><span>${subject}</span>`;
+        block.appendChild(label);
+      });
+    } else {
+      hint.textContent = "暂不支持该省份的老高考流程。请回到 Claude Code 描述你的具体情况。";
+    }
+  }
+
+  function collectSubjects() {
+    const mode = provinceMode(state.candidate.province);
+    if (mode === "3+3") {
+      return [...document.querySelectorAll('input[name="subject-3plus3"]:checked')].map(el => el.value);
+    }
+    if (mode === "3+1+2") {
+      const primary = document.querySelector('input[name="subject-primary"]:checked')?.value;
+      const secondary = [...document.querySelectorAll('input[name="subject-secondary"]:checked')].map(el => el.value);
+      return primary ? [primary, ...secondary] : secondary;
+    }
+    return [];
+  }
+
+  function initCandidateForm() {
+    fillProvinceOptions();
+    fillYearOptions();
+    const provinceSelect = document.querySelector("#province-select");
+    const yearSelect = document.querySelector("#year-select");
+    const examMode = document.querySelector("#exam-mode-field");
+    if (!provinceSelect) return;
+    provinceSelect.value = state.candidate.province || "";
+    yearSelect.value = state.candidate.year || "";
+    examMode.value = provinceMode(state.candidate.province) || "";
+    state.candidate.exam_mode = examMode.value;
+    document.querySelector("#score-field").value = state.candidate.score || "";
+    document.querySelector("#rank-field").value = state.candidate.rank || "";
+    renderSubjects(state.candidate.province);
+    validateCandidateForm();
+  }
+
+  function validateCandidateForm() {
+    const province = state.candidate.province;
+    const year = state.candidate.year;
+    const subjects = collectSubjects();
+    const score = (document.querySelector("#score-field")?.value || "").trim();
+    const rank = (document.querySelector("#rank-field")?.value || "").trim();
+    const messages = [];
+    if (!province) messages.push("请选择招生省份");
+    else if (!provinceMode(province)) messages.push("当前省份在新高考映射表中未找到，无法继续");
+    if (!year) messages.push("请选择填报年份");
+    const mode = provinceMode(province);
+    if (mode === "3+3" && subjects.length !== 3) messages.push("3+3 模式请选 3 科");
+    if (mode === "3+1+2") {
+      const primary = document.querySelector('input[name="subject-primary"]:checked')?.value;
+      const secondary = [...document.querySelectorAll('input[name="subject-secondary"]:checked')].length;
+      if (!primary) messages.push("请选首选科目（物理 或 历史）");
+      if (secondary !== 2) messages.push("请再选 2 科（化学/生物/政治/地理）");
+    }
+    // 物理与历史互斥：在所有新高考省份的选科政策里都不能同时选。
+    if (subjects.includes("物理") && subjects.includes("历史")) {
+      messages.push("物理与历史不能同时选（招生时按物理类/历史类分大类，二者只能选一）");
+    }
+    if (!score && !rank) messages.push("高考成绩与全省位次至少填一项");
+    const button = document.querySelector("#generate-recommendation");
+    const validation = document.querySelector("#candidate-validation");
+    if (button) button.disabled = messages.length > 0;
+    if (validation) validation.textContent = messages.length ? messages.join("；") : "";
+    return messages.length === 0;
+  }
+
+  function renderSelfSummary() {
+    readProfile();
+    const lines = [
+      `喜欢做什么：${state.profile.flow_experience || "待探索"}`,
+      `想尝试什么：${state.profile.want_to_try || "待探索"}`,
+      `想成为什么样的人：${state.profile.future_self || "待探索"}`,
+      `引导线索：${(state.profile.scenarios || []).join("、") || "无"}`
+    ];
+    const box = document.querySelector("#self-summary");
+    box.className = "";
+    box.textContent = lines.join("\n");
+    box.style.whiteSpace = "pre-wrap";
+  }
+
+  function renderMajors() {
+    const target = document.querySelector("#major-cards");
+    if (!research.major_clusters?.length) {
+      const waiting = state.requests?.major_research === "pending";
+      target.className = "empty";
+      target.textContent = waiting
+        ? "真实研究请求已保存。Agent 正在根据你的回答查询大学培养方案与权威行业资料，结果写回后本页会自动刷新。"
+        : "先完成并保存“认识自己”。这里不会显示模拟专业数据。";
+    } else {
+      target.className = "grid";
+      target.innerHTML = research.major_clusters.map(cluster => {
+        const deepKey = `major_deep_dive:${cluster.id}`;
+        const deepStatus = state.requests?.[deepKey];
+        const deepDive = cluster.deep_dive;
+        let deepBlock = "";
+        if (deepStatus === "pending" || deepStatus === "in-progress") {
+          deepBlock = `<p class="source-meta" style="background:#fff7e0;padding:6px;border-radius:4px">⏳ Agent 正在深入研究本方向，结果回来后会自动展开</p>`;
+        } else if (deepStatus === "failed") {
+          deepBlock = `<p class="source-meta" style="background:#fde2e2;padding:6px;border-radius:4px">❌ 深入研究失败，可再次点击“深入了解”重试</p>`;
+        } else if (deepDive) {
+          deepBlock = `
+            <details open style="margin-top:8px;border-top:1px dashed #ccc;padding-top:8px">
+              <summary><strong>深入研究结果</strong></summary>
+              ${deepDive.representative_universities?.length
+                ? `<p><strong>代表院校：</strong>${escapeHtml(deepDive.representative_universities.join("；"))}</p>` : ""}
+              ${deepDive.training_plan_highlights?.length
+                ? `<p><strong>培养方案亮点：</strong>${escapeHtml(deepDive.training_plan_highlights.join("；"))}</p>` : ""}
+              ${deepDive.employment_signals?.length
+                ? `<p><strong>就业信号：</strong>${escapeHtml(deepDive.employment_signals.join("；"))}</p>` : ""}
+              ${deepDive.notes ? `<p><strong>补充：</strong>${escapeHtml(deepDive.notes)}</p>` : ""}
+              <p class="source-meta">${sourceLinks(deepDive.source_ids)}</p>
+            </details>`;
+        }
+        return `
+        <article class="mini-card" data-cluster-id="${escapeHtml(cluster.id)}">
+          <span class="badge">真实研究</span>
+          <h3>${escapeHtml(cluster.name)}</h3>
+          <p><strong>为什么匹配：</strong>${escapeHtml((cluster.match_reasons || []).join("；"))}</p>
+          <p><strong>课程与工作：</strong>${escapeHtml([...(cluster.courses || []), ...(cluster.work_realities || [])].join("；"))}</p>
+          <p><strong>行业前景：</strong>${escapeHtml(cluster.industry_outlook || "待核验")}</p>
+          <p><strong>风险：</strong>${escapeHtml((cluster.risks || []).join("；") || "待核验")}</p>
+          <p class="source-meta">${sourceLinks(cluster.source_ids)}</p>
+          ${deepBlock}
+          <div class="actions" data-major-id="${escapeHtml(cluster.id)}">
+            <button class="action secondary major-choice" data-choice="deep" type="button">深入了解</button>
+            <button class="action secondary major-choice" data-choice="keep" type="button">保留观察</button>
+            <button class="action danger major-choice" data-choice="exclude" type="button">排除</button>
+          </div>
+          <p class="source-meta">当前选择：${escapeHtml(state.major_preferences?.[cluster.id] || "未选择")}</p>
+        </article>`;
+      }).join("");
+    }
+
+    const sources = document.querySelector("#industry-sources");
+    const items = research.sources?.filter(source =>
+      research.major_clusters?.some(cluster => cluster.source_ids?.includes(source.id))
+    ) || [];
+    sources.className = items.length ? "" : "empty";
+    sources.innerHTML = items.length ? items.map(source => `
+      <div class="source">
+        <div><a href="${escapeHtml(source.url)}" target="_blank" rel="noreferrer"><strong>${escapeHtml(source.claim)}</strong></a>
+        <div class="source-meta">${escapeHtml(source.publisher)} · ${escapeHtml(source.published_or_data_year)} · 核验于 ${escapeHtml(source.verified_at)}</div></div>
+        <span class="badge">${escapeHtml(source.status)}</span>
+      </div>`).join("") : "尚无已核验来源。";
+  }
+
+  function renderAdmissions() {
+    // 旧的『录取分析』表格已并入志愿表（renderApplications），此处保留空函数避免主轮询报错。
+  }
+
+  function renderApplications() {
+    const target = document.querySelector("#application-list");
+    const pending = state.requests?.application_recommendation === "pending"
+      || state.requests?.application_recommendation === "in-progress";
+    if (!research.applications?.length) {
+      target.className = "empty";
+      target.textContent = pending
+        ? "Agent 正在根据你的专业偏好与招生信息生成填报建议……"
+        : "在上一步点『生成填报建议』后，候选志愿会写在这里。";
+      return;
+    }
+    target.className = "";
+    const order = state.application_order?.length
+      ? state.application_order
+      : research.applications.map(application => application.id);
+    const ordered = order.map(id => research.applications.find(item => item.id === id)).filter(Boolean);
+    research.applications.forEach(item => {
+      if (!ordered.some(existing => existing.id === item.id)) ordered.push(item);
+    });
+    target.innerHTML = ordered.map((application, index) => {
+      const cityLabel = ({
+        hard_satisfied: "✅ 满足城市硬约束",
+        soft_satisfied: "✅ 符合城市偏好",
+        violates_preference: "⚠️ 不在偏好城市，建议复核",
+      })[application.city_match] || "";
+      return `
+      <article class="mini-card" style="margin-bottom:10px">
+        <span class="badge">${index + 1} · ${escapeHtml(application.risk_level)}</span>
+        <h3>${escapeHtml(application.university)} · ${escapeHtml(application.group_or_major)}</h3>
+        <p>录取机会：${escapeHtml(application.chance_range || "仅定性等级（数据不足以给数值区间）")}${application.method_summary ? "；" + escapeHtml(application.method_summary) : ""}</p>
+        <p>校区/城市/学费：${escapeHtml(application.campus || "待核验")} / ${escapeHtml(application.city || "待核验")} / ${escapeHtml(application.tuition || "待核验")}</p>
+        ${cityLabel ? `<p>${cityLabel}</p>` : ""}
+        ${application.rationale ? `<p><strong>推荐理由：</strong>${escapeHtml(application.rationale)}</p>` : ""}
+        <p>限制：${escapeHtml((application.restrictions || []).join("；") || "无已知限制")}</p>
+        <p class="source-meta">${sourceLinks(application.source_ids)}</p>
+        <div class="actions" data-application-id="${escapeHtml(application.id)}">
+          <button class="action secondary move-application" data-direction="up" type="button">上移</button>
+          <button class="action secondary move-application" data-direction="down" type="button">下移</button>
+        </div>
+      </article>`;
+    }).join("");
+  }
+
+  async function loadHistory() {
+    historyEvents = (await api("/api/history")).reverse();
+    renderHistory(document.querySelector("#history-search").value);
+  }
+
+  async function loadRequests() {
+    agentRequests = await api("/api/requests");
+    const latest = agentRequests[0];
+    const status = document.querySelector("#agent-status");
+    if (!latest) {
+      status.textContent = "Agent 任务状态：尚未提交";
+      return;
+    }
+    const labels = {
+      pending: "已传回网页数据，等待 Agent 领取",
+      "in-progress": "Agent 正在联网研究与核验来源",
+      completed: "Agent 已写回真实结果",
+      failed: "Agent 处理失败，请查看历史或重试"
+    };
+    status.textContent = `Agent 任务 ${latest.id}：${labels[latest.status] || latest.status}`;
+    status.style.background = latest.status === "failed" ? "#f8dfdc" : "#f7ead5";
+  }
+
+  function agentIsOnline() {
+    if (!agentListener) return false;
+    if (agentListener.status === "offline") return false;
+    const age = agentListener.heartbeat_age_seconds;
+    return age !== null && age !== undefined && age < 10;
+  }
+
+  function activeRequest() {
+    // 仍需 Agent 处理的最新任务（pending 或 in-progress）。
+    return agentRequests.find(r => r.status === "pending" || r.status === "in-progress");
+  }
+
+  async function loadListener() {
+    agentListener = await api("/api/agent-listener");
+    const online = agentIsOnline();
+    const busy = agentListener.status === "busy";
+    document.querySelector("#agent-dot").style.background =
+      online ? (busy ? "var(--warn)" : "var(--accent)") : "var(--danger)";
+    document.querySelector("#agent-online").textContent = online
+      ? (busy ? "Agent 在线 · 正在处理任务" : "Agent 在线 · 正在监听网页操作")
+      : "Agent 离线 · 回到 Claude Code 让该 Skill 继续运行等待器，网页操作才会被处理";
+  }
+
+  async function loadAgentProgress() {
+    agentProgress = await api("/api/agent-progress");
+    const pending = activeRequest();
+    const card = document.querySelector("#agent-progress-card");
+    const retry = document.querySelector("#retry-request");
+    const noTask = agentProgress.status === "idle" && !pending;
+    card.style.display = noTask ? "none" : "block";
+    if (noTask) { retry.style.display = "none"; return; }
+
+    const heartbeatAge = agentProgress.heartbeat_at
+      ? Date.now() - new Date(agentProgress.heartbeat_at).getTime()
+      : Infinity;
+    const online = agentIsOnline();
+    const percent = agentProgress.percent || 0;
+    document.querySelector("#agent-progress-percent").textContent = `${percent}%`;
+    document.querySelector("#agent-progress-bar").style.width = `${percent}%`;
+    document.querySelector("#agent-progress-heartbeat").textContent = agentProgress.heartbeat_at
+      ? `最后进度更新：${new Date(agentProgress.heartbeat_at).toLocaleString("zh-CN")}`
+      : "";
+
+    const failed = agentProgress.status === "failed";
+    const stalled = agentProgress.status === "working" && heartbeatAge > 120000;
+    const waitingOffline = pending && pending.status === "pending" && !online;
+
+    if (failed || stalled || waitingOffline) {
+      card.style.borderColor = "var(--danger)";
+      document.querySelector("#agent-progress-step").textContent =
+        failed ? "任务失败" : stalled ? "Agent 似乎已停止" : "没有在线 Agent 领取任务";
+      document.querySelector("#agent-progress-message").textContent =
+        failed ? (agentProgress.message || "任务处理失败。")
+        : stalled ? "超过 2 分钟没有进度心跳，Agent 可能已停止或对话已结束。"
+        : "网页数据已传回，但当前没有在线的 Agent。请回到 Claude Code 让该 Skill 继续运行等待器。";
+      retry.style.display = (failed || stalled) ? "inline-flex" : "none";
+      retry.dataset.requestType = (pending && pending.type) || agentRequests[0]?.type || "";
+      return;
+    }
+    card.style.borderColor = "var(--line)";
+    retry.style.display = "none";
+    document.querySelector("#agent-progress-step").textContent = agentProgress.step || "处理中";
+    document.querySelector("#agent-progress-message").textContent = agentProgress.message || "";
+  }
+
+  function syncServerState(disk) {
+    // 轮询时只同步 Agent 拥有的字段，绝不覆盖页面正在编辑的输入。
+    if (!disk || typeof disk !== "object") return;
+    state.version = disk.version ?? state.version;
+    state.submissions = disk.submissions ?? state.submissions;
+    state.audit = disk.audit ?? state.audit;
+    const diskRequests = disk.requests || {};
+    state.requests = state.requests || {};
+    for (const [key, value] of Object.entries(diskRequests)) {
+      // Agent 对任务进度有权威：completed / failed / in-progress 覆盖本地 pending。
+      if (value !== "pending" || !state.requests[key]) state.requests[key] = value;
+    }
+    document.querySelector("#version-label").textContent = `v${state.version || 1}`;
+  }
+
+  function renderHistory(query = "") {
+    const normalized = query.trim().toLowerCase();
+    const events = historyEvents.filter(event => JSON.stringify(event).toLowerCase().includes(normalized));
+    document.querySelector("#history-list").innerHTML = events.length ? events.map(event => `
+      <article class="event">
+        <time>${new Date(event.timestamp).toLocaleString("zh-CN")} · v${event.version || "?"} · ${escapeHtml(event.stage)}</time>
+        <div><strong>${escapeHtml(event.type)}</strong> — ${escapeHtml(event.summary)}</div>
+      </article>`).join("") : '<div class="empty">没有匹配的历史记录。</div>';
+  }
+
+  function renderAudit() {
+    const audit = research.audit || state.audit;
+    if (!audit) return;
+    document.querySelector("#audit-badge").textContent = audit.status || "等待独立审计";
+    document.querySelector("#audit-message").textContent = audit.summary || `提交 ${audit.submission_id}：${audit.status}`;
+    if (audit.findings?.length) {
+      document.querySelector("#audit-results").className = "";
+      document.querySelector("#audit-results").innerHTML = audit.findings.map(finding =>
+        `<div class="source"><div><strong>${escapeHtml(finding.item)}</strong><div class="source-meta">${escapeHtml(finding.result)}</div></div><span class="badge">${escapeHtml(finding.status)}</span></div>`
+      ).join("");
+    }
+  }
+
+  async function refreshResearch() {
+    research = { ...structuredClone(emptyResearch), ...(await api("/api/research")) };
+    renderMajors();
+    renderAdmissions();
+    renderApplications();
+    renderAudit();
+  }
+
+  async function poll() {
+    try {
+      const [diskState] = await Promise.all([api("/api/state"), loadListener(), loadRequests()]);
+      syncServerState(diskState);
+      await Promise.all([refreshResearch(), loadAgentProgress(), loadHistory()]);
+      if (!connected) {
+        setConnection(true, "已连接真实工作区。你的答案会落盘，Agent 写回的权威研究数据会自动出现在页面中。");
+      }
+    } catch (error) {
+      setConnection(false, `与工作区的连接中断，正在自动重连……（${error.message}）`);
+    }
+  }
+
+  async function initialize() {
+    if (location.protocol === "file:") {
+      setConnection(false, "当前是静态 file:// 模板，无法保存真实状态或接收真实数据。请由 Skill 启动 localhost 工作区。");
+      return;
+    }
+    try {
+      await api("/api/health");
+      state = { ...structuredClone(emptyState), ...(await api("/api/state")) };
+      restoreInputs();
+      showPanel(state.stage || "self");
+      await poll();
+      setInterval(poll, 3000);
+    } catch (error) {
+      setConnection(false, `工作区连接失败：${error.message}`);
+    }
+  }
+
+  // 统一包裹异步点击：禁用按钮防重复提交，失败时给出可见提示而不是静默卡住。
+  async function withFeedback(button, fn) {
+    if (button) button.disabled = true;
+    try {
+      await fn();
+    } catch (error) {
+      setConnection(false, `操作失败：${error.message}。请确认 Skill 的本地服务仍在运行，然后重试。`);
+    } finally {
+      if (button) button.disabled = false;
+    }
+  }
+
+  document.querySelectorAll("nav button").forEach(button =>
+    button.addEventListener("click", () => withFeedback(button, async () => {
+      showPanel(button.dataset.panel);
+      await saveState();
+    }))
+  );
+  document.querySelectorAll("[data-go]").forEach(button =>
+    button.addEventListener("click", () => withFeedback(button, async () => {
+      showPanel(button.dataset.go);
+      await saveState();
+    }))
+  );
+  document.querySelectorAll('input[name="clarity"]').forEach(input =>
+    input.addEventListener("change", toggleGuidance)
+  );
+  document.querySelectorAll("[data-field], input[name='scenarios'], [data-profile], input[name='city_constraint']").forEach(input =>
+    input.addEventListener("input", renderSelfSummary)
+  );
+  // 第三步表单的联动
+  document.addEventListener("change", event => {
+    const t = event.target;
+    if (t.id === "province-select") {
+      state.candidate.province = t.value;
+      state.candidate.exam_mode = provinceMode(t.value);
+      document.querySelector("#exam-mode-field").value = state.candidate.exam_mode || "";
+      state.candidate.subjects = [];
+      renderSubjects(t.value);
+      validateCandidateForm();
+    } else if (t.id === "year-select") {
+      state.candidate.year = t.value;
+      validateCandidateForm();
+    } else if (t.name === "subject-3plus3" || t.name === "subject-primary" || t.name === "subject-secondary") {
+      // 3+3 限制最多选 3 科
+      if (t.name === "subject-3plus3") {
+        const checked = document.querySelectorAll('input[name="subject-3plus3"]:checked');
+        if (checked.length > 3) { t.checked = false; }
+      }
+      // 3+1+2 副选最多 2
+      if (t.name === "subject-secondary") {
+        const checked = document.querySelectorAll('input[name="subject-secondary"]:checked');
+        if (checked.length > 2) { t.checked = false; }
+      }
+      // 3+3：物理与历史互斥——勾了其中一个就把另一个置灰且取消勾选
+      if (t.name === "subject-3plus3") {
+        const phy = document.querySelector('input[name="subject-3plus3"][value="物理"]');
+        const his = document.querySelector('input[name="subject-3plus3"][value="历史"]');
+        if (phy && his) {
+          if (phy.checked) { his.checked = false; his.disabled = true; }
+          else if (his.checked) { phy.checked = false; phy.disabled = true; }
+          else { phy.disabled = false; his.disabled = false; }
+        }
+      }
+      state.candidate.subjects = collectSubjects();
+      validateCandidateForm();
+    }
+  });
+  ["#score-field", "#rank-field"].forEach(sel => {
+    document.addEventListener("input", event => {
+      if (event.target.matches(sel)) validateCandidateForm();
+    });
+  });
+  document.querySelector("#save-self").addEventListener("click", event => withFeedback(event.currentTarget, async () => {
+    readProfile();
+    const hasCoreEvidence = state.profile.flow_experience && state.profile.want_to_try && state.profile.future_self;
+    if (!hasCoreEvidence && state.profile.clarity === "clear") {
+      alert("请填写三个核心问题，或选择进入引导模式。");
+      return;
+    }
+    if (!state.profile.clarity) {
+      alert("请选择你目前对喜好的清晰程度。");
+      return;
+    }
+    state.stage = "majors";
+    await saveState();
+    // 已经有过 major_research 结果（completed 或 failed）就不再隐式触发——
+    // 失败需要用户在 Agent 进度卡片上点『重新排队』，明确表达重试意图。
+    const existing = state.requests?.major_research;
+    const shouldQueue = existing !== "completed" && existing !== "failed" && existing !== "in-progress";
+    if (shouldQueue) {
+      state.requests.major_research = "pending";
+      const request = await api("/api/requests", {
+        method: "POST",
+        body: JSON.stringify({ type: "major_research" })
+      });
+      await addEvent(
+        state.profile.clarity === "clear" ? "self-discovery" : "guidance",
+        "major-research-requested",
+        `已保存真实回答，并创建 Agent 任务 ${request.id}`
+      );
+    } else {
+      await addEvent("self-discovery", "profile-updated",
+        `已更新自我探索答案（major_research=${existing}，未重新触发）`);
+    }
+    await poll();
+    showPanel("majors");
+  }));
+  document.querySelector("#generate-recommendation").addEventListener("click", event => withFeedback(event.currentTarget, async () => {
+    // 把表单值同步进 state.candidate
+    state.candidate.province = document.querySelector("#province-select").value;
+    state.candidate.year = document.querySelector("#year-select").value;
+    state.candidate.exam_mode = provinceMode(state.candidate.province);
+    state.candidate.subjects = collectSubjects();
+    state.candidate.score = document.querySelector("#score-field").value.trim();
+    state.candidate.rank = document.querySelector("#rank-field").value.trim();
+    if (!validateCandidateForm()) {
+      alert("请按提示完成表单");
+      return;
+    }
+    state.stage = "admission";
+    await saveState();
+    try {
+      // 用户点这个按钮就是明确意图『生成一份新建议』，传 force 让后端允许在 completed 之上重做。
+      const request = await api("/api/requests", {
+        method: "POST",
+        body: JSON.stringify({ type: "application_recommendation", force: true }),
+      });
+      await addEvent("admission-analysis", "recommendation-requested",
+        `已保存招生口径并请求录取建议 ${request.id}`);
+    } catch (error) {
+      // 后端 candidate_complete 校验失败时返回 400 携带 error；poll 仍刷新进度
+      alert(`无法生成建议：${error.message || error}`);
+    }
+    await poll();
+  }));
+  document.querySelector("#simulate-submit").addEventListener("click", event => withFeedback(event.currentTarget, async () => {
+    if (!research.applications?.length) {
+      alert("还没有候选志愿。请先在上一步点『生成填报建议』。");
+      return;
+    }
+    if (!confirm("确认要冻结当前这份填报建议吗？快照不可修改（但可以基于它生成新版本），并会立即送入独立审计。")) return;
+    const submission = await api("/api/submissions", { method: "POST", body: "{}" });
+    syncServerState(await api("/api/state"));
+    document.querySelector("#audit-badge").textContent = "等待全新 subagent";
+    document.querySelector("#audit-message").textContent = `快照 ${submission.id} 已冻结，等待独立审计。`;
+    await poll();
+    showPanel("audit");
+  }));
+  document.querySelector("#retry-request").addEventListener("click", event => withFeedback(event.currentTarget, async () => {
+    const type = event.currentTarget.dataset.requestType;
+    if (!type) return;
+    // 重试是用户的明确意图，必须显式带 force 才能突破后端 failed/completed 的"不无脑重排"保护。
+    await api("/api/requests", { method: "POST", body: JSON.stringify({ type, force: true }) });
+    await poll();
+  }));
+  document.querySelector("#history-search").addEventListener("input", event => renderHistory(event.target.value));
+  document.querySelector("#major-cards").addEventListener("click", event => {
+    const button = event.target.closest(".major-choice");
+    if (!button) return;
+    withFeedback(button, async () => {
+      const clusterId = button.closest("[data-major-id]").dataset.majorId;
+      const choice = button.dataset.choice;
+      state.major_preferences[clusterId] = choice;
+      await saveState();
+      await addEvent("major-research", "major-preference-updated", `${clusterId}：${choice}`, [clusterId]);
+      // "深入了解" 不只是打标签，还触发一个真实的 deep_dive 任务给 Agent。
+      if (choice === "deep") {
+        await api("/api/requests", {
+          method: "POST",
+          body: JSON.stringify({ type: "major_deep_dive", cluster_id: clusterId }),
+        });
+        await poll();
+      }
+      renderMajors();
+    });
+  });
+  document.querySelector("#application-list").addEventListener("click", event => {
+    const button = event.target.closest(".move-application");
+    if (!button) return;
+    withFeedback(button, async () => {
+      const id = button.closest("[data-application-id]").dataset.applicationId;
+      const initial = state.application_order?.length
+        ? [...state.application_order]
+        : research.applications.map(application => application.id);
+      const index = initial.indexOf(id);
+      const next = button.dataset.direction === "up" ? index - 1 : index + 1;
+      if (index < 0 || next < 0 || next >= initial.length) return;
+      [initial[index], initial[next]] = [initial[next], initial[index]];
+      state.application_order = initial;
+      await saveState();
+      await addEvent("simulation", "application-order-updated", `调整志愿顺序：${id}`, [id]);
+      renderApplications();
+    });
+  });
+  document.querySelector("#copy-summary").addEventListener("click", async () => {
+    const text = historyEvents.slice(0, 20).map(event =>
+      `${event.timestamp} | v${event.version} | ${event.stage} | ${event.summary}`
+    ).join("\n");
+    await navigator.clipboard.writeText(text || "暂无历史");
+  });
+  document.querySelector("#clear-local").addEventListener("click", () =>
+    alert("真实工作区状态保存在磁盘，不允许从页面一键清空。请创建新工作区开始另一位考生。")
+  );
+
+  initialize();
+</script>
+</body>
+</html>

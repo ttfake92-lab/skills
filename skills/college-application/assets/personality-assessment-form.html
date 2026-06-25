@@ -1,0 +1,219 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>性格与职业兴趣测评表</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --ink: #17211b;
+      --muted: #657169;
+      --paper: #f3f0e7;
+      --card: #fffdf8;
+      --line: #d8d4c9;
+      --accent: #176b4d;
+      --accent-soft: #dcebe4;
+      --warn: #9a5b12;
+      --danger: #a33e35;
+      --shadow: 0 14px 38px rgba(34, 45, 38, .06);
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; color: var(--ink); background: var(--paper); font: 16px/1.65 ui-sans-serif, system-ui, -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif; }
+    .shell { width: min(1080px, calc(100% - 28px)); margin: 24px auto 72px; }
+    .hero, .card { border: 1px solid var(--line); border-radius: 22px; background: var(--card); box-shadow: var(--shadow); }
+    .hero { padding: 28px; }
+    .eyebrow { color: var(--accent); font-size: 12px; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; }
+    h1 { margin: 8px 0 10px; font: 700 clamp(30px, 5vw, 52px)/1.08 ui-serif, "Songti SC", serif; }
+    h2 { margin: 0 0 12px; font-size: 23px; }
+    h3 { margin: 0 0 8px; font-size: 17px; }
+    p { margin: 0 0 12px; }
+    a { color: #315c85; }
+    .muted { color: var(--muted); }
+    .disclaimer { margin-top: 14px; padding: 10px 12px; border: 1px solid rgba(216, 212, 201, .75); border-radius: 14px; color: rgba(101, 113, 105, .82); background: rgba(251, 247, 236, .58); font-size: 12px; line-height: 1.55; }
+    .disclaimer strong { color: rgba(23, 33, 27, .68); font-weight: 700; }
+    .disclaimer p { margin: 0; }
+    .grid { display: grid; grid-template-columns: 1fr; gap: 16px; margin-top: 18px; }
+    .card { padding: 22px; }
+    .toolbar { position: sticky; bottom: 12px; z-index: 5; display: flex; gap: 10px; flex-wrap: wrap; align-items: center; margin-top: 18px; padding: 14px; border: 1px solid var(--line); border-radius: 18px; background: rgba(255, 253, 248, .94); backdrop-filter: blur(14px); box-shadow: var(--shadow); }
+    button { min-height: 44px; padding: 10px 16px; border: 0; border-radius: 12px; color: white; background: var(--accent); font-weight: 750; cursor: pointer; }
+    button.secondary { color: var(--accent); background: var(--accent-soft); }
+    button:focus-visible, input:focus-visible { outline: 3px solid rgba(23, 107, 77, .25); outline-offset: 2px; }
+    .progress { flex: 1 1 240px; height: 10px; overflow: hidden; border-radius: 999px; background: #e4e0d5; }
+    .progress span { display: block; width: 0%; height: 100%; background: var(--accent); transition: width .2s ease; }
+    .question { display: grid; grid-template-columns: 70px 1fr minmax(250px, 360px); gap: 14px; align-items: center; padding: 14px 0; border-top: 1px solid var(--line); }
+    .question:first-of-type { border-top: 0; }
+    .qid { font-weight: 800; color: var(--accent); }
+    .type { display: inline-flex; min-width: 34px; justify-content: center; margin-left: 6px; padding: 2px 7px; border-radius: 999px; background: var(--accent-soft); color: var(--accent); font-size: 12px; font-weight: 800; }
+    .scale { display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; }
+    .scale label { display: grid; place-items: center; min-height: 40px; border: 1px solid var(--line); border-radius: 10px; cursor: pointer; background: #fbf7ec; }
+    .scale input { position: absolute; opacity: 0; pointer-events: none; }
+    .scale label:has(input:checked) { border-color: var(--accent); color: white; background: var(--accent); font-weight: 800; }
+    .legend { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; color: var(--muted); font-size: 13px; }
+    .error { color: var(--danger); font-weight: 750; }
+    .ok { color: var(--accent); font-weight: 750; }
+    @media (max-width: 820px) {
+      .question { grid-template-columns: 1fr; }
+      .scale { max-width: 420px; }
+    }
+  </style>
+</head>
+<body>
+  <main class="shell">
+    <section class="hero">
+      <div class="eyebrow">College Application Input 01</div>
+      <h1>性格与职业兴趣测评表</h1>
+      <p class="muted">填写后点击下载，把结果文件发给 Agent。页面离线可用，不会上传任何数据。</p>
+      <div class="disclaimer"><p><strong>隐私与使用说明：</strong>本页面离线运行，填写内容不会上传网络；数据只保存在你的浏览器下载文件或本地工作区中，请不要填写不必要的敏感信息。本测评不是心理诊断，也不能单独决定专业选择，只用于生成职业方向假设，后续还要结合真实经历、行业研究和高考数据交叉验证。</p></div>
+      <div class="legend"><span>1=完全不符合（偏“否”）</span><span>2=比较不符合</span><span>3=一般/不确定</span><span>4=比较符合</span><span>5=非常符合（偏“是”）</span></div>
+    </section>
+
+    <section class="grid">
+      <article class="card">
+        <h2>A. 职业兴趣（RIASEC）</h2>
+        <div id="riasec"></div>
+      </article>
+      <article class="card">
+        <h2>B. 人格特质（Mini-IPIP / Big Five）</h2>
+        <p class="muted">反向题正常作答，Agent 会自动反向计分。</p>
+        <div id="bigfive"></div>
+      </article>
+    </section>
+
+    <section class="toolbar" aria-live="polite">
+      <div class="progress"><span id="progressBar"></span></div>
+      <span id="statusText" class="muted">0 / 32 已完成</span>
+      <button type="button" id="downloadJson">下载给 Agent 的 JSON</button>
+      <button type="button" class="secondary" id="downloadMd">下载 Markdown 备份</button>
+    </section>
+  </main>
+
+  <script>
+    const riasecQuestions = [
+      ['A01','R','我喜欢动手修理、组装、制作或调试具体物品。'],
+      ['A02','R','比起纯文字讨论，我更喜欢在实验室、户外、车间或真实场景中解决具体问题。'],
+      ['A03','I','我喜欢研究事物原理、分析数据、做实验或寻找规律。'],
+      ['A04','I','遇到复杂问题时，我愿意花时间查资料、拆解变量、验证假设。'],
+      ['A05','A','我喜欢通过写作、影像、音乐、绘画、设计或其他形式表达想法。'],
+      ['A06','A','我享受创造新概念、新风格或新作品，而不是只照流程完成任务。'],
+      ['A07','S','我喜欢帮助别人理解问题、解决困难或做出选择。'],
+      ['A08','S','和人交流、教学、咨询、照顾或协作时，我容易获得成就感。'],
+      ['A09','E','我喜欢组织活动、带领团队、争取资源或说服别人接受方案。'],
+      ['A10','E','我对创业、管理、销售、公共表达、谈判或项目推进有兴趣。'],
+      ['A11','C','我喜欢把信息、数据、文件或流程整理得准确、有序、可追踪。'],
+      ['A12','C','我能接受明确规则和标准，愿意细致核对，避免混乱和遗漏。']
+    ];
+    const bigFiveQuestions = [
+      ['B01','外向性','在聚会或集体活动里，我经常是比较活跃的人。','否'],
+      ['B02','外向性','我平时话不多，更习惯先观察再表达。','是'],
+      ['B03','外向性','在人多的场合里，我常常更愿意待在背景里。','是'],
+      ['B04','外向性','我会主动和不同的人交流。','否'],
+      ['B05','宜人性','我容易理解和在意别人的感受。','否'],
+      ['B06','宜人性','别人遇到问题时，我通常不太想介入。','是'],
+      ['B07','宜人性','我能比较敏锐地感受到他人的情绪变化。','否'],
+      ['B08','宜人性','我对了解他人的想法和处境兴趣不大。','是'],
+      ['B09','尽责性','该做的事情，我通常会尽快完成。','否'],
+      ['B10','尽责性','我喜欢有秩序、有条理的环境。','否'],
+      ['B11','尽责性','我会制定计划，并尽量按计划执行。','否'],
+      ['B12','尽责性','我常常忘记把东西放回原位。','是'],
+      ['B13','神经质','我的情绪波动比较频繁。','否'],
+      ['B14','神经质','大多数时候，我都比较放松。','是'],
+      ['B15','神经质','我比较容易烦躁、紧张或被事情影响。','否'],
+      ['B16','神经质','我很少感到低落。','是'],
+      ['B17','开放性','我有比较丰富的想象力。','否'],
+      ['B18','开放性','我对抽象概念、理论或新想法不太感兴趣。','是'],
+      ['B19','开放性','我理解抽象概念时常常觉得困难。','是'],
+      ['B20','开放性','我不太擅长想象新的画面、故事或可能性。','是']
+    ];
+    const allQuestions = [...riasecQuestions, ...bigFiveQuestions];
+
+    function questionHtml(q, group) {
+      const [id, type, text, reversed] = q;
+      const reverseText = group === 'bigfive' ? ` <span class="muted">1分=不认可，5分=认可</span>` : '';
+      return `<div class="question">
+        <div class="qid">${id}<span class="type">${type}</span></div>
+        <div>${text}${reverseText}</div>
+        <div class="scale" role="radiogroup" aria-label="${id}">
+          ${[1,2,3,4,5].map(v => `<label><input type="radio" name="${id}" value="${v}">${v}</label>`).join('')}
+        </div>
+      </div>`;
+    }
+
+    document.getElementById('riasec').innerHTML = riasecQuestions.map(q => questionHtml(q, 'riasec')).join('');
+    document.getElementById('bigfive').innerHTML = bigFiveQuestions.map(q => questionHtml(q, 'bigfive')).join('');
+
+    function collectAnswers() {
+      const answers = {};
+      for (const [id] of allQuestions) {
+        const checked = document.querySelector(`input[name="${id}"]:checked`);
+        if (checked) answers[id] = Number(checked.value);
+      }
+      return answers;
+    }
+
+    function updateProgress() {
+      const count = Object.keys(collectAnswers()).length;
+      document.getElementById('progressBar').style.width = `${Math.round(count / allQuestions.length * 100)}%`;
+      const status = document.getElementById('statusText');
+      status.textContent = `${count} / ${allQuestions.length} 已完成`;
+      status.className = count === allQuestions.length ? 'ok' : 'muted';
+    }
+
+    function buildPayload() {
+      const answers = collectAnswers();
+      return {
+        schema: 'college-application.personality-assessment.v1',
+        generated_at: new Date().toISOString(),
+        instructions: 'Send this JSON file back to the Agent. The Agent will score RIASEC and Mini-IPIP according to the skill rules.',
+        answers,
+        missing: allQuestions.map(q => q[0]).filter(id => answers[id] == null),
+        metadata: {
+          riasec_items: riasecQuestions.map(([id,type,text]) => ({id,type,text})),
+          big_five_items: bigFiveQuestions.map(([id,trait,text,reversed]) => ({id,trait,text,reversed: reversed === '是'}))
+        }
+      };
+    }
+
+    function buildMarkdown(payload) {
+      const lines = ['# 性格与职业兴趣测评结果', '', `生成时间：${payload.generated_at}`, '', '## 答案', ''];
+      lines.push('| 题号 | 分数 |');
+      lines.push('|---|---:|');
+      for (const [id] of allQuestions) lines.push(`| ${id} | ${payload.answers[id] ?? ''} |`);
+      if (payload.missing.length) lines.push('', `缺失题号：${payload.missing.join('、')}`);
+      lines.push('', '请把此文件发给 Agent 继续分析。');
+      return lines.join('\n');
+    }
+
+    function download(filename, content, type) {
+      const blob = new Blob([content], {type});
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = filename;
+      document.body.appendChild(a);
+      a.click();
+      a.remove();
+      URL.revokeObjectURL(url);
+    }
+
+    function requireComplete(payload) {
+      if (!payload.missing.length) return true;
+      alert(`还有 ${payload.missing.length} 题没有填写：${payload.missing.join('、')}。请补齐后再下载。`);
+      return false;
+    }
+
+    document.addEventListener('change', updateProgress);
+    document.getElementById('downloadJson').addEventListener('click', () => {
+      const payload = buildPayload();
+      if (!requireComplete(payload)) return;
+      download('personality-assessment-result.json', JSON.stringify(payload, null, 2), 'application/json;charset=utf-8');
+    });
+    document.getElementById('downloadMd').addEventListener('click', () => {
+      const payload = buildPayload();
+      if (!requireComplete(payload)) return;
+      download('personality-assessment-result.md', buildMarkdown(payload), 'text/markdown;charset=utf-8');
+    });
+    updateProgress();
+  </script>
+</body>
+</html>

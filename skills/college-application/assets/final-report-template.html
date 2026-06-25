@@ -1,0 +1,204 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{report_title}}</title>
+  <style>
+    :root { color-scheme: light; --ink:#17211b; --muted:#657169; --paper:#f3f0e7; --card:#fffdf8; --line:#d8d4c9; --accent:#176b4d; --accent-soft:#dcebe4; --blue:#315c85; --warn:#9a5b12; --danger:#a33e35; --shadow:0 14px 38px rgba(34,45,38,.06); }
+    * { box-sizing:border-box; }
+    body { margin:0; color:var(--ink); background:var(--paper); font:16px/1.72 ui-sans-serif, system-ui, -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif; }
+    a { color:var(--blue); word-break:break-all; }
+    .shell { width:min(1120px, calc(100% - 28px)); margin:24px auto 72px; }
+    .hero,.card { border:1px solid var(--line); border-radius:24px; background:var(--card); box-shadow:var(--shadow); }
+    .hero { padding:30px; }
+    .eyebrow { color:var(--accent); font-size:12px; font-weight:800; letter-spacing:.1em; text-transform:uppercase; }
+    h1 { margin:8px 0 10px; font:700 clamp(30px,5vw,52px)/1.08 ui-serif, "Songti SC", serif; }
+    h2 { margin:0 0 12px; font-size:24px; }
+    h3 { margin:18px 0 8px; font-size:18px; }
+    p { margin:0 0 12px; }
+    .muted { color:var(--muted); }
+    .disclaimer { margin-top:14px; padding:10px 12px; border:1px solid rgba(216,212,201,.75); border-radius:14px; color:rgba(101,113,105,.82); background:rgba(251,247,236,.58); font-size:12px; line-height:1.55; }
+    .disclaimer strong { color:rgba(23,33,27,.68); font-weight:700; }
+    .disclaimer p { margin:0; }
+    .grid { display:grid; grid-template-columns:repeat(12,1fr); gap:16px; margin-top:18px; }
+    .card { grid-column:span 12; padding:24px; }
+    .half { grid-column:span 6; }
+    .third { grid-column:span 4; }
+    .headline { font-size:20px; line-height:1.58; }
+    .metric { display:inline-flex; flex-direction:column; min-width:132px; margin:0 10px 10px 0; padding:12px 14px; border:1px solid var(--line); border-radius:14px; background:#fbf7ec; }
+    .metric b { font-size:20px; }
+    table { width:100%; border-collapse:collapse; margin-top:10px; }
+    th,td { padding:10px 12px; border-bottom:1px solid var(--line); text-align:left; vertical-align:top; }
+    th { color:var(--muted); font-size:12px; letter-spacing:.05em; text-transform:uppercase; }
+    .tag { display:inline-block; padding:3px 8px; border-radius:999px; background:var(--accent-soft); color:var(--accent); font-size:12px; font-weight:800; }
+    .risk { color:var(--warn); font-weight:750; }
+    .danger { color:var(--danger); font-weight:750; }
+    details { margin-top:12px; border:1px solid var(--line); border-radius:16px; background:#fbf7ec; }
+    summary { cursor:pointer; padding:14px 16px; color:var(--accent); font-weight:850; }
+    details > div { padding:0 16px 16px; }
+    .source-list li { margin-bottom:10px; }
+    .footer { margin-top:18px; padding:20px; border:1px dashed var(--line); border-radius:18px; color:var(--muted); }
+    canvas { width:100%; max-width:280px; height:auto; max-height:220px; background:rgba(251,247,236,.72); border:1px solid var(--line); border-radius:16px; padding:10px; }
+    canvas.chart-short { max-height:180px; }
+    @media (max-width:760px) { .half,.third { grid-column:span 12; } table { display:block; overflow-x:auto; } }
+  </style>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <main class="shell">
+    <section class="hero">
+      <div class="eyebrow">College Application Report</div>
+      <h1>{{report_title}}</h1>
+      <p class="muted">生成时间：{{generated_at}}　｜　考生省份：{{province}}　｜　数据最后核验：{{verified_at}}</p>
+      <p class="headline">{{executive_summary}}</p>
+      <div class="disclaimer"><p><strong>隐私与使用说明：</strong>本页面离线运行，填写内容不会上传网络；数据只保存在你的浏览器下载文件或本地工作区中，请不要填写不必要的敏感信息。本报告仅供高考志愿决策参考，不构成录取承诺，正式填报前请以省教育考试院、高校招生章程、官方志愿填报系统为准，并与老师、家长交叉验证。</p></div>
+    </section>
+
+    <section class="grid">
+      <article class="card">
+        <h2>先看重点</h2>
+        <div style="display:flex; gap:16px; align-items:flex-start; flex-wrap:wrap;">
+          <div style="flex: 1 1 240px;"><canvas id="riasecOverview" class="chart-short" height="160" aria-label="RIASEC overview chart"></canvas></div>
+          <div style="flex: 1 1 420px;">{{key_takeaways}}</div>
+        </div>
+      </article>
+
+      <article class="card half">
+        <h2>当前最适合优先研究的方向</h2>
+        {{career_direction_cards}}
+      </article>
+
+      <article class="card half">
+        <h2>高考信息与当前限制</h2>
+        <table><tbody>
+          <tr><th>招生省份</th><td>{{province}}</td></tr>
+          <tr><th>填报年份</th><td>{{application_year}}</td></tr>
+          <tr><th>考试模式</th><td>{{exam_mode}}</td></tr>
+          <tr><th>选科</th><td>{{subjects}}</td></tr>
+          <tr><th>成绩 / 位次</th><td>{{score_rank}}</td></tr>
+          <tr><th>地区偏好</th><td>{{region_preferences}}</td></tr>
+        </tbody></table>
+        <p class="danger">{{data_limitations}}</p>
+      </article>
+
+      <article class="card">
+        <h2>下一步要补的数据</h2>
+        {{next_data_steps}}
+      </article>
+
+      <article class="card">
+        <h2>志愿建议</h2>
+        <table><thead><tr><th>层级</th><th>院校/专业组</th><th>匹配理由</th><th>机会判断</th><th>主要风险</th><th>来源</th></tr></thead><tbody>{{application_rows}}</tbody></table>
+      </article>
+
+      <article class="card">
+        <details>
+          <summary>展开完整性格与职业兴趣结果</summary>
+          <div>
+            <div class="metric"><span>RIASEC 前三码</span><b>{{riasec_code}}</b></div>
+            <div class="metric"><span>开放性</span><b>{{openness}}</b></div>
+            <div class="metric"><span>尽责性</span><b>{{conscientiousness}}</b></div>
+            <div class="metric"><span>外向性</span><b>{{extraversion}}</b></div>
+            <p>{{personality_summary}}</p>
+            <p class="muted">局限：{{personality_limitations}}</p>
+            <h3>六角兴趣图</h3>
+            <canvas id="riasecDetail" class="chart-short" height="160" aria-label="RIASEC detail chart"></canvas>
+            <h3>五维人格得分</h3>
+            <canvas id="bigFiveDetail" class="chart-short" height="110" aria-label="Big Five detail chart"></canvas>
+            <h3>完整得分表</h3>
+            {{personality_score_tables}}
+            <h3>更适合先研究的方向</h3>
+            {{personality_career_direction_cards}}
+          </div>
+        </details>
+
+        <details>
+          <summary>展开专业与行业深度分析</summary>
+          <div>{{industry_analysis_sections}}</div>
+        </details>
+
+        <details>
+          <summary>展开方法、不确定性与无法查证项</summary>
+          <div>
+            <h3>方法</h3>
+            <p>{{methodology}}</p>
+            <h3>无法查证 / 需要交叉验证</h3>
+            {{unverified_items}}
+          </div>
+        </details>
+
+        <details>
+          <summary>展开完整来源台账</summary>
+          <div><ol class="source-list">{{source_items}}</ol></div>
+        </details>
+      </article>
+    </section>
+
+    <section class="footer">
+      <strong>最终提醒：</strong>本报告是辅助决策材料，不是正式志愿表。请逐条打开来源链接，核对年份、省份、科类、批次、专业组、招生章程、单科/语种/体检限制。涉及健康或体检限制的专业，请用户自行查看招生章程，不建议在工具中填写隐私信息。
+    </section>
+  </main>
+  <script>
+    const riasecScores = {{riasec_json}};
+    const bigFiveScores = {{bigfive_json}};
+    function renderRiasec(id) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      new Chart(el, {
+        type: 'radar',
+        data: {
+          labels: Object.keys(riasecScores),
+          datasets: [{
+            label: '得分',
+            data: Object.values(riasecScores),
+            borderColor: '#176b4d',
+            backgroundColor: 'rgba(23,107,77,0.16)',
+            pointBackgroundColor: '#176b4d'
+          }]
+        },
+        options: {
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: { r: { beginAtZero: true, suggestedMax: 10, ticks: { stepSize: 2 } } },
+          plugins: {
+            legend: { display: false },
+            tooltip: { callbacks: { label: ctx => ctx.parsed.r + ' / 10' } }
+          }
+        }
+      });
+    }
+    function renderBigFive(id) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      new Chart(el, {
+        type: 'bar',
+        data: {
+          labels: Object.keys(bigFiveScores),
+          datasets: [{
+            label: '得分',
+            data: Object.values(bigFiveScores),
+            backgroundColor: ['#176b4d','#315c85','#9a5b12','#a33e35','#657169']
+          }]
+        },
+        options: {
+          indexAxis: 'y',
+          responsive: true,
+          maintainAspectRatio: false,
+          scales: {
+            x: { beginAtZero: true, suggestedMax: 20, ticks: { stepSize: 5 } },
+            y: { ticks: { autoSkip: false } }
+          },
+          plugins: {
+            legend: { display: false },
+            tooltip: { callbacks: { label: ctx => ctx.parsed.x + ' / 20' } }
+          }
+        }
+      });
+    }
+    renderRiasec('riasecOverview');
+    renderRiasec('riasecDetail');
+    renderBigFive('bigFiveDetail');
+  </script>
+</body>
+</html>
