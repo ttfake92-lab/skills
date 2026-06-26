@@ -5,6 +5,7 @@
     "./skills/mx-shell-prompt",
     "./skills/yyl-remotion-video",
     "./skills/yyl-video-thumbnail",
-    "./skills/college-application"
+    "./skills/college-application",
+    "./skills/yyl-benchmark-breakdown"
   ]
 }

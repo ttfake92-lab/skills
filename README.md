@@ -28,6 +28,7 @@ npx skills@latest add ttfake92-lab/skills
 - **[mx-shell-prompt](./skills/mx-shell-prompt/SKILL.md)** — Write structured, cinematic video generation prompts for AI video tools like Seedance 2.0, Kling, Sora, Runway, Pika. Transforms rough ideas into production-ready prompts with three pillars: who-where, what-feel, what-happens. Includes shot catalog, cinematic vocabulary, and composition templates.
 - **[yyl-remotion-video](./skills/yyl-remotion-video/SKILL.md)** — Build 16:9 Remotion video projects from scripts, articles, notes, or outlines. Creates frame-driven React/TypeScript animations, estimates duration without synthesizing audio, renders still checks, and exports mp4 with built-in themes plus a dark 3D luxury gallery template.
 - **[yyl-video-thumbnail](./skills/yyl-video-thumbnail/SKILL.md)** — Generate high-CTR video thumbnails for Bilibili, YouTube, and Douyin/TikTok. Uses pop-out technique: darkened original photo as base, yellow-highlighted title text, and cutout subject overlaid at full brightness. Ships with three templates (popout poster, UI command panel, film-edit style) and auto-generates 16:9 / 4:3 / 3:4 ratios.
+- **[yyl-benchmark-breakdown](./skills/yyl-benchmark-breakdown/SKILL.md)** — Teardown competitor content from any link. Auto-detects platform (Douyin/XHS/Bilibili/YouTube/WeChat) and scope (single post or entire account), fetches content via 4-level fallback, transcribes audio, extracts visual frames, then outputs a 3-piece report: reusable formula, frame-by-frame breakdown with visual+audio alignment, and persona/positioning analysis. Auto-archives to benchmarks/ for long-term reference library.
 
 #### Education & Decision
 
@@ -35,11 +36,11 @@ npx skills@latest add ttfake92-lab/skills
 
 ### New Skill
 
-- `college-application` has been added to the repository manifest, so `npx skills@latest add ttfake92-lab/skills` can discover it together with the existing skills.
+- `yyl-benchmark-breakdown` has been added — a content teardown skill for creators. Drop a competitor link, get a reusable formula, frame-by-frame breakdown, and persona analysis. Works with Douyin, XHS, Bilibili, YouTube, and WeChat.
 
 ### Skills Overview
 
-This repository includes five skills — four for content creation and one for education/decision support:
+This repository includes six skills — five for content creation and one for education/decision support:
 
 | Skill | What It Does | Best For |
 |------|--------------|----------|
@@ -48,6 +49,7 @@ This repository includes five skills — four for content creation and one for e
 | `yyl-remotion-video` | Turns scripts, articles, notes, or outlines into Remotion projects that can render mp4. | Frame-accurate explainers, product demos, command-line films, silent clips for post-production voiceover. |
 | `yyl-video-thumbnail` | Generates high-CTR video thumbnails with pop-out technique — darkened base, yellow keyword text, full-brightness cutout subject. | Bilibili, YouTube, Douyin/TikTok covers, AI tool demos, command-line film posters. |
 | `college-application` | Guides gaokao students through personality assessment, career/major/industry research, and admission data analysis; outputs a sourced HTML report. | China gaokao applicants, parents, education consultants, anyone building decision-support agents. |
+| `yyl-benchmark-breakdown` | Teardown competitor content from any link: auto-detect platform, fetch via 4-level fallback, transcribe audio, extract visual frames, output reusable formula + frame-by-frame breakdown + persona analysis. | Content creators doing competitive research, viral video analysis, benchmark building. |
 
 ### How To Choose
 
@@ -61,13 +63,16 @@ Use **yyl-video-thumbnail** when your video is done and you need a click-worthy 
 
 Use **college-application** when a student needs structured help choosing majors and universities for China's gaokao system. It focuses on evidence-based personality assessment, career/major/industry research grounded in official sources, and admission data analysis — all wrapped in a traceable HTML report with explicit disclaimers.
 
+Use **yyl-benchmark-breakdown** when you want to learn from a competitor's content. Drop a link and get a teardown: why it works, what formula you can steal, frame-by-frame visual+audio breakdown, and their persona/positioning strategy. Auto-archives everything for your long-term benchmark library.
+
 ### Example Workflow
 
-1. Use `mx-shell-prompt` to break a script into cinematic blocks and shot ideas.
-2. Use `AI-video-prompt` when the output needs image-reference prompts with precise constraints.
-3. Use `yyl-remotion-video` when you want a deterministic 16:9 Remotion clip instead of model-generated footage.
-4. Use `yyl-video-thumbnail` to generate a high-CTR cover image once the video is ready.
-5. Add voiceover, subtitles, sound design, and final edits in post-production.
+1. Use `yyl-benchmark-breakdown` to analyze a competitor's viral video — extract the formula, hooks, and visual rhythm.
+2. Use `mx-shell-prompt` to break your script into cinematic blocks and shot ideas.
+3. Use `AI-video-prompt` when the output needs image-reference prompts with precise constraints.
+4. Use `yyl-remotion-video` when you want a deterministic 16:9 Remotion clip instead of model-generated footage.
+5. Use `yyl-video-thumbnail` to generate a high-CTR cover image once the video is ready.
+6. Add voiceover, subtitles, sound design, and final edits in post-production.
 
 ### License
 
@@ -103,14 +108,15 @@ npx skills@latest add ttfake92-lab/skills
 #### 教育与决策
 
 - **[college-application](./skills/college-application/SKILL.md)** — 高考志愿决策辅助。通过 Agent 对话引导考生完成「认识自己 → 理解职业/专业/行业 → 用招生数据约束选择 → 生成可审计报告」的完整决策流程。包含有科学依据的性格与职业兴趣测评（RIASEC + Big Five）、职业/专业/行业深度研究、省份/选科/分数/位次与官方招生数据整合，最终生成带完整来源链接和免责声明的 HTML 报告。
+- **[yyl-benchmark-breakdown](./skills/yyl-benchmark-breakdown/SKILL.md)** — 对标账号拆解。丢一个链接，自动识别平台（抖音/小红书/B站/YouTube/公众号）和粒度（单条或整个账号），通过四级回退取数、转写口播、抽视觉帧，输出三件套：可复用爆款公式、画面+口播逐段拆解（时间轴对齐）、人设与内容定位。自动存档到 benchmarks/ 沉淀成对标库。
 
 ### 新增说明
 
-- 已新增 `college-application`（高考志愿决策辅助），并加入仓库 skill 清单。现在使用 `npx skills@latest add ttfake92-lab/skills` 时，可以和已有 skill 一起被发现与安装。
+- 已新增 `yyl-benchmark-breakdown`（对标账号拆解），并加入仓库 skill 清单。现在使用 `npx skills@latest add ttfake92-lab/skills` 时，可以和已有 skill 一起被发现与安装。
 
 ### Skills 概览
 
-这个仓库目前有 5 个 skills：4 个内容创作类 + 1 个教育决策类。
+这个仓库目前有 6 个 skills：5 个内容创作类 + 1 个教育决策类。
 
 | Skill | 做什么 | 适合场景 |
 |------|--------|----------|
@@ -119,6 +125,7 @@ npx skills@latest add ttfake92-lab/skills
 | `yyl-remotion-video` | 把口播稿、文章、资料摘要或明确大纲做成可渲染 mp4 的 Remotion 项目。 | 逐帧可控讲解视频、产品 demo、命令行电影、后期统一配音的视频片段。 |
 | `yyl-video-thumbnail` | 用 pop-out 技法生成视频封面：压暗原图 + 黄色关键词 + 全亮抠图人物。 | B站/YouTube/抖音封面、AI 工具 demo 封面、命令行电影海报。 |
 | `college-application` | 引导高考考生完成性格测评、职业/专业/行业研究和招生数据分析，生成带来源的 HTML 报告。 | 高考考生、家长、教育咨询师、需要构建决策辅助 Agent 的开发者。 |
+| `yyl-benchmark-breakdown` | 丢一个链接，自动拆解对标内容：四级回退取数、转写口播、抽视觉帧，输出可复用爆款公式、画面+口播逐段拆解、人设定位。 | 内容创作者做竞品分析、爆款视频拆解、建立对标库。 |
 
 ### 怎么选择
 
@@ -132,13 +139,16 @@ npx skills@latest add ttfake92-lab/skills
 
 如果你需要帮高考生做志愿决策，用 **college-application**。它关注的是科学依据的性格测评、基于官方来源的职业/专业/行业研究、招生数据分析，以及带完整来源链接和免责声明的可审计 HTML 报告。
 
+如果你想拆解对标账号或竞品内容，用 **yyl-benchmark-breakdown**。丢一个链接进去，它会自动取数、转写口播、抽视觉帧，输出可复用的爆款公式、画面+口播逐段拆解和人设定位，并自动存档到对标库。
+
 ### 推荐工作流
 
-1. 用 `mx-shell-prompt` 把脚本拆成电影化板块和镜头想法。
-2. 如果要用 Seedance 等图片参考型视频工具生成画面，用 `AI-video-prompt` 写成带图片参考和硬约束的生产型提示词。
-3. 如果你想要可控的 16:9 动态讲解片段，就用 `yyl-remotion-video` 做 Remotion 视频。
-4. 视频做好后，用 `yyl-video-thumbnail` 生成高点击率封面。
-5. 最后在后期软件里加入口播、字幕、音效和剪辑。
+1. 用 `yyl-benchmark-breakdown` 拆解竞品爆款视频 —— 提取公式、钩子、视觉节奏。
+2. 用 `mx-shell-prompt` 把你的脚本拆成电影化板块和镜头想法。
+3. 如果要用 Seedance 等图片参考型视频工具生成画面，用 `AI-video-prompt` 写成带图片参考和硬约束的生产型提示词。
+4. 如果你想要可控的 16:9 动态讲解片段，就用 `yyl-remotion-video` 做 Remotion 视频。
+5. 视频做好后，用 `yyl-video-thumbnail` 生成高点击率封面。
+6. 最后在后期软件里加入口播、字幕、音效和剪辑。
 
 ### 许可
 
