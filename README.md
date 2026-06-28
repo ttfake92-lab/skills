@@ -37,14 +37,15 @@ npx skills@latest add ttfake92-lab/skills
 #### System Tools
 
 - **[yyl-disk-cleaner-cat](./skills/yyl-disk-cleaner-cat/SKILL.md)** — macOS disk cleanup with a pixel-art cat. Scans developer caches, system caches, large files, performance metrics, and network diagnostics. Presents an interactive pixel-art web page where you confirm deletions — a blue-white cat physically walks through a hand-drawn apartment, sweeping dust piles in real-time as files are permanently removed. Includes persistent memory across sessions.
+- **[macos-migration](./skills/macos-migration/SKILL.md)** — Two-phase macOS migration assistant. On the old Mac it scans Homebrew packages, App Store / manual apps, npm/uv/pip/go tools, dotfiles, editor extensions, fonts, and launch agents into a JSON manifest; on the new Mac it reads the manifest and restores everything (batch Homebrew install, config files, Library data from Time Machine), then reports what needs manual handling. Requires a full Time Machine backup up front and asks before collecting secrets like SSH keys.
 
 ### New Skill
 
-- `yyl-disk-cleaner-cat` has been added — a macOS disk cleanup tool with a pixel-art cat animation. Now discoverable via `npx skills@latest add ttfake92-lab/skills`.
+- `macos-migration` has been added — a two-phase macOS system migration assistant (collect on the old Mac, restore on the new one). Now discoverable via `npx skills@latest add ttfake92-lab/skills`.
 
 ### Skills Overview
 
-This repository includes seven skills — five for content creation, one for education/decision support, and one for system tools:
+This repository includes eight skills — five for content creation, one for education/decision support, and two for system tools:
 
 | Skill | What It Does | Best For |
 |------|--------------|----------|
@@ -55,6 +56,7 @@ This repository includes seven skills — five for content creation, one for edu
 | `college-application` | Guides gaokao students through personality assessment, career/major/industry research, and admission data analysis; outputs a sourced HTML report. | China gaokao applicants, parents, education consultants, anyone building decision-support agents. |
 | `yyl-benchmark-breakdown` | Teardown competitor content from any link: auto-detect platform, fetch via 4-level fallback, transcribe audio, extract visual frames, output reusable formula + frame-by-frame breakdown + persona analysis. | Content creators doing competitive research, viral video analysis, benchmark building. |
 | `yyl-disk-cleaner-cat` | Scans macOS disk, presents interactive pixel-art cleanup page with real-time cat animation. | Freeing disk space, clearing developer caches, system optimization, network diagnostics. |
+| `macos-migration` | Two-phase macOS migration: scans the old Mac into a JSON manifest, then restores apps, packages, and configs on the new Mac, with a manual-handling diff report. | Getting a new Mac, reinstalling macOS, restoring from Time Machine, moving a full dev setup. |
 
 ### How To Choose
 
@@ -71,6 +73,8 @@ Use **college-application** when a student needs structured help choosing majors
 Use **yyl-benchmark-breakdown** when you want to learn from a competitor's content. Drop a link and get a teardown: why it works, what formula you can steal, frame-by-frame visual+audio breakdown, and their persona/positioning strategy. Auto-archives everything for your long-term benchmark library.
 
 Use **yyl-disk-cleaner-cat** when you need to free up macOS disk space, clear developer caches, or optimize system performance. It focuses on safe deletion with user confirmation, persistent preference learning, and a unique pixel-art interactive experience.
+
+Use **macos-migration** when you're setting up a new Mac or reinstalling macOS. It scans your old system into a JSON manifest, then on the new machine batch-installs Homebrew packages and restores configs and Library data from Time Machine, never overwriting existing files and reporting everything that needs manual handling.
 
 ### Example Workflow
 
@@ -120,14 +124,15 @@ npx skills@latest add ttfake92-lab/skills
 #### 系统工具
 
 - **[yyl-disk-cleaner-cat](./skills/yyl-disk-cleaner-cat/SKILL.md)** — macOS 磁盘清理小猫。扫描开发者缓存、系统缓存、大文件、性能指标和网络状态，打开一个像素风网页让你勾选确认——确认后一只蓝白小猫在手绘公寓里一间间走、实时打扫灰尘堆。带持续记忆：偏好、永不清理列表、历史清理记录跨会话保留。
+- **[macos-migration](./skills/macos-migration/SKILL.md)** — macOS 系统迁移助手，两阶段设计。旧系统上把 Homebrew 软件、App Store/手动安装的应用、npm/uv/pip/go 工具、dotfiles、编辑器扩展、字体、自启动服务扫描成一份 JSON 清单；新系统上读清单逐步还原（Homebrew 批量安装、配置文件、从 Time Machine 恢复 Library 数据），最后输出需手动处理的差异报告。前置要求先做一次 Time Machine 全量备份，采集私钥等敏感数据前先征求确认。
 
 ### 新增说明
 
-- 已新增 `yyl-disk-cleaner-cat`（macOS 磁盘清理小猫），并加入仓库 skill 清单。现在使用 `npx skills@latest add ttfake92-lab/skills` 时，可以和已有 skill 一起被发现与安装。
+- 已新增 `macos-migration`（macOS 系统迁移助手，旧系统采集 + 新系统还原两阶段），并加入仓库 skill 清单。现在使用 `npx skills@latest add ttfake92-lab/skills` 时，可以和已有 skill 一起被发现与安装。
 
 ### Skills 概览
 
-这个仓库目前有 7 个 skills：5 个内容创作类 + 1 个教育决策类 + 1 个系统工具类。
+这个仓库目前有 8 个 skills：5 个内容创作类 + 1 个教育决策类 + 2 个系统工具类。
 
 | Skill | 做什么 | 适合场景 |
 |------|--------|----------|
@@ -138,6 +143,7 @@ npx skills@latest add ttfake92-lab/skills
 | `college-application` | 引导高考考生完成性格测评、职业/专业/行业研究和招生数据分析，生成带来源的 HTML 报告。 | 高考考生、家长、教育咨询师、需要构建决策辅助 Agent 的开发者。 |
 | `yyl-benchmark-breakdown` | 丢一个链接，自动拆解对标内容：四级回退取数、转写口播、抽视觉帧，输出可复用爆款公式、画面+口播逐段拆解、人设定位。 | 内容创作者做竞品分析、爆款视频拆解、建立对标库。 |
 | `yyl-disk-cleaner-cat` | 扫描 macOS 磁盘，打开像素风交互页确认删除，小猫实时打扫。 | 释放磁盘空间、清理开发者缓存、系统优化、网络诊断。 |
+| `macos-migration` | 两阶段 macOS 迁移：旧系统扫描成 JSON 清单，新系统还原软件、包和配置，并输出需手动处理的差异报告。 | 换新 Mac、重装系统、从 Time Machine 恢复、迁移整套开发环境。 |
 
 ### 怎么选择
 
@@ -154,6 +160,8 @@ npx skills@latest add ttfake92-lab/skills
 如果你想拆解对标账号或竞品内容，用 **yyl-benchmark-breakdown**。丢一个链接进去，它会自动取数、转写口播、抽视觉帧，输出可复用的爆款公式、画面+口播逐段拆解和人设定位，并自动存档到对标库。
 
 如果你的下一步是释放 macOS 磁盘空间、清理缓存或优化系统性能，用 **yyl-disk-cleaner-cat**。它关注的是安全删除（用户确认）、持续偏好学习和像素风交互体验。
+
+如果你在装新 Mac 或重装系统，用 **macos-migration**。它先把旧系统扫描成一份 JSON 清单，再在新机器上批量安装 Homebrew 软件、从 Time Machine 恢复配置和 Library 数据，全程不覆盖已有文件，并把所有需手动处理的项目列成差异报告。
 
 ### 推荐工作流
 
