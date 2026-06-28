@@ -1,0 +1,7 @@
+{
+  "version": "1.0.0",
+  "author": "鱼亦乐 (yuyile)",
+  "date": "June 2026",
+  "abstract": "macOS disk cleanup skill with a pixel-art cat that physically walks through a hand-drawn apartment to clean up junk. Scans developer caches, system caches, large files, performance metrics, and network diagnostics. Presents an interactive pixel-art web page where users confirm deletions — the cat sweeps dust piles in real-time as files are permanently removed. Includes persistent memory across sessions: preferences, never-touch lists, and cleanup history stored in ~/.disk-cleanup-cat/.",
+  "references": []
+}

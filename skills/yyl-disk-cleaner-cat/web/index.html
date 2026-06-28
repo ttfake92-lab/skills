@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>磁盘清理小猫</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/style.css">
+</head>
+<body>
+<div id="app">
+
+  <!-- 顶部：标题 + 记忆 + 磁盘占用（合并）-->
+  <header class="window topwin">
+    <div class="titlebar"><i class="sq"></i><span>磁盘清理小猫 · DISK CLEANER</span><i class="sq"></i></div>
+    <div class="win-body">
+      <div class="memo" id="memo">读取记忆中…</div>
+      <div class="disk-inline" id="diskCard"></div>
+    </div>
+  </header>
+
+  <main class="stage">
+    <section class="window room-panel">
+      <div class="titlebar"><i class="sq"></i><span>小猫打扫中 · 一间间清走垃圾</span><i class="sq"></i></div>
+      <div class="win-body">
+        <canvas id="room" width="960" height="540"></canvas>
+        <div class="hud">
+          <div class="hud-row"><span>本次已释放</span><b id="freedNow">0B</b></div>
+          <div class="progress"><div id="progressBar"></div></div>
+          <div class="hud-status" id="catStatus">小猫在等你下令…</div>
+        </div>
+      </div>
+    </section>
+
+    <aside class="side">
+      <section class="window" id="reviewWin">
+        <div class="titlebar"><i class="sq"></i><span id="reviewTitle">要清理的项目</span><i class="sq"></i></div>
+        <div class="win-body" id="reviewPane">
+          <div class="pane-head"><span id="paneHint">勾选后点「开始打扫」</span><span class="reclaim" id="reclaimTotal">—</span></div>
+          <div class="warn" id="reviewWarn">永久删除，不进废纸篓。删什么由你勾选确认。</div>
+          <div class="lists" id="cleanLists"></div>
+          <div class="trace hidden" id="trace"></div>
+          <div class="cln-summary hidden" id="clnSummary"></div>
+          <button id="startBtn" class="big-btn" disabled>开始打扫</button>
+          <button id="closeBtn" class="big-btn hidden">关掉小猫</button>
+          <div class="selsum" id="selSum"></div>
+        </div>
+      </section>
+    </aside>
+  </main>
+
+  <!-- 优化建议（真实测量 · 安全一键）-->
+  <section class="window">
+    <div class="titlebar"><i class="sq"></i><span>优化建议 · 真实测量 · 安全一键</span><i class="sq"></i></div>
+    <div class="win-body"><div class="advisories" id="advisories"></div></div>
+  </section>
+
+</div>
+<script src="/app.js"></script>
+</body>
+</html>

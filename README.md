@@ -34,13 +34,17 @@ npx skills@latest add ttfake92-lab/skills
 
 - **[college-application](./skills/college-application/SKILL.md)** — China gaokao (college entrance exam) application assistant. Guides students through a structured decision process: scientifically-grounded personality & career interest assessment (RIASEC + Big Five), career/major/industry research, and admission data analysis — then generates a traceable HTML report with sources, cross-validation suggestions, and disclaimer. Supports provinces, subject combos, scores/rank, and official admission data.
 
+#### System Tools
+
+- **[yyl-disk-cleaner-cat](./skills/yyl-disk-cleaner-cat/SKILL.md)** — macOS disk cleanup with a pixel-art cat. Scans developer caches, system caches, large files, performance metrics, and network diagnostics. Presents an interactive pixel-art web page where you confirm deletions — a blue-white cat physically walks through a hand-drawn apartment, sweeping dust piles in real-time as files are permanently removed. Includes persistent memory across sessions.
+
 ### New Skill
 
-- `yyl-benchmark-breakdown` has been added — a content teardown skill for creators. Drop a competitor link, get a reusable formula, frame-by-frame breakdown, and persona analysis. Works with Douyin, XHS, Bilibili, YouTube, and WeChat.
+- `yyl-disk-cleaner-cat` has been added — a macOS disk cleanup tool with a pixel-art cat animation. Now discoverable via `npx skills@latest add ttfake92-lab/skills`.
 
 ### Skills Overview
 
-This repository includes six skills — five for content creation and one for education/decision support:
+This repository includes seven skills — five for content creation, one for education/decision support, and one for system tools:
 
 | Skill | What It Does | Best For |
 |------|--------------|----------|
@@ -50,6 +54,7 @@ This repository includes six skills — five for content creation and one for ed
 | `yyl-video-thumbnail` | Generates high-CTR video thumbnails with pop-out technique — darkened base, yellow keyword text, full-brightness cutout subject. | Bilibili, YouTube, Douyin/TikTok covers, AI tool demos, command-line film posters. |
 | `college-application` | Guides gaokao students through personality assessment, career/major/industry research, and admission data analysis; outputs a sourced HTML report. | China gaokao applicants, parents, education consultants, anyone building decision-support agents. |
 | `yyl-benchmark-breakdown` | Teardown competitor content from any link: auto-detect platform, fetch via 4-level fallback, transcribe audio, extract visual frames, output reusable formula + frame-by-frame breakdown + persona analysis. | Content creators doing competitive research, viral video analysis, benchmark building. |
+| `yyl-disk-cleaner-cat` | Scans macOS disk, presents interactive pixel-art cleanup page with real-time cat animation. | Freeing disk space, clearing developer caches, system optimization, network diagnostics. |
 
 ### How To Choose
 
@@ -64,6 +69,8 @@ Use **yyl-video-thumbnail** when your video is done and you need a click-worthy 
 Use **college-application** when a student needs structured help choosing majors and universities for China's gaokao system. It focuses on evidence-based personality assessment, career/major/industry research grounded in official sources, and admission data analysis — all wrapped in a traceable HTML report with explicit disclaimers.
 
 Use **yyl-benchmark-breakdown** when you want to learn from a competitor's content. Drop a link and get a teardown: why it works, what formula you can steal, frame-by-frame visual+audio breakdown, and their persona/positioning strategy. Auto-archives everything for your long-term benchmark library.
+
+Use **yyl-disk-cleaner-cat** when you need to free up macOS disk space, clear developer caches, or optimize system performance. It focuses on safe deletion with user confirmation, persistent preference learning, and a unique pixel-art interactive experience.
 
 ### Example Workflow
 
@@ -104,19 +111,23 @@ npx skills@latest add ttfake92-lab/skills
 - **[mx-shell-prompt](./skills/mx-shell-prompt/SKILL.md)** — 视频提示词写作。把粗略想法转化为结构化的电影级视频提示词，适用于 Seedance 2.0、Kling、Sora、Runway、Pika 等所有文生视频工具。核心理念：每个好提示词由三根支柱构成 —— 谁在哪、什么感觉、发生什么。内含景别速查表、电影词汇库和构图模板。
 - **[yyl-remotion-video](./skills/yyl-remotion-video/SKILL.md)** — Remotion 视频制作。把口播稿、文章、资料摘要或明确大纲做成 16:9、逐帧可控、可直接导出 mp4 的视频项目。内置三套主题和深色 3D 高端画廊模板，不在流程内合成音频，适合后期统一配音。
 - **[yyl-video-thumbnail](./skills/yyl-video-thumbnail/SKILL.md)** — 视频封面生成。用 pop-out 技法做 B站/YouTube/抖音高点击率封面：底层压暗原图保留环境、中层黄色关键词标题、顶层全亮抠图人物原位叠回。支持 popout 深色海报、ui 命令面板、paper 胶片编辑三套模板，自动输出 16:9/4:3/3:4 三种比例。
+- **[yyl-benchmark-breakdown](./skills/yyl-benchmark-breakdown/SKILL.md)** — 对标账号拆解。丢一个链接，自动识别平台（抖音/小红书/B站/YouTube/公众号）和粒度（单条或整个账号），通过四级回退取数、转写口播、抽视觉帧，输出三件套：可复用爆款公式、画面+口播逐段拆解（时间轴对齐）、人设与内容定位。自动存档到 benchmarks/ 沉淀成对标库。
 
 #### 教育与决策
 
 - **[college-application](./skills/college-application/SKILL.md)** — 高考志愿决策辅助。通过 Agent 对话引导考生完成「认识自己 → 理解职业/专业/行业 → 用招生数据约束选择 → 生成可审计报告」的完整决策流程。包含有科学依据的性格与职业兴趣测评（RIASEC + Big Five）、职业/专业/行业深度研究、省份/选科/分数/位次与官方招生数据整合，最终生成带完整来源链接和免责声明的 HTML 报告。
-- **[yyl-benchmark-breakdown](./skills/yyl-benchmark-breakdown/SKILL.md)** — 对标账号拆解。丢一个链接，自动识别平台（抖音/小红书/B站/YouTube/公众号）和粒度（单条或整个账号），通过四级回退取数、转写口播、抽视觉帧，输出三件套：可复用爆款公式、画面+口播逐段拆解（时间轴对齐）、人设与内容定位。自动存档到 benchmarks/ 沉淀成对标库。
+
+#### 系统工具
+
+- **[yyl-disk-cleaner-cat](./skills/yyl-disk-cleaner-cat/SKILL.md)** — macOS 磁盘清理小猫。扫描开发者缓存、系统缓存、大文件、性能指标和网络状态，打开一个像素风网页让你勾选确认——确认后一只蓝白小猫在手绘公寓里一间间走、实时打扫灰尘堆。带持续记忆：偏好、永不清理列表、历史清理记录跨会话保留。
 
 ### 新增说明
 
-- 已新增 `yyl-benchmark-breakdown`（对标账号拆解），并加入仓库 skill 清单。现在使用 `npx skills@latest add ttfake92-lab/skills` 时，可以和已有 skill 一起被发现与安装。
+- 已新增 `yyl-disk-cleaner-cat`（macOS 磁盘清理小猫），并加入仓库 skill 清单。现在使用 `npx skills@latest add ttfake92-lab/skills` 时，可以和已有 skill 一起被发现与安装。
 
 ### Skills 概览
 
-这个仓库目前有 6 个 skills：5 个内容创作类 + 1 个教育决策类。
+这个仓库目前有 7 个 skills：5 个内容创作类 + 1 个教育决策类 + 1 个系统工具类。
 
 | Skill | 做什么 | 适合场景 |
 |------|--------|----------|
@@ -126,6 +137,7 @@ npx skills@latest add ttfake92-lab/skills
 | `yyl-video-thumbnail` | 用 pop-out 技法生成视频封面：压暗原图 + 黄色关键词 + 全亮抠图人物。 | B站/YouTube/抖音封面、AI 工具 demo 封面、命令行电影海报。 |
 | `college-application` | 引导高考考生完成性格测评、职业/专业/行业研究和招生数据分析，生成带来源的 HTML 报告。 | 高考考生、家长、教育咨询师、需要构建决策辅助 Agent 的开发者。 |
 | `yyl-benchmark-breakdown` | 丢一个链接，自动拆解对标内容：四级回退取数、转写口播、抽视觉帧，输出可复用爆款公式、画面+口播逐段拆解、人设定位。 | 内容创作者做竞品分析、爆款视频拆解、建立对标库。 |
+| `yyl-disk-cleaner-cat` | 扫描 macOS 磁盘，打开像素风交互页确认删除，小猫实时打扫。 | 释放磁盘空间、清理开发者缓存、系统优化、网络诊断。 |
 
 ### 怎么选择
 
@@ -140,6 +152,8 @@ npx skills@latest add ttfake92-lab/skills
 如果你需要帮高考生做志愿决策，用 **college-application**。它关注的是科学依据的性格测评、基于官方来源的职业/专业/行业研究、招生数据分析，以及带完整来源链接和免责声明的可审计 HTML 报告。
 
 如果你想拆解对标账号或竞品内容，用 **yyl-benchmark-breakdown**。丢一个链接进去，它会自动取数、转写口播、抽视觉帧，输出可复用的爆款公式、画面+口播逐段拆解和人设定位，并自动存档到对标库。
+
+如果你的下一步是释放 macOS 磁盘空间、清理缓存或优化系统性能，用 **yyl-disk-cleaner-cat**。它关注的是安全删除（用户确认）、持续偏好学习和像素风交互体验。
 
 ### 推荐工作流
 
