@@ -13,7 +13,7 @@ A collection of skills for AI coding agents. Skills are packaged instructions th
 Ask your coding agent to run this command:
 
 ```bash
-npx skills@latest add ttfake92-lab/skills
+使用这个方式帮我安装skill npx skills@latest add ttfake92-lab/skills
 ```
 
 It will read this repository's skill manifest, show the available skills, and let the agent install the selected skills into supported agent environments.
