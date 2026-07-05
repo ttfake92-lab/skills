@@ -17,7 +17,9 @@ Claude Code 的对标账号拆解 skill。丢一个抖音 / 小红书 / B 站 / 
    ↓
 平台 + 粒度识别(抖音/B站/小红书... · 单条/账号)
    ↓
-取数(本地 Douyin_TikTok_Download_API → TikHub → Jina → 粘贴托底)
+准备证据包(scripts/prepare-assets.sh:下载 → 转写 → 抽帧/拼图)
+   ↓
+取数兜底(平台本地 API:Douyin/XHS → TikHub → Jina → 粘贴托底)
    ↓
 短视频:下载 → ffmpeg 抽音轨 → whisper 转写口播
               ↓
@@ -34,25 +36,38 @@ Claude Code 的对标账号拆解 skill。丢一个抖音 / 小红书 / B 站 / 
 # 1) 克隆到你的 skills 目录
 git clone <this-repo> ~/.claude/skills/yyl-benchmark-breakdown
 
-# 2) 装依赖(必需 3 项)— 详见 INSTALL.md
-docker pull evil0ctal/douyin_tiktok_download_api:latest
-docker run -d --name douyin_tiktok_api -p 80:80 evil0ctal/douyin_tiktok_download_api
-brew install ffmpeg openai-whisper          # macOS;Linux 看 INSTALL.md
-
-# 3) 自检
+# 2) 自检前置清单
 bash ~/.claude/skills/yyl-benchmark-breakdown/scripts/check-deps.sh
 
-# 4) 在 Claude Code 里说:「拆解这条:<链接>」
+# 3) 如果本地下载 API 缺失且 Docker 已启动,一键拉起
+bash ~/.claude/skills/yyl-benchmark-breakdown/scripts/bootstrap-local-apis.sh
+
+# 4) 再自检;通过后就可以拆
+bash ~/.claude/skills/yyl-benchmark-breakdown/scripts/check-deps.sh
+
+# 5) 在 Claude Code 里说:「拆解这条:<链接>」
 ```
+
+如果 Docker / ffmpeg / whisper 缺失,按 [INSTALL.md](INSTALL.md) 先补齐。TikHub 是可选项;需要拆 YouTube、快手、海外平台或想要备用 API 时再配置。
+
+## 一键准备证据包
+
+```bash
+bash scripts/prepare-assets.sh "<链接>"
+```
+
+这个脚本会完成机械流程:识别平台 → 调本地 API → 下载视频/图片 → 视频转写 → 抽帧/拼 contact sheet → 生成 `manifest.txt`。Claude 再基于证据包做判断和拆解。
 
 ## 依赖
 
 | 依赖 | 必需 | 用途 |
 |---|---|---|
+| [Docker](https://www.docker.com/products/docker-desktop/) | ✅ | 运行本地下载 API |
 | [Douyin_TikTok_Download_API](https://github.com/Evil0ctal/Douyin_TikTok_Download_API) | ✅ | 抖音/TikTok/B站取数主力,本地自托管 |
+| [XHS-Downloader](https://github.com/JoeanAmier/XHS-Downloader) | ✅ | 小红书图文/视频笔记取数和文件下载,本地自托管 |
 | [ffmpeg](https://ffmpeg.org/) | ✅ | 抽音轨 |
 | [openai-whisper](https://github.com/openai/whisper) | ✅ | 转写口播 |
-| [TikHub](https://tikhub.io/) | 可选 | 小红书 / YouTube / 海外平台 |
+| [TikHub](https://tikhub.io/) | 可选 | YouTube / 海外平台 / 小红书备用 |
 | [Jina Reader](https://jina.ai/reader/) | 可选 | 公众号 / 普通网页 / 图文兜底 |
 
 完整安装见 [INSTALL.md](INSTALL.md)。
@@ -65,7 +80,9 @@ yyl-benchmark-breakdown/
 ├── INSTALL.md                      # 依赖安装指南(人读)
 ├── README.md                       # 你正在看
 ├── scripts/
-│   └── check-deps.sh               # 一键自检依赖
+│   ├── bootstrap-local-apis.sh      # 拉起本地 Douyin/XHS 下载 API
+│   ├── check-deps.sh               # 一键自检依赖
+│   └── prepare-assets.sh           # 下载/转写/抽帧/拼图证据包工作流
 ├── references/
 │   ├── fetch-playbook.md           # 取数手册:四级回退 + 下载+转写+抽帧命令
 │   ├── breakdown-framework.md      # 通用四层 + 各平台特化(脚本/结构层)
@@ -89,8 +106,8 @@ yyl-benchmark-breakdown/
 第二阶段(规划中):
 - **长期对标账号库** —— 基于 `benchmarks/` 跨账号/跨时间汇总规律
 - **长视频转写优化** —— >15 分钟自动切片 + 并行;或接飞书妙记/通义听悟
-- **小红书自动化** —— 接 MediaCrawler 自托管或截图视觉读,绕过 TikHub 付费墙
+- **小红书账号级自动化** —— 接 MediaCrawler 自托管,做主页采样、评论和搜索
 
 ## License
 
-MIT。
+MIT。作者:鱼亦乐(@yuyile)。

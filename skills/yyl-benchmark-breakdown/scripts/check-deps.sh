@@ -16,16 +16,79 @@ echo ""
 ESSENTIAL_MISS=0
 OPTIONAL_MISS=0
 
+# ─── 必需:Docker(用于本地下载 API)───────────────────────────────
+echo "▎Docker(本地下载 API 运行环境)"
+DOCKER_READY=0
+if command -v docker >/dev/null 2>&1; then
+  ok "docker CLI 已安装"
+  if docker info >/dev/null 2>&1; then
+    ok "Docker daemon 已启动"
+    DOCKER_READY=1
+  else
+    miss "Docker daemon 未启动"
+    hint "打开 Docker Desktop,等状态变成 Running,再重跑自检"
+    ESSENTIAL_MISS=$((ESSENTIAL_MISS+1))
+  fi
+else
+  miss "Docker 未安装"
+  hint "macOS:  brew install --cask docker"
+  hint "Windows: https://www.docker.com/products/docker-desktop/"
+  hint "Linux:   https://docs.docker.com/engine/install/"
+  ESSENTIAL_MISS=$((ESSENTIAL_MISS+1))
+fi
+echo ""
+
 # ─── 必需:本地 Douyin_TikTok_Download_API ──────────────────────────
 echo "▎本地下载 API(主力:抖音 / TikTok / Bilibili)"
 if curl -sSf -m 3 "${DOUYIN_API_BASE:-http://localhost:80}/docs" >/dev/null 2>&1; then
   ok "本地 API 可达:${DOUYIN_API_BASE:-http://localhost:80}"
 else
   miss "本地 API 不可达(${DOUYIN_API_BASE:-http://localhost:80})"
-  hint "Docker 部署(推荐):"
-  hint "  docker pull evil0ctal/douyin_tiktok_download_api:latest"
-  hint "  docker run -d --name douyin_tiktok_api -p 80:80 evil0ctal/douyin_tiktok_download_api"
+  if [[ $DOCKER_READY -eq 1 ]]; then
+    hint "运行: bash scripts/bootstrap-local-apis.sh"
+  else
+    hint "先安装并启动 Docker,再运行: bash scripts/bootstrap-local-apis.sh"
+  fi
   hint "详见 INSTALL.md 或 https://github.com/Evil0ctal/Douyin_TikTok_Download_API"
+  ESSENTIAL_MISS=$((ESSENTIAL_MISS+1))
+fi
+echo ""
+
+# ─── 必需:本地 XHS-Downloader API ───────────────────────────────
+echo "▎XHS-Downloader API(主力:小红书)"
+XHS_BASE="${XHS_API_BASE:-http://127.0.0.1:5556}"
+XHS_CONTAINER="${XHS_CONTAINER_NAME:-xhs-downloader-api}"
+if [[ -z "${XHS_DOWNLOAD_DIR:-}" ]] && command -v docker >/dev/null 2>&1; then
+  XHS_VOLUME_DIR="$(docker inspect -f '{{range .Mounts}}{{if eq .Destination "/app/Volume"}}{{.Source}}{{end}}{{end}}' "$XHS_CONTAINER" 2>/dev/null || true)"
+  if [[ -n "$XHS_VOLUME_DIR" ]]; then
+    XHS_DOWNLOAD_DIR="$XHS_VOLUME_DIR/Download"
+  else
+    XHS_DOWNLOAD_DIR="$HOME/.xhs-downloader/Volume/Download"
+  fi
+else
+  XHS_DOWNLOAD_DIR="${XHS_DOWNLOAD_DIR:-$HOME/.xhs-downloader/Volume/Download}"
+fi
+if curl -sSf -m 3 "$XHS_BASE/docs" >/dev/null 2>&1; then
+  ok "XHS API 可达:$XHS_BASE"
+  if docker ps --filter name="$XHS_CONTAINER" --format '{{.Names}}' 2>/dev/null | grep -q "^${XHS_CONTAINER}$"; then
+    ok "容器运行中:$XHS_CONTAINER"
+  else
+    warn "API 可达,但没在 docker ps 里看到 $XHS_CONTAINER(可能不是 Docker 启动,可忽略)"
+  fi
+  if [[ -d "$XHS_DOWNLOAD_DIR" ]]; then
+    ok "XHS 下载目录可读:$XHS_DOWNLOAD_DIR"
+  else
+    warn "XHS 下载目录未找到:$XHS_DOWNLOAD_DIR"
+    hint "如使用自定义挂载,设置: export XHS_DOWNLOAD_DIR=/path/to/Volume/Download"
+  fi
+else
+  miss "XHS API 不可达($XHS_BASE)"
+  if [[ $DOCKER_READY -eq 1 ]]; then
+    hint "运行: bash scripts/bootstrap-local-apis.sh"
+  else
+    hint "先安装并启动 Docker,再运行: bash scripts/bootstrap-local-apis.sh"
+  fi
+  hint "如端口不同,设置: export XHS_API_BASE=http://127.0.0.1:<port>"
   ESSENTIAL_MISS=$((ESSENTIAL_MISS+1))
 fi
 echo ""
@@ -54,21 +117,21 @@ else
 fi
 echo ""
 
-# ─── 可选:TikHub(小红书 / YouTube / 海外平台备用)─────────────────
-echo "▎TikHub(可选,小红书/YouTube/海外平台备用)"
+# ─── 可选:TikHub(YouTube / 海外平台 / 小红书备用)─────────────────
+echo "▎TikHub(可选,YouTube/海外平台/小红书备用)"
 if command -v tikhub >/dev/null 2>&1; then
   ok "tikhub CLI 已装"
   if [[ -n "${TIKHUB_API_KEY:-}" ]]; then
     ok "TIKHUB_API_KEY 环境变量已设(不打印 key 本身)"
   else
-    warn "TIKHUB_API_KEY 未设 → 拆小红书时会回退到 Jina 或粘贴"
+    warn "TIKHUB_API_KEY 未设 → YouTube/海外平台会回退到 Jina 或粘贴"
     hint "申请: https://user.tikhub.io/  申请后:"
     hint "  echo 'export TIKHUB_API_KEY=<你的key>' >> ~/.zshrc && source ~/.zshrc"
     OPTIONAL_MISS=$((OPTIONAL_MISS+1))
   fi
 else
   warn "tikhub CLI 未装(可选)"
-  hint "如需拆小红书:pip install 'tikhub[cli]'"
+  hint "如需 TikHub 备用:pip install 'tikhub[cli]'"
   OPTIONAL_MISS=$((OPTIONAL_MISS+1))
 fi
 echo ""
@@ -95,6 +158,8 @@ if [[ $ESSENTIAL_MISS -eq 0 ]]; then
   exit 0
 else
   echo -e "${RED}━━━ 必需依赖缺 $ESSENTIAL_MISS 项,按上面 → 提示先装 ━━━${NC}"
+  echo "本地 API 可用前不要开始拆解。先运行:"
+  echo "  bash scripts/bootstrap-local-apis.sh"
   echo "详细安装见 INSTALL.md"
   exit 1
 fi

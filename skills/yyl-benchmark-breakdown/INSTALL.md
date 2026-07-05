@@ -2,7 +2,7 @@
 
 这个 skill 依赖几个外部服务和工具。**必需的不装拆解跑不起来,可选的没有也能用主流程。**
 
-> **快速自检**:克隆下来先跑 `bash scripts/check-deps.sh`,看缺什么。
+> **快速自检**:克隆下来先跑 `bash scripts/check-deps.sh`,看缺什么。必需依赖没过时,不要开始拆解。
 
 ---
 
@@ -10,11 +10,56 @@
 
 | 依赖 | 必需? | 用途 | 大小/费用 |
 |---|---|---|---|
+| Docker | **必需** | 运行本地 Douyin / XHS 下载 API | Docker Desktop,免费 |
 | Douyin_TikTok_Download_API(本地) | **必需** | 主力取数:抖音 / TikTok / Bilibili 元数据 + 下载地址 | Docker 镜像 ~500MB,免费 |
+| XHS-Downloader API(本地) | **必需** | 主力取数:小红书图文/视频笔记详情 + 文件下载 | Docker/本地服务,免费 |
 | ffmpeg | **必需** | 从视频抽音轨 | ~100MB,免费 |
 | openai-whisper | **必需** | 把音轨转写成文字(脚本拆解的核心) | 命令行 ~50MB + 首跑下载 medium 模型 ~1.5GB,免费 |
-| TikHub | **可选** | 小红书 / YouTube / 海外平台备用 API | 注册免费,部分端点付费,小红书全系付费 |
+| TikHub | **可选** | YouTube / 海外平台 / 小红书备用 API | 注册免费,部分端点付费,小红书全系付费 |
 | Jina Reader | **可选** | 公众号 / 普通网页 / 图文兜底 | 免费,20 次/分钟匿名;注册免费 key 200 次/分钟 |
+
+---
+
+## 0. 前置清单与一键启动
+
+### 先跑自检
+
+```bash
+bash scripts/check-deps.sh
+```
+
+自检通过才进入拆解。缺项时按输出处理:
+- Docker 未安装/未启动:先安装并打开 Docker Desktop。
+- 本地 Douyin / XHS API 不可达:运行 `bash scripts/bootstrap-local-apis.sh`。
+- ffmpeg / whisper 缺失:按本文第 3 节安装。
+
+### 一键拉起本地下载 API
+
+Docker 已安装并启动后:
+
+```bash
+bash scripts/bootstrap-local-apis.sh
+bash scripts/check-deps.sh
+```
+
+这个脚本会:
+- 拉起 Douyin_TikTok_Download_API,默认 `http://localhost:80`。
+- 拉起 XHS-Downloader API,默认 `http://127.0.0.1:5556`。
+- 为 XHS-Downloader 准备本地下载目录,默认 `$HOME/.xhs-downloader/Volume/Download`。
+
+### TikHub 选择
+
+TikHub 不是必需项。首次 setup 时你可以二选一:
+- **现在配置**:适合要拆 YouTube、快手、海外平台,或本地 API 失败时想要付费兜底。
+- **先跳过**:抖音 / TikTok / B站 / 小红书单条仍然可以用本地 API 跑完整流程。
+
+配置方式:
+
+```bash
+pip install "tikhub[cli]"
+export TIKHUB_API_KEY=<你的key>
+tikhub user info
+```
 
 ---
 
@@ -50,7 +95,78 @@ export DOUYIN_API_BASE=http://localhost:8080
 
 ---
 
-## 2. ffmpeg + whisper(必需,转写)
+## 2. XHS-Downloader API(必需)
+
+小红书图文/视频笔记的**主力下载源**。为了让 workflow 能自动找到下载文件,推荐用本地目录挂载 Docker Volume。
+
+默认约定:
+- 容器名称:`${XHS_CONTAINER_NAME:-xhs-downloader-api}`
+- API 地址:`${XHS_API_BASE:-http://127.0.0.1:5556}`
+- 下载目录:`${XHS_DOWNLOAD_DIR:-$HOME/.xhs-downloader/Volume/Download}`
+
+### Docker 部署(推荐)
+
+```bash
+mkdir -p "$HOME/.xhs-downloader/Volume"
+docker pull joeanamier/xhs-downloader
+docker run -d --name xhs-downloader-api -p 5556:5556 \
+  -v "$HOME/.xhs-downloader/Volume:/app/Volume" \
+  joeanamier/xhs-downloader python main.py api
+```
+
+也可以直接运行:
+
+```bash
+bash scripts/bootstrap-local-apis.sh
+```
+
+如果端口或路径不同,用环境变量告诉 skill:
+```bash
+export XHS_API_BASE=http://127.0.0.1:5556
+export XHS_DOWNLOAD_DIR="$HOME/.xhs-downloader/Volume/Download"
+export XHS_CONTAINER_NAME=xhs-downloader-api
+```
+
+### 自检
+
+```bash
+curl -sSf "${XHS_API_BASE:-http://127.0.0.1:5556}/docs" >/dev/null && echo "XHS API OK"
+test -d "${XHS_DOWNLOAD_DIR:-$HOME/.xhs-downloader/Volume/Download}" && echo "XHS download dir OK"
+docker ps --filter name="${XHS_CONTAINER_NAME:-xhs-downloader-api}"
+```
+
+### API 调用
+
+```bash
+curl -sS -X POST "${XHS_API_BASE:-http://127.0.0.1:5556}/xhs/detail" \
+  -H "Content-Type: application/json" \
+  -d '{"url":"<小红书链接>","download":true,"skip":false}' \
+  -o /tmp/bm/xhs_detail.json
+```
+
+完整证据包流程:
+```bash
+bash scripts/prepare-assets.sh "<小红书链接>"
+```
+
+### 管理命令
+
+```bash
+docker start "${XHS_CONTAINER_NAME:-xhs-downloader-api}"
+docker restart "${XHS_CONTAINER_NAME:-xhs-downloader-api}"
+docker logs "${XHS_CONTAINER_NAME:-xhs-downloader-api}"
+```
+
+### Cookie / 风控
+
+- 配置文件:`${XHS_DOWNLOAD_DIR%/Download}/settings.json`
+- Cookie 不是必需,但遇到风控、空数据、低清或下载失败时,先更新小红书网页版 Cookie,再 `docker restart "${XHS_CONTAINER_NAME:-xhs-downloader-api}"`。
+- 不要把 Cookie 写进 skill、报告、benchmarks 或命令历史。
+- 旧分享链接可能失效;让用户从小红书 App 重新复制最新链接通常更快。
+
+---
+
+## 3. ffmpeg + whisper(必需,转写)
 
 短视频拆解必须有口播。没这俩你只能看 caption 和数据,做不了脚本层拆解。
 
@@ -79,9 +195,9 @@ sudo dnf install ffmpeg && pip install -U openai-whisper
 
 ---
 
-## 3. TikHub(可选)
+## 4. TikHub(可选)
 
-只在拆**小红书 / YouTube / 海外平台**时需要。
+只在拆 **YouTube / 海外平台 / 小红书本地 API 失败** 时需要。
 
 ### 注册
 https://user.tikhub.io/ → 注册 → Dashboard 拿 API Key
@@ -106,7 +222,7 @@ tikhub user info                                     # 看额度
 
 ---
 
-## 4. Jina Reader(可选,纯免费)
+## 5. Jina Reader(可选,纯免费)
 
 公众号、普通网页、图文兜底。**无 key 也能直接用,curl 一下就行。**
 
@@ -145,3 +261,6 @@ A: 项目也支持 pip 模式(`pip install douyin-tiktok-scraper` 作为库),或
 
 **Q: 完全不想装本地 API,能拆抖音吗?**
 A: 可以,但要付费走 TikHub 的抖音端点(或用演示站 `api.douyin.wtf`,不保证可用)。把 skill 里 `localhost:80` 全部换成相应 base 即可。
+
+**Q: 小红书 API 能打开 docs,但下载失败?**
+A: 先用小红书 App 重新复制链接再试;仍失败就更新 `${XHS_DOWNLOAD_DIR%/Download}/settings.json` 的 Cookie,然后重启 XHS-Downloader 容器。不要把 Cookie 发进对话或写进报告。
