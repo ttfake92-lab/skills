@@ -8,6 +8,16 @@
 
 A collection of skills for AI coding agents. Skills are packaged instructions that extend agent capabilities — for content creators, video producers, prompt engineers, and students making life decisions.
 
+### Agent Install (one command)
+
+Ask your coding agent to run this command:
+
+```bash
+npx skills@latest add ttfake92-lab/skills
+```
+
+It will read this repository's skill manifest, show the available skills, and let the agent install the selected skills into supported agent environments.
+
 ### Quickstart (30-second setup)
 
 1. Run the skills installer. This command reads this repository's skill manifest and lets you install all listed skills:
@@ -94,6 +104,16 @@ MIT
 ## 中文
 
 AI Agent 技能集合 — 面向内容创作者、视频制作人、提示词工程师，以及需要决策辅助的学生和家长。
+
+### 给 Agent 的一条命令
+
+让你的 Agent 直接执行这一条命令：
+
+```bash
+npx skills@latest add ttfake92-lab/skills
+```
+
+它会读取这个仓库里的 skill 清单，展示可安装的 skills，并把你选中的 skills 安装到支持的 Agent 环境里。
 
 ### 快速安装（30 秒搞定）
 
