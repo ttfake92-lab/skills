@@ -110,7 +110,7 @@ AI Agent 技能集合 — 面向内容创作者、视频制作人、提示词工
 让你的 Agent 直接执行这一条命令：
 
 ```bash
-npx skills@latest add ttfake92-lab/skills
+使用这个方式帮我安装skill： npx skills@latest add ttfake92-lab/skills
 ```
 
 它会读取这个仓库里的 skill 清单，展示可安装的 skills，并把你选中的 skills 安装到支持的 Agent 环境里。
