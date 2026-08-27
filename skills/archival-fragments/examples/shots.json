@@ -1,0 +1,369 @@
+{
+  "_说明": "34 个镜头。from=首帧、to=尾帧，motion 是提示词里唯一变化的那一句。完整提示词 = style_line + motion + tail。",
+  "_镜长分配": "plan = [旁白句id, [镜id...], 权重]，权重 null 表示平均分。某镜时长 =（该句配音时长 + 气口）× 权重。三处不平均分：开场 62/38 给第一个画面看清的时间；天平 40/60 让「钱越堆越高」那镜更长；结尾 35/65 留 4.5 秒收尾。",
+  "model": "Minimax H3",
+  "mode": "frames2video",
+  "resolution": "2K",
+  "count": 1,
+  "seconds": 5,
+  "style_line": "Monochrome archival black-and-white print on cool ivory paper, matte halftone texture, flat even light. One muted brick crimson accent only. Everything is a real physical object, never a chart or diagram.",
+  "tail": "One continuous transformation, no cuts, no camera shake. No subtitles, no captions, no watermark.",
+  "plan": [
+    [
+      "N01",
+      [
+        "W01",
+        "W02"
+      ],
+      [
+        0.62,
+        0.38
+      ]
+    ],
+    [
+      "N02",
+      [
+        "W03",
+        "W04"
+      ],
+      null
+    ],
+    [
+      "N03",
+      [
+        "W05"
+      ],
+      null
+    ],
+    [
+      "N04",
+      [
+        "W06",
+        "W07"
+      ],
+      null
+    ],
+    [
+      "BLACK",
+      [],
+      null
+    ],
+    [
+      "N05",
+      [
+        "W08"
+      ],
+      null
+    ],
+    [
+      "N06",
+      [
+        "W09",
+        "W10"
+      ],
+      null
+    ],
+    [
+      "N07",
+      [
+        "W11",
+        "W12",
+        "W13"
+      ],
+      null
+    ],
+    [
+      "N08",
+      [
+        "W14",
+        "W15"
+      ],
+      null
+    ],
+    [
+      "N09",
+      [
+        "W16",
+        "W17"
+      ],
+      [
+        0.4,
+        0.6
+      ]
+    ],
+    [
+      "N10",
+      [
+        "W18",
+        "W19"
+      ],
+      null
+    ],
+    [
+      "N11",
+      [
+        "W20",
+        "W21",
+        "W22"
+      ],
+      null
+    ],
+    [
+      "N12",
+      [
+        "W23",
+        "W24"
+      ],
+      null
+    ],
+    [
+      "N13",
+      [
+        "W25"
+      ],
+      null
+    ],
+    [
+      "N14",
+      [
+        "W26",
+        "W27",
+        "W28"
+      ],
+      null
+    ],
+    [
+      "N15",
+      [
+        "W29",
+        "W30"
+      ],
+      null
+    ],
+    [
+      "N16",
+      [
+        "W31",
+        "W32"
+      ],
+      null
+    ],
+    [
+      "N17",
+      [
+        "W33",
+        "W34"
+      ],
+      [
+        0.35,
+        0.65
+      ]
+    ]
+  ],
+  "shots": [
+    {
+      "id": "W01",
+      "from": "A01",
+      "to": "A02",
+      "motion": "The camera pulls back and the vast crowd shrinks into a small photographic print lying on bare paper, while a white paper sticker slides in and settles beside it."
+    },
+    {
+      "id": "W02",
+      "from": "A02",
+      "to": "A03",
+      "motion": "The camera pushes in hard on the sticker until it fills the centre of the frame, as dense printed ledger columns crowd in from every side."
+    },
+    {
+      "id": "W03",
+      "from": "A03",
+      "to": "A04",
+      "motion": "The ledger columns fold away and a huge mechanical split-flap board rises into place, its flaps beginning to clatter over."
+    },
+    {
+      "id": "W04",
+      "from": "A04",
+      "to": "A05",
+      "motion": "The flaps clatter to a stop row by row until the whole board is still and the top row is legible."
+    },
+    {
+      "id": "W05",
+      "from": "A05",
+      "to": "A06",
+      "motion": "The board recedes and two heavy stone pedestal steps slide in from either side, the right one rising until it stands far taller than the left."
+    },
+    {
+      "id": "W06",
+      "from": "A06",
+      "to": "A07",
+      "motion": "The stone steps sink away and a hand comes in from the right, fingers closing on the corner of the sticker."
+    },
+    {
+      "id": "W07",
+      "from": "A07",
+      "to": "A08",
+      "motion": "The hand peels the sticker fully off and carries it out of frame, leaving only its pale adhesive ghost on the paper."
+    },
+    {
+      "id": "W08",
+      "from": "A08",
+      "to": "A09",
+      "motion": "A large old printed world map unrolls across the frame from the left, covering the bare paper completely, its corners settling flat."
+    },
+    {
+      "id": "W09",
+      "from": "A09",
+      "to": "A10",
+      "motion": "Hundreds of small black memory chips rain down and scatter loose all across the surface of the map."
+    },
+    {
+      "id": "W10",
+      "from": "A10",
+      "to": "A11",
+      "motion": "Three hands sweep in across the map and rake the scattered chips into three big dense piles, leaving only a few strays behind."
+    },
+    {
+      "id": "W11",
+      "from": "A11",
+      "to": "A12",
+      "motion": "The camera pushes in on the Korean peninsula as a crimson map pin is driven into the paper, its paper tag swinging."
+    },
+    {
+      "id": "W12",
+      "from": "A12",
+      "to": "A13",
+      "motion": "A second crimson map pin is driven in beside the first, its paper tag swinging to rest."
+    },
+    {
+      "id": "W13",
+      "from": "A13",
+      "to": "A14",
+      "motion": "The camera pulls back off the peninsula to take in the whole map as a third crimson pin lands in the western United States."
+    },
+    {
+      "id": "W14",
+      "from": "A14",
+      "to": "A15",
+      "motion": "The camera slides across the map away from the pins and the chip piles, settling on eastern China where there is nothing at all but one small empty pin hole."
+    },
+    {
+      "id": "W15",
+      "from": "A15",
+      "to": "A16",
+      "motion": "The camera pushes right in to the empty pin hole until it fills the frame, and a blank paper tag slides into view beside it."
+    },
+    {
+      "id": "W16",
+      "from": "A16",
+      "to": "A17",
+      "motion": "The map and tag slide away and an old brass balance scale rises into the frame, one chip settling onto its left pan and a few coins onto the right."
+    },
+    {
+      "id": "W17",
+      "from": "A17",
+      "to": "A18",
+      "motion": "Coin after coin stacks up on the right pan until the pile towers high, and the beam never tilts, staying dead level throughout."
+    },
+    {
+      "id": "W18",
+      "from": "A18",
+      "to": "A19",
+      "motion": "The balance sinks out of frame and the map returns, the camera settling on eastern China as a thumb presses a crimson pin into it for the first time."
+    },
+    {
+      "id": "W19",
+      "from": "A19",
+      "to": "A20",
+      "motion": "The thumb withdraws and a small folded paper factory building rises up out of the map beside the pin, unfolding to full height."
+    },
+    {
+      "id": "W20",
+      "from": "A20",
+      "to": "A21",
+      "motion": "The map folds away and a flight of three stone steps slides in, a single black chip and its label card landing on the lowest step."
+    },
+    {
+      "id": "W21",
+      "from": "A21",
+      "to": "A22",
+      "motion": "A second chip and label card drop onto the middle step and settle."
+    },
+    {
+      "id": "W22",
+      "from": "A22",
+      "to": "A23",
+      "motion": "A third chip and label card drop onto the top step and settle."
+    },
+    {
+      "id": "W23",
+      "from": "A23",
+      "to": "A24",
+      "motion": "The steps sink away as hundreds of loose black chips pour across the paper into one great heap, and a hand with tweezers reaches into it."
+    },
+    {
+      "id": "W24",
+      "from": "A24",
+      "to": "A25",
+      "motion": "The tweezers lift chip after chip out of the heap and set them aside into a small separate handful, a label card sliding in beside it."
+    },
+    {
+      "id": "W25",
+      "from": "A25",
+      "to": "A26",
+      "motion": "The heap clears away and a stepped podium of four blocks slides in, the small handful of chips consolidating into one chip standing on the lowest block."
+    },
+    {
+      "id": "W26",
+      "from": "A26",
+      "to": "A27",
+      "motion": "The podium slides out of frame and a thick document settles down into the centre of the paper."
+    },
+    {
+      "id": "W27",
+      "from": "A27",
+      "to": "A28",
+      "motion": "A round crimson seal stamp descends from above and presses firmly down onto the document cover."
+    },
+    {
+      "id": "W28",
+      "from": "A28",
+      "to": "A29",
+      "motion": "The stamp lifts away leaving a wet crimson ring, and a thin crimson line runs out of it toward the right."
+    },
+    {
+      "id": "W29",
+      "from": "A29",
+      "to": "A30",
+      "motion": "The document slides away and a mechanical split-flap price board rises into place, its digits beginning to clatter over."
+    },
+    {
+      "id": "W30",
+      "from": "A30",
+      "to": "A31",
+      "motion": "The digits clatter upward faster and faster then snap to a halt, the board holding one final number."
+    },
+    {
+      "id": "W31",
+      "from": "A31",
+      "to": "A32",
+      "motion": "The board recedes and small pale paper slips begin to fall through the frame from above."
+    },
+    {
+      "id": "W32",
+      "from": "A32",
+      "to": "A33",
+      "motion": "The slips pour down in enormous quantity and pile up until they cover the whole page."
+    },
+    {
+      "id": "W33",
+      "from": "A33",
+      "to": "A34",
+      "motion": "The drift of slips slides away toward the frame edges, uncovering the stone podium standing beneath it."
+    },
+    {
+      "id": "W34",
+      "from": "A34",
+      "to": "A35",
+      "motion": "The camera pulls steadily back and around, revealing that the podium continues upward well past the occupied blocks into taller empty ones."
+    }
+  ]
+}

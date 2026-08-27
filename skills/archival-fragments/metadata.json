@@ -1,0 +1,11 @@
+{
+  "version": "2.0.0",
+  "author": "鱼亦乐 (yuyile)",
+  "date": "August 2026",
+  "abstract": "End-to-end short-film pipeline in the Archival Fragments visual style — ivory paper, monochrome print, one muted crimson accent. Turns an idea or a script into a finished film: installs and verifies dependencies (ffmpeg, LibTV CLI, Fish Audio), writes the script, breaks it into story / visuals / rhythm, designs a chained keyframe sequence, drives MiniMax H3 first-last-frame generation shot by shot, synthesizes narration, and assembles with ffmpeg. Enforces three hard constraints: every shot needs a distinct keyframe, the shot table must be reviewed before generation, and concrete universal symbols beat abstract graphics. Validated on a 67.3s / 34-shot film, all shots first-pass.",
+  "references": [
+    "https://www.liblib.art",
+    "https://fish.audio",
+    "https://ffmpeg.org"
+  ]
+}

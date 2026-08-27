@@ -39,6 +39,7 @@ npx skills@latest add ttfake92-lab/skills
 - **[yyl-remotion-video](./skills/yyl-remotion-video/SKILL.md)** — Build 16:9 Remotion video projects from scripts, articles, notes, or outlines. Creates frame-driven React/TypeScript animations, estimates duration without synthesizing audio, renders still checks, and exports mp4 with built-in themes plus a dark 3D luxury gallery template.
 - **[yyl-video-thumbnail](./skills/yyl-video-thumbnail/SKILL.md)** — Generate high-CTR video thumbnails for Bilibili, YouTube, and Douyin/TikTok. Uses pop-out technique: darkened original photo as base, yellow-highlighted title text, and cutout subject overlaid at full brightness. Ships with three templates (popout poster, UI command panel, film-edit style) and auto-generates 16:9 / 4:3 / 3:4 ratios.
 - **[yyl-benchmark-breakdown](./skills/yyl-benchmark-breakdown/SKILL.md)** — Teardown competitor content from any link. Auto-detects platform (Douyin/XHS/Bilibili/YouTube/WeChat) and scope (single post or entire account), fetches content via 4-level fallback, transcribes audio, extracts visual frames, then outputs a 3-piece report: reusable formula, frame-by-frame breakdown with visual+audio alignment, and persona/positioning analysis. Auto-archives to benchmarks/ for long-term reference library.
+- **[archival-fragments](./skills/archival-fragments/SKILL.md)** — End-to-end short-film pipeline in the Archival Fragments visual style (ivory paper, monochrome print, one muted crimson accent). Takes an idea or script, installs and verifies dependencies (ffmpeg / LibTV CLI / Fish Audio), writes the script, breaks it into story, visuals and rhythm, designs a chained keyframe sequence, drives MiniMax H3 first-last-frame generation shot by shot, synthesizes narration, and assembles with ffmpeg. Validated on a 67.3s / 34-shot film.
 
 #### Education & Decision
 
@@ -51,11 +52,11 @@ npx skills@latest add ttfake92-lab/skills
 
 ### New Skill
 
-- `macos-migration` has been added — a two-phase macOS system migration assistant (collect on the old Mac, restore on the new one). Now discoverable via `npx skills@latest add ttfake92-lab/skills`.
+- `archival-fragments` has been added — an end-to-end short-film pipeline that goes from an idea to a finished, narrated video in the Archival Fragments visual style. Now discoverable via `npx skills@latest add ttfake92-lab/skills`.
 
 ### Skills Overview
 
-This repository includes eight skills — five for content creation, one for education/decision support, and two for system tools:
+This repository includes nine skills — six for content creation, one for education/decision support, and two for system tools:
 
 | Skill | What It Does | Best For |
 |------|--------------|----------|
@@ -67,6 +68,7 @@ This repository includes eight skills — five for content creation, one for edu
 | `yyl-benchmark-breakdown` | Teardown competitor content from any link: auto-detect platform, fetch via 4-level fallback, transcribe audio, extract visual frames, output reusable formula + frame-by-frame breakdown + persona analysis. | Content creators doing competitive research, viral video analysis, benchmark building. |
 | `yyl-disk-cleaner-cat` | Scans macOS disk, presents interactive pixel-art cleanup page with real-time cat animation. | Freeing disk space, clearing developer caches, system optimization, network diagnostics. |
 | `macos-migration` | Two-phase macOS migration: scans the old Mac into a JSON manifest, then restores apps, packages, and configs on the new Mac, with a manual-handling diff report. | Getting a new Mac, reinstalling macOS, restoring from Time Machine, moving a full dev setup. |
+| `archival-fragments` | Idea or script to finished film: verifies deps, breaks the script into story/visuals/rhythm, chains keyframes, generates shot by shot on MiniMax H3, narrates and assembles. | Explainer shorts, news commentary, paper-collage editorial style, first-last-frame workflows. |
 
 ### How To Choose
 
@@ -83,6 +85,8 @@ Use **college-application** when a student needs structured help choosing majors
 Use **yyl-benchmark-breakdown** when you want to learn from a competitor's content. Drop a link and get a teardown: why it works, what formula you can steal, frame-by-frame visual+audio breakdown, and their persona/positioning strategy. Auto-archives everything for your long-term benchmark library.
 
 Use **yyl-disk-cleaner-cat** when you need to free up macOS disk space, clear developer caches, or optimize system performance. It focuses on safe deletion with user confirmation, persistent preference learning, and a unique pixel-art interactive experience.
+
+Use **archival-fragments** when you want a finished short film, not just prompts. It handles the whole chain — dependency checks, script writing, story/visual/rhythm breakdown, chained keyframes, shot-by-shot generation on MiniMax H3, narration, and ffmpeg assembly. Its hard constraints exist to prevent the two failure modes that actually happen: every shot looking identical, and abstract graphics the audience cannot decode.
 
 Use **macos-migration** when you're setting up a new Mac or reinstalling macOS. It scans your old system into a JSON manifest, then on the new machine batch-installs Homebrew packages and restores configs and Library data from Time Machine, never overwriting existing files and reporting everything that needs manual handling.
 
@@ -136,6 +140,7 @@ npx skills@latest add ttfake92-lab/skills
 - **[yyl-remotion-video](./skills/yyl-remotion-video/SKILL.md)** — Remotion 视频制作。把口播稿、文章、资料摘要或明确大纲做成 16:9、逐帧可控、可直接导出 mp4 的视频项目。内置三套主题和深色 3D 高端画廊模板，不在流程内合成音频，适合后期统一配音。
 - **[yyl-video-thumbnail](./skills/yyl-video-thumbnail/SKILL.md)** — 视频封面生成。用 pop-out 技法做 B站/YouTube/抖音高点击率封面：底层压暗原图保留环境、中层黄色关键词标题、顶层全亮抠图人物原位叠回。支持 popout 深色海报、ui 命令面板、paper 胶片编辑三套模板，自动输出 16:9/4:3/3:4 三种比例。
 - **[yyl-benchmark-breakdown](./skills/yyl-benchmark-breakdown/SKILL.md)** — 对标账号拆解。丢一个链接，自动识别平台（抖音/小红书/B站/YouTube/公众号）和粒度（单条或整个账号），通过四级回退取数、转写口播、抽视觉帧，输出三件套：可复用爆款公式、画面+口播逐段拆解（时间轴对齐）、人设与内容定位。自动存档到 benchmarks/ 沉淀成对标库。
+- **[archival-fragments](./skills/archival-fragments/SKILL.md)** — 档案剪贴风格短片全流程。给一个想法或一份文案，从空文件夹开始：装依赖并逐项验证（ffmpeg / LibTV CLI / Fish Audio，含真实发一次 TTS 测试）、写文案、拆故事拆画面拆节奏、设计串联关键帧链、用 MiniMax H3 首尾帧逐镜生成、Fish Audio 配音、ffmpeg 变速拼片成片。三条硬约束：每镜画面必须不同、逐镜表须先给用户过目、具象符号优先于抽象图形。已用一条 67.3 秒 / 34 镜成片验证。
 
 #### 教育与决策
 
@@ -148,11 +153,11 @@ npx skills@latest add ttfake92-lab/skills
 
 ### 新增说明
 
-- 已新增 `macos-migration`（macOS 系统迁移助手，旧系统采集 + 新系统还原两阶段），并加入仓库 skill 清单。现在使用 `npx skills@latest add ttfake92-lab/skills` 时，可以和已有 skill 一起被发现与安装。
+- 已新增 `archival-fragments`（档案剪贴风格短片全流程：从想法到带配音的成片），并加入仓库 skill 清单。现在使用 `npx skills@latest add ttfake92-lab/skills` 时，可以和已有 skill 一起被发现与安装。
 
 ### Skills 概览
 
-这个仓库目前有 8 个 skills：5 个内容创作类 + 1 个教育决策类 + 2 个系统工具类。
+这个仓库目前有 9 个 skills：6 个内容创作类 + 1 个教育决策类 + 2 个系统工具类。
 
 | Skill | 做什么 | 适合场景 |
 |------|--------|----------|
@@ -164,6 +169,7 @@ npx skills@latest add ttfake92-lab/skills
 | `yyl-benchmark-breakdown` | 丢一个链接，自动拆解对标内容：四级回退取数、转写口播、抽视觉帧，输出可复用爆款公式、画面+口播逐段拆解、人设定位。 | 内容创作者做竞品分析、爆款视频拆解、建立对标库。 |
 | `yyl-disk-cleaner-cat` | 扫描 macOS 磁盘，打开像素风交互页确认删除，小猫实时打扫。 | 释放磁盘空间、清理开发者缓存、系统优化、网络诊断。 |
 | `macos-migration` | 两阶段 macOS 迁移：旧系统扫描成 JSON 清单，新系统还原软件、包和配置，并输出需手动处理的差异报告。 | 换新 Mac、重装系统、从 Time Machine 恢复、迁移整套开发环境。 |
+| `archival-fragments` | 从想法或文案到成片：验环境、拆故事拆画面拆节奏、串联关键帧、H3 逐镜生成、配音、变速拼片。 | 解说短片、新闻评论、纸质拼贴编辑风格、首尾帧工作流。 |
 
 ### 怎么选择
 
@@ -180,6 +186,8 @@ npx skills@latest add ttfake92-lab/skills
 如果你想拆解对标账号或竞品内容，用 **yyl-benchmark-breakdown**。丢一个链接进去，它会自动取数、转写口播、抽视觉帧，输出可复用的爆款公式、画面+口播逐段拆解和人设定位，并自动存档到对标库。
 
 如果你的下一步是释放 macOS 磁盘空间、清理缓存或优化系统性能，用 **yyl-disk-cleaner-cat**。它关注的是安全删除（用户确认）、持续偏好学习和像素风交互体验。
+
+如果你要的是一条做完的片子而不只是提示词，用 **archival-fragments**。它管的是全链路：验环境、写文案、拆故事拆画面拆节奏、串联关键帧、用 MiniMax H3 逐镜生成、配音、ffmpeg 拼片。它的三条硬约束是为了防两个真实发生过的翻车：整片镜头长得一模一样，以及观众看不懂的抽象图形。
 
 如果你在装新 Mac 或重装系统，用 **macos-migration**。它先把旧系统扫描成一份 JSON 清单，再在新机器上批量安装 Homebrew 软件、从 Time Machine 恢复配置和 Library 数据，全程不覆盖已有文件，并把所有需手动处理的项目列成差异报告。
 
