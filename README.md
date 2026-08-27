@@ -10,10 +10,10 @@ A collection of skills for AI coding agents. Skills are packaged instructions th
 
 ### Agent Install (one command)
 
-Ask your coding agent to run this command:
+Ask your coding agent to install the skills for you — give it this command:
 
 ```bash
-使用这个方式帮我安装skill npx skills@latest add ttfake92-lab/skills
+npx skills@latest add ttfake92-lab/skills
 ```
 
 It will read this repository's skill manifest, show the available skills, and let the agent install the selected skills into supported agent environments.
@@ -111,10 +111,10 @@ AI Agent 技能集合 — 面向内容创作者、视频制作人、提示词工
 
 ### 给 Agent 的一条命令
 
-让你的 Agent 直接执行这一条命令：
+跟你的 Agent 说「用这个方式帮我安装 skill」，把下面这条命令给它：
 
 ```bash
-使用这个方式帮我安装skill： npx skills@latest add ttfake92-lab/skills
+npx skills@latest add ttfake92-lab/skills
 ```
 
 它会读取这个仓库里的 skill 清单，展示可安装的 skills，并把你选中的 skills 安装到支持的 Agent 环境里。
