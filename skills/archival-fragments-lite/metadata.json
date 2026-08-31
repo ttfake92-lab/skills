@@ -1,0 +1,7 @@
+{
+  "version": "1.0.0",
+  "author": "鱼亦乐 (yuyile)",
+  "date": "August 2026",
+  "abstract": "Model-agnostic visual style and method pack for the Archival Fragments look — ivory paper, monochrome print, one muted crimson accent. Fixes two things only: the style, and the reference-image-to-first-last-frame method. Build a chain of N+1 distinct reference images, then generate each shot from two adjacent images so consecutive shots share a frame and cut seamlessly. Works with any image model and any video tool that supports first-and-last-frame input. No dependencies, no automation, no vendor lock-in. Three hard constraints prevent the failure modes seen in practice: one image reused across every shot, abstract graphics the audience cannot decode, and frozen shots.",
+  "references": []
+}

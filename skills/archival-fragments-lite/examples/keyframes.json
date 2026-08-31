@@ -1,0 +1,183 @@
+{
+  "_说明": "一条 67.3 秒 / 34 镜成片的全部 35 张参考图提示词。每一张都是不同的画面。第 N 镜的尾帧就是第 N+1 镜的首帧（同一个文件），所以 34 镜只要 35 张图。标 reuse 的是刻意复用，全片只有 8 张。",
+  "_怎么用": "每张的完整提示词 = style_prefix + 空格 + 该张的 prompt。换题材时照着改结构，不要照抄这些画面——地图/天平/台阶是为「某公司市值第一」这个题材找的符号。",
+  "_比例": "4:3（推荐）",
+  "style_prefix": "Monochrome archival black-and-white print on cool ivory paper, matte halftone print texture, flat even soft light, short soft pale grey shadows, nothing glossy. One accent colour only: a muted brick crimson, not pure red, covering only a few percent of the frame. Everything is a real physical object photographed on paper — never a chart, never a diagram, never an infographic. No subtitles, no captions, no watermark.",
+  "keyframes": [
+    {
+      "id": "A01",
+      "reuse": "K01",
+      "desc": "满屏攒动人群"
+    },
+    {
+      "id": "A02",
+      "reuse": "K02",
+      "desc": "人群缩成小照片 + 3.28万亿贴纸"
+    },
+    {
+      "id": "A03",
+      "reuse": "K03",
+      "desc": "贴纸占据中心，四周账册"
+    },
+    {
+      "id": "A04",
+      "desc": "交易所翻牌板翻动中",
+      "prompt": "A large mechanical split-flap stock board of the kind that hangs in an old exchange hall, filling the frame. Its rows of black flaps are caught mid-flip, half the characters blurred in motion. One row near the centre is settling to read \"3.28万亿\" in white on black."
+    },
+    {
+      "id": "A05",
+      "desc": "翻牌板定格，长鑫在最上一行",
+      "prompt": "A large mechanical split-flap stock board, all flaps now still. The topmost row reads \"长鑫科技\" and beside it \"3.28万亿\" in white on black. The rows below it carry other company names in smaller white lettering. A small muted brick crimson marker clip is pinned to the top row."
+    },
+    {
+      "id": "A06",
+      "desc": "两块名牌，长鑫高过工商银行",
+      "prompt": "Two solid stone pedestal steps standing side by side on ivory paper, each with an engraved metal name plate on its face. The left, lower step reads \"工商银行\". The right step is clearly much taller and reads \"长鑫科技\". A thin muted brick crimson line marks the height of the lower one, and the taller step rises well above it."
+    },
+    {
+      "id": "A07",
+      "desc": "手撕掉贴纸",
+      "prompt": "A hand in a shirt cuff peels a white paper sticker reading \"3.28万亿\" off the page, the sticker lifting and curling as it comes away. Beneath where it was there is nothing but blank ivory paper."
+    },
+    {
+      "id": "A08",
+      "desc": "撕掉后空白",
+      "prompt": "A bare ivory sheet with a faint pale rectangle where a sticker used to be, its adhesive outline still visible, and a small torn corner of white paper left behind at one edge. Nothing else."
+    },
+    {
+      "id": "A09",
+      "desc": "世界地图，没有任何图钉",
+      "prompt": "A large old printed world map filling the entire frame, engraved coastlines and faint graticule lines on ivory paper, pinned flat at its corners. There are no pins, no markers and no highlights anywhere on it."
+    },
+    {
+      "id": "A10",
+      "desc": "地图上散着一大堆芯片",
+      "prompt": "A large old printed world map filling the frame, with a great scattered heap of small black memory chips lying loose all over its surface, hundreds of them, unsorted."
+    },
+    {
+      "id": "A11",
+      "desc": "芯片被扫成三堆，只剩零星",
+      "prompt": "A large old printed world map, with the loose black memory chips now swept into three big dense piles, and only a few stray chips left scattered across the rest of the map. Three hands are just withdrawing from the piles."
+    },
+    {
+      "id": "A12",
+      "desc": "第一根图钉 SAMSUNG",
+      "prompt": "Close view of a printed world map showing the Korean peninsula. One muted brick crimson map pin is pushed into it, with a small paper tag tied to the pin reading \"SAMSUNG\" in black uppercase. A dense pile of small black memory chips sits beside it."
+    },
+    {
+      "id": "A13",
+      "desc": "第二根图钉 SK HYNIX",
+      "prompt": "Close view of a printed world map showing the Korean peninsula with two muted brick crimson map pins pushed into it, their paper tags reading \"SAMSUNG\" and \"SK HYNIX\" in black uppercase. Two piles of small black memory chips sit beside them."
+    },
+    {
+      "id": "A14",
+      "desc": "第三根图钉 MICRON，三钉齐",
+      "prompt": "A printed world map seen wide, with three muted brick crimson map pins pushed into it — two in the Korean peninsula and one in the western United States — their paper tags reading \"SAMSUNG\", \"SK HYNIX\" and \"MICRON\" in black uppercase. Three dense piles of black memory chips sit on the map."
+    },
+    {
+      "id": "A15",
+      "desc": "镜头移到中国，一个空钉孔",
+      "prompt": "Close view of a printed world map showing eastern China. There is no pin here and no chips — only a single small empty pin hole punched in the paper, with a faint ring of shadow around it."
+    },
+    {
+      "id": "A16",
+      "desc": "空钉孔特写 + 空白标签卡",
+      "prompt": "Extreme close view of a single small empty pin hole in an old printed map, the paper fibres torn slightly around it. Beside it lies a small blank paper tag with nothing written on it and a length of thread."
+    },
+    {
+      "id": "A17",
+      "desc": "天平：芯片 vs 几枚硬币，平衡",
+      "prompt": "An old brass balance scale standing on ivory paper, seen from the side. On its left pan lies one single small black memory chip. On its right pan sit a few stacked coins. The beam is perfectly level and balanced."
+    },
+    {
+      "id": "A18",
+      "desc": "天平：钱堆成高摞，仍然平衡",
+      "prompt": "The same old brass balance scale. On its left pan still lies one single small black memory chip. On its right pan the coins have grown into a tall precarious stack towering above the pan. The beam is still perfectly level and balanced."
+    },
+    {
+      "id": "A19",
+      "desc": "图钉第一次按进合肥 + 2016",
+      "prompt": "Close view of a printed world map showing eastern China, where a muted brick crimson map pin is being pushed into the paper for the first time, a thumb still on its head. A small paper tag tied to the pin reads \"2016\" in black."
+    },
+    {
+      "id": "A20",
+      "desc": "图钉旁升起厂房剪影",
+      "prompt": "A printed world map with one muted brick crimson pin in eastern China. Rising up out of the map beside the pin stands a small folded paper model of a long low factory building with a row of chimneys, casting a short soft shadow across the map."
+    },
+    {
+      "id": "A21",
+      "desc": "台阶一级：LPDDR5",
+      "prompt": "A flight of three plain stone steps rising left to right on ivory paper, seen from the side. On the first and lowest step sits one small black memory chip with a paper label card propped beside it reading \"LPDDR5\" in black uppercase. The two higher steps are empty."
+    },
+    {
+      "id": "A22",
+      "desc": "台阶二级：DDR5",
+      "prompt": "A flight of three plain stone steps rising left to right on ivory paper. The first two steps each carry one small black memory chip with a paper label card, reading \"LPDDR5\" and \"DDR5\" in black uppercase. The top step is still empty."
+    },
+    {
+      "id": "A23",
+      "desc": "台阶三级：LPDDR5X",
+      "prompt": "A flight of three plain stone steps rising left to right on ivory paper. All three steps carry one small black memory chip each with a paper label card, reading \"LPDDR5\", \"DDR5\" and \"LPDDR5X\" in black uppercase."
+    },
+    {
+      "id": "A24",
+      "desc": "一大堆芯片摊在桌上，手在挑",
+      "prompt": "A great heap of hundreds of small black memory chips spread loose across ivory paper. A hand in a shirt cuff reaches into the heap with tweezers, picking out individual chips one at a time."
+    },
+    {
+      "id": "A25",
+      "desc": "挑出的一小把单独放着 7.7%",
+      "prompt": "A great heap of small black memory chips fills most of the frame. Set apart from it on bare ivory paper lies a small separate handful of chips, perhaps a dozen, with a paper label card propped beside them reading \"7.7%\" in black."
+    },
+    {
+      "id": "A26",
+      "desc": "四级领奖台，长鑫站上第四格",
+      "prompt": "A stepped podium of four blocks on ivory paper, tallest at the left and descending to the right, each with an engraved metal name plate. The three taller blocks read \"SAMSUNG\", \"SK HYNIX\" and \"MICRON\". A small black memory chip has just been set on the fourth and lowest block, whose plate reads \"长鑫科技\"."
+    },
+    {
+      "id": "A27",
+      "reuse": "K27",
+      "desc": "招股书封面 8.66"
+    },
+    {
+      "id": "A28",
+      "reuse": "K28",
+      "desc": "红章压下"
+    },
+    {
+      "id": "A29",
+      "reuse": "K29",
+      "desc": "红印留下"
+    },
+    {
+      "id": "A30",
+      "desc": "翻牌板从 8.66 开始翻动",
+      "prompt": "A large mechanical split-flap price board on ivory paper, its digits caught mid-flip and blurred with motion. One settled row still shows \"8.66\" in white on black before the flaps carry it away."
+    },
+    {
+      "id": "A31",
+      "desc": "翻牌定格 49.5",
+      "prompt": "A large mechanical split-flap price board on ivory paper, all flaps now still, showing \"49.5\" in large white digits on black. A small muted brick crimson marker clip is pinned beside the number."
+    },
+    {
+      "id": "A32",
+      "reuse": "K32",
+      "desc": "交割单开始下落"
+    },
+    {
+      "id": "A33",
+      "reuse": "K33",
+      "desc": "交割单堆满，中间 1412"
+    },
+    {
+      "id": "A34",
+      "desc": "交割单退去，露出四级领奖台",
+      "prompt": "Small pale paper slips are sliding away toward the frame edges, uncovering a stepped podium of four plain stone blocks standing on ivory paper, descending in height from left to right, each with a plain engraved metal name plate on its face. One small black memory chip stands on the lowest, fourth block. A few slips still lie at the frame edges. No dates, no historical labels, no museum exhibit."
+    },
+    {
+      "id": "A35",
+      "desc": "拉开，第四格上面还有三格空着",
+      "prompt": "A wide view of one single flight of plain stone podium blocks on ivory paper, all of the same kind, rising steadily from right to left like a staircase. The four blocks at the near right end each carry an engraved metal name plate and a small black memory chip stands on the nearest one. Continuing up beyond them are three more blocks, taller than all the others, standing completely bare — no chips on them and their metal plates blank and unengraved. No names, no dates, no portraits, no memorial."
+    }
+  ]
+}

@@ -9,6 +9,7 @@
     "./skills/yyl-benchmark-breakdown",
     "./skills/yyl-disk-cleaner-cat",
     "./skills/macos-migration",
-    "./skills/archival-fragments"
+    "./skills/archival-fragments",
+    "./skills/archival-fragments-lite"
   ]
 }
