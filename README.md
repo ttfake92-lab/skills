@@ -34,8 +34,7 @@ npx skills@latest add ttfake92-lab/skills
 
 #### Content Creation
 
-- **[AI-video-prompt](./skills/AI-video-prompt/SKILL.md)** — Write image-reference video prompts with reference binding, time-coded action, sound design, camera movement, and hard constraints. Best for multi-image reference workflows such as 多图参考, 首尾帧, 全能参考, and script-to-video prompt generation.
-- **[mx-shell-prompt](./skills/mx-shell-prompt/SKILL.md)** — Write structured, cinematic video generation prompts for AI video tools like Seedance 2.0, Kling, Sora, Runway, Pika. Transforms rough ideas into production-ready prompts with three pillars: who-where, what-feel, what-happens. Includes shot catalog, cinematic vocabulary, and composition templates.
+- **[yyl-video-prompt](./skills/yyl-video-prompt/SKILL.md)** — Director-style AI video prompts. Picks a mode from the script's style, then splits any script, story, voiceover, or one-line idea into ready-to-submit segment prompts. Short-video mode has two styles, one-take and multi-shot, benchmarked on a viral short and a multi-shot narrative example; cinematic-drama mode handles slow, performance-driven scenes with an eight-dimension acting formula and FACS action units. Every segment covers reference-image binding, time-coded action, camera language, sound design, and hard constraints. Works with Seedance 2.0/2.5, Jimeng/Dreamina, LibTV, and more. Replaces `AI-video-prompt` and `mx-shell-prompt`.
 - **[yyl-remotion-video](./skills/yyl-remotion-video/SKILL.md)** — Build 16:9 Remotion video projects from scripts, articles, notes, or outlines. Creates frame-driven React/TypeScript animations, estimates duration without synthesizing audio, renders still checks, and exports mp4 with built-in themes plus a dark 3D luxury gallery template.
 - **[yyl-video-thumbnail](./skills/yyl-video-thumbnail/SKILL.md)** — Generate high-CTR video thumbnails for Bilibili, YouTube, and Douyin/TikTok. Uses pop-out technique: darkened original photo as base, yellow-highlighted title text, and cutout subject overlaid at full brightness. Ships with three templates (popout poster, UI command panel, film-edit style) and auto-generates 16:9 / 4:3 / 3:4 ratios.
 - **[yyl-benchmark-breakdown](./skills/yyl-benchmark-breakdown/SKILL.md)** — Teardown competitor content from any link. Auto-detects platform (Douyin/XHS/Bilibili/YouTube/WeChat) and scope (single post or entire account), fetches content via 4-level fallback, transcribes audio, extracts visual frames, then outputs a 3-piece report: reusable formula, frame-by-frame breakdown with visual+audio alignment, and persona/positioning analysis. Auto-archives to benchmarks/ for long-term reference library.
@@ -53,16 +52,16 @@ npx skills@latest add ttfake92-lab/skills
 
 ### New Skill
 
+- `yyl-video-prompt` has been added. It merges `AI-video-prompt` and `mx-shell-prompt` into one skill with two modes, short-video and cinematic drama. The two older skills have been removed — if you installed them before, switch to `yyl-video-prompt`.
 - `archival-fragments` and `archival-fragments-lite` have been added — the Archival Fragments visual style, as a full end-to-end film pipeline and as a tool-agnostic style-and-method pack. Now discoverable via `npx skills@latest add ttfake92-lab/skills`.
 
 ### Skills Overview
 
-This repository includes ten skills — seven for content creation, one for education/decision support, and two for system tools:
+This repository includes nine skills — six for content creation, one for education/decision support, and two for system tools:
 
 | Skill | What It Does | Best For |
 |------|--------------|----------|
-| `AI-video-prompt` | Turns scripts or story beats into image-reference prompts with second-by-second action, sound, and hard constraints. | Seedance 2.0, multi-image reference prompts, first/end frame continuity, production control prompts. |
-| `mx-shell-prompt` | Turns scripts, stories, voiceovers, or rough ideas into structured cinematic prompts. | Text-to-video tools, storyboard prompts, shot lists, camera language. |
+| `yyl-video-prompt` | Turns scripts or ideas into segment-by-segment video prompts, choosing short-video or cinematic-drama mode from the script's style. | Seedance 2.0/2.5, Jimeng, multi-image reference, one-take and multi-shot shorts, performance-driven drama scenes. |
 | `yyl-remotion-video` | Turns scripts, articles, notes, or outlines into Remotion projects that can render mp4. | Frame-accurate explainers, product demos, command-line films, silent clips for post-production voiceover. |
 | `yyl-video-thumbnail` | Generates high-CTR video thumbnails with pop-out technique — darkened base, yellow keyword text, full-brightness cutout subject. | Bilibili, YouTube, Douyin/TikTok covers, AI tool demos, command-line film posters. |
 | `college-application` | Guides gaokao students through personality assessment, career/major/industry research, and admission data analysis; outputs a sourced HTML report. | China gaokao applicants, parents, education consultants, anyone building decision-support agents. |
@@ -74,9 +73,7 @@ This repository includes ten skills — seven for content creation, one for educ
 
 ### How To Choose
 
-Use **AI-video-prompt** when your next step is generating footage in image-reference workflows such as Seedance-style multi-image generation. It focuses on locking image roles, character continuity, time-coded motion, sound design, spatial logic, and hard failure-prevention constraints.
-
-Use **mx-shell-prompt** when your next step is sending prompts to video generation tools such as Seedance 2.0, Kling, Jimeng, Sora, Runway, or Pika. It focuses on cinematic language: characters, props, scenes, sound, mood, shot sizes, composition, and camera movement.
+Use **yyl-video-prompt** when your next step is generating footage with an AI video model. It first decides between short-video mode (one-take or multi-shot, short-platform pacing) and cinematic-drama mode (slow, performance-driven scenes), then writes each segment with reference-image roles, time-coded action, camera language, sound design, and hard constraints. It merges and replaces the former `AI-video-prompt` and `mx-shell-prompt`.
 
 Use **yyl-remotion-video** when your next step is building a real Remotion project and exporting an mp4. It focuses on React/TypeScript implementation, timeline timing, frame-based animation, still-frame checks, and theme-driven video templates.
 
@@ -97,11 +94,10 @@ Use **macos-migration** when you're setting up a new Mac or reinstalling macOS. 
 ### Example Workflow
 
 1. Use `yyl-benchmark-breakdown` to analyze a competitor's viral video — extract the formula, hooks, and visual rhythm.
-2. Use `mx-shell-prompt` to break your script into cinematic blocks and shot ideas.
-3. Use `AI-video-prompt` when the output needs image-reference prompts with precise constraints.
-4. Use `yyl-remotion-video` when you want a deterministic 16:9 Remotion clip instead of model-generated footage.
-5. Use `yyl-video-thumbnail` to generate a high-CTR cover image once the video is ready.
-6. Add voiceover, subtitles, sound design, and final edits in post-production.
+2. Use `yyl-video-prompt` to turn your script into segment prompts — short-video or cinematic-drama mode, with reference-image binding and hard constraints.
+3. Use `yyl-remotion-video` when you want a deterministic 16:9 Remotion clip instead of model-generated footage.
+4. Use `yyl-video-thumbnail` to generate a high-CTR cover image once the video is ready.
+5. Add voiceover, subtitles, sound design, and final edits in post-production.
 
 ### License
 
@@ -139,8 +135,7 @@ npx skills@latest add ttfake92-lab/skills
 
 #### 内容创作
 
-- **[AI-video-prompt](./skills/AI-video-prompt/SKILL.md)** — 图片参考型视频提示词生成。把脚本或故事节拍转成带图片参考绑定、秒级动作、声音设计、运镜和硬约束的完整提示词，适合多图参考、首尾帧、全能参考和脚本转视频提示词。
-- **[mx-shell-prompt](./skills/mx-shell-prompt/SKILL.md)** — 视频提示词写作。把粗略想法转化为结构化的电影级视频提示词，适用于 Seedance 2.0、Kling、Sora、Runway、Pika 等所有文生视频工具。核心理念：每个好提示词由三根支柱构成 —— 谁在哪、什么感觉、发生什么。内含景别速查表、电影词汇库和构图模板。
+- **[yyl-video-prompt](./skills/yyl-video-prompt/SKILL.md)** — 导演式 AI 视频提示词。先按脚本风格选档位，再把脚本、故事、口播稿或一句想法拆成能直接提交生成的分段提示词。短视频档分一镜到底和多分镜两种写法，以一条爆款短视频和一个多分镜叙事案例为标杆；电影精品档面向慢节奏的表演戏，用八维表演公式和 AU 面部编码。每段都写参考图绑定、秒级动作、镜头语言、声音设计和硬约束。适用 Seedance 2.0/2.5、即梦、LibTV 等。合并并取代了原来的 `AI-video-prompt` 和 `mx-shell-prompt`。
 - **[yyl-remotion-video](./skills/yyl-remotion-video/SKILL.md)** — Remotion 视频制作。把口播稿、文章、资料摘要或明确大纲做成 16:9、逐帧可控、可直接导出 mp4 的视频项目。内置三套主题和深色 3D 高端画廊模板，不在流程内合成音频，适合后期统一配音。
 - **[yyl-video-thumbnail](./skills/yyl-video-thumbnail/SKILL.md)** — 视频封面生成。用 pop-out 技法做 B站/YouTube/抖音高点击率封面：底层压暗原图保留环境、中层黄色关键词标题、顶层全亮抠图人物原位叠回。支持 popout 深色海报、ui 命令面板、paper 胶片编辑三套模板，自动输出 16:9/4:3/3:4 三种比例。
 - **[yyl-benchmark-breakdown](./skills/yyl-benchmark-breakdown/SKILL.md)** — 对标账号拆解。丢一个链接，自动识别平台（抖音/小红书/B站/YouTube/公众号）和粒度（单条或整个账号），通过四级回退取数、转写口播、抽视觉帧，输出三件套：可复用爆款公式、画面+口播逐段拆解（时间轴对齐）、人设与内容定位。自动存档到 benchmarks/ 沉淀成对标库。
@@ -158,16 +153,16 @@ npx skills@latest add ttfake92-lab/skills
 
 ### 新增说明
 
+- 已新增 `yyl-video-prompt`：把 `AI-video-prompt` 和 `mx-shell-prompt` 合并成一个 Skill，分短视频和电影精品两个档位。两个旧 Skill 已从仓库下架，之前装过的话换成 `yyl-video-prompt` 即可。
 - 已新增 `archival-fragments`（档案剪贴风格短片全流程）和 `archival-fragments-lite`（同样的风格与方法，但不绑定工具，推荐大多数人用这个），并加入仓库 skill 清单。现在使用 `npx skills@latest add ttfake92-lab/skills` 时，可以和已有 skill 一起被发现与安装。
 
 ### Skills 概览
 
-这个仓库目前有 10 个 skills：7 个内容创作类 + 1 个教育决策类 + 2 个系统工具类。
+这个仓库目前有 9 个 skills：6 个内容创作类 + 1 个教育决策类 + 2 个系统工具类。
 
 | Skill | 做什么 | 适合场景 |
 |------|--------|----------|
-| `AI-video-prompt` | 把脚本或故事节拍转成图片参考型提示词，包含图片参考、秒级动作、声音和硬约束。 | Seedance 2.0、多图参考、首尾帧连续、强控制视频生成提示词。 |
-| `mx-shell-prompt` | 把脚本、故事、口播稿或粗略想法转成结构化电影级视频提示词。 | 文生视频工具、分镜提示词、镜头语言、AI 视频生成。 |
+| `yyl-video-prompt` | 把脚本或想法拆成逐段可提交的视频提示词，按脚本风格自动选短视频档或电影精品档。 | Seedance 2.0/2.5、即梦、多图参考、一镜到底和多分镜短视频、靠表演推进的剧情戏。 |
 | `yyl-remotion-video` | 把口播稿、文章、资料摘要或明确大纲做成可渲染 mp4 的 Remotion 项目。 | 逐帧可控讲解视频、产品 demo、命令行电影、后期统一配音的视频片段。 |
 | `yyl-video-thumbnail` | 用 pop-out 技法生成视频封面：压暗原图 + 黄色关键词 + 全亮抠图人物。 | B站/YouTube/抖音封面、AI 工具 demo 封面、命令行电影海报。 |
 | `college-application` | 引导高考考生完成性格测评、职业/专业/行业研究和招生数据分析，生成带来源的 HTML 报告。 | 高考考生、家长、教育咨询师、需要构建决策辅助 Agent 的开发者。 |
@@ -179,9 +174,7 @@ npx skills@latest add ttfake92-lab/skills
 
 ### 怎么选择
 
-如果你的下一步是 Seedance 这类依赖图片参考的视频生成工作流，用 **AI-video-prompt**。它关注的是图片角色绑定、人物连续性、秒级动作、声音设计、空间逻辑和防跑偏硬约束。
-
-如果你的下一步是把提示词发给 Seedance 2.0、Kling、即梦、Sora、Runway、Pika 等视频生成工具，用 **mx-shell-prompt**。它关注的是电影语言：角色、道具、场景、声音、氛围、景别、构图和运镜。
+如果你的下一步是用 AI 视频模型生成画面，用 **yyl-video-prompt**。它先判断走短视频档（一镜到底或多分镜，短视频平台的节奏）还是电影精品档（慢节奏、靠表演推进），再逐段写好参考图绑定、秒级动作、镜头语言、声音设计和硬约束。它合并并取代了原来的 `AI-video-prompt` 和 `mx-shell-prompt`。
 
 如果你的下一步是生成一个真实的 Remotion 工程并导出 mp4，用 **yyl-remotion-video**。它关注的是 React / TypeScript 实现、时间轴、逐帧动画、检查帧和主题模板。
 
@@ -202,11 +195,10 @@ npx skills@latest add ttfake92-lab/skills
 ### 推荐工作流
 
 1. 用 `yyl-benchmark-breakdown` 拆解竞品爆款视频 —— 提取公式、钩子、视觉节奏。
-2. 用 `mx-shell-prompt` 把你的脚本拆成电影化板块和镜头想法。
-3. 如果要用 Seedance 等图片参考型视频工具生成画面，用 `AI-video-prompt` 写成带图片参考和硬约束的生产型提示词。
-4. 如果你想要可控的 16:9 动态讲解片段，就用 `yyl-remotion-video` 做 Remotion 视频。
-5. 视频做好后，用 `yyl-video-thumbnail` 生成高点击率封面。
-6. 最后在后期软件里加入口播、字幕、音效和剪辑。
+2. 用 `yyl-video-prompt` 把脚本拆成逐段视频提示词——按风格走短视频档或电影精品档，带参考图绑定和硬约束。
+3. 如果你想要可控的 16:9 动态讲解片段，就用 `yyl-remotion-video` 做 Remotion 视频。
+4. 视频做好后，用 `yyl-video-thumbnail` 生成高点击率封面。
+5. 最后在后期软件里加入口播、字幕、音效和剪辑。
 
 ### 许可
 
