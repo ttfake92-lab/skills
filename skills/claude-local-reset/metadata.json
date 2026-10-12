@@ -1,0 +1,7 @@
+{
+  "version": "1.0.0",
+  "author": "鱼亦乐 (yuyile)",
+  "date": "October 2026",
+  "abstract": "Back up and reset Claude Desktop local state on macOS and Windows, optionally rotate Claude Code local identity, then check network exit, DNS/WebRTC, proxy and relay leftovers. Delivers an HTML receipt and a risk-reduction guide. Does not unban an account. Linux is unsupported.",
+  "references": []
+}

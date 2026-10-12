@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; base-uri 'none'; form-action 'none'">
+<title>Claude 检查回执</title>
+<style>
+:root{--paper:#f5f5f0;--ink:#202c29;--muted:#63706b;--line:#dce2d9;--green:#225949;--red:#9a3431;--amber:#76531b;--blue:#495d75}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;font-size:15px;line-height:1.65}
+main{max-width:1060px;margin:0 auto;padding:38px 28px 56px}a{color:var(--green);text-underline-offset:4px}a:focus-visible,summary:focus-visible{outline:3px solid #507569;outline-offset:4px;border-radius:3px}
+.brand{font-size:12px;font-weight:700;letter-spacing:2px;color:var(--muted);margin:0 0 18px}.demo-banner{padding:11px 16px;border:1px solid #e0c58b;background:#fff5dd;border-radius:10px;color:#715018;font-size:13px;margin-bottom:20px}
+.guide-entry{display:flex;align-items:center;justify-content:space-between;gap:18px;background:#e7efe7;border:1px solid #c5d5c9;border-radius:12px;padding:15px 19px;margin:0 0 26px;text-decoration:none}.guide-entry strong{display:block;font-size:17px}.guide-entry small{display:block;font-size:12px;color:#4f665b;margin-top:3px}.guide-entry .guide-open{font-size:13px;font-weight:600;white-space:nowrap}
+.hero{display:grid;grid-template-columns:1.06fr 1fr;gap:38px;align-items:start;padding:0 0 26px;border-bottom:1px solid var(--line)}h1{font-size:32px;letter-spacing:-1px;line-height:1.25;margin:0 0 16px;font-weight:700}.hero-copy{margin:0 0 18px;color:var(--muted);max-width:460px;font-size:14px}.hero .counts{display:flex;gap:9px;flex-wrap:wrap}.count{border:1px solid var(--line);background:#fff;border-radius:7px;padding:5px 11px;font-size:13px}.count b{font-size:20px;margin-right:3px}.pass{color:var(--green)}.fail{color:var(--red)}.review{color:var(--amber)}.not_tested{color:var(--blue)}
+.action-panel{background:#fff;border:1px solid var(--line);border-radius:13px;padding:20px 22px}.action-panel h2{margin:0 0 12px;font-size:16px}.actions{margin:0;padding-left:23px}.actions li{padding-left:3px;margin:0 0 13px;font-size:13px}.actions li:last-child{margin-bottom:0}.actions strong{font-size:14px}.actions p{margin:4px 0;color:var(--muted);line-height:1.65}.actions a{white-space:nowrap}
+.meta{display:flex;flex-wrap:wrap;gap:6px 18px;margin:16px 0 28px;font-size:12px;color:var(--muted)}.section-heading{display:flex;align-items:baseline;gap:16px;flex-wrap:wrap;margin:28px 0 13px}.section-heading h2{margin:0;font-size:19px}.section-heading p{margin:0;color:var(--muted);font-size:12px}
+.sites{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.site-card{background:#fff;border:1px solid var(--line);border-radius:12px;padding:18px;display:flex;flex-direction:column}.site-top{display:flex;gap:8px;align-items:center;justify-content:space-between}.site-card h3{font-size:15px;line-height:1.5;margin:0}.badge{font-size:11px;font-weight:600;border-radius:5px;padding:3px 8px;white-space:nowrap;display:inline-block}.badge.pass{background:#e5f0e7}.badge.fail{background:#fae9e5}.badge.review{background:#f7edda}.badge.not_tested{background:#edf0f4}.site-result{margin:13px 0 5px;font-size:13px;font-weight:600}.site-evidence{font-size:12px;line-height:1.7;color:var(--muted);margin:0 0 16px;flex:1}.site-link{border-top:1px solid var(--line);padding-top:10px;font-size:13px;font-weight:600;text-decoration:none;display:flex;justify-content:space-between}
+.checks{list-style:none;padding:0;margin:0;background:#fff;border:1px solid var(--line);border-radius:12px;overflow:hidden}.check-row{padding:13px 19px;border-bottom:1px solid #e9ece6}.check-row:last-child{border-bottom:0}.check-title{display:flex;justify-content:space-between;align-items:center;gap:16px}.check-title strong{font-size:14px;font-weight:600}.check-row p{font-size:12px;color:var(--muted);line-height:1.7;margin:5px 0 0;overflow-wrap:anywhere}.next-inline{display:block;color:#596660;margin-top:2px}
+details{border:1px solid var(--line);border-radius:12px;padding:15px 19px;margin-top:22px;background:#f9faf6}summary{cursor:pointer;font-size:14px;font-weight:600}details p,details li{font-size:12px;color:var(--muted);overflow-wrap:anywhere}details ul{padding-left:20px}details code{font-size:11px;background:#edf0e9;padding:2px 4px;border-radius:3px}.more-links{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:15px 0}.more-links a{border:1px solid var(--line);background:#fff;border-radius:8px;padding:9px 12px;display:flex;justify-content:space-between;gap:8px;text-decoration:none;font-size:12px}.more-links small{font-size:11px;color:var(--muted);white-space:nowrap}.account-links{display:flex;gap:9px 16px;flex-wrap:wrap;margin:12px 0}.account-links a{font-size:12px}
+footer{font-size:12px;color:var(--muted);margin-top:20px;padding-top:13px;border-top:1px solid var(--line)}
+@media(max-width:760px){main{padding:24px 18px 36px}.hero{grid-template-columns:1fr;gap:20px}h1{font-size:27px}.sites{grid-template-columns:1fr}.site-card{padding:16px}.more-links{grid-template-columns:1fr 1fr}.meta{margin-bottom:22px}.section-heading{gap:5px;margin-top:24px}.check-row{padding:12px 15px}}
+@media(max-width:400px){.guide-entry{align-items:flex-start;flex-direction:column;gap:8px}.more-links{grid-template-columns:1fr}.counts{gap:6px!important}.count{padding:4px 9px}h1{font-size:25px}}
+@media print{body{background:#fff}main{max-width:none;padding:0}.hero{gap:22px}.site-card,.check-row,.action-panel{break-inside:avoid}details{display:block}.demo-banner{border-color:#999}a{color:inherit}}
+</style>
+</head>
+<body>
+<main>
+  <p class="brand">CLAUDE · 检查回执</p>
+  $demo_banner
+  <a class="guide-entry" href="guide.html" aria-label="打开 Claude 防封号指南，查看首次使用、曾被封号和手动操作后的质检步骤">
+    <span><strong>Claude 防封号指南</strong><small>第一次使用 / 曾被封号 · 手动准备 → 调用 skill 质检</small></span>
+    <span class="guide-open">打开完整指南 <span aria-hidden="true">→</span></span>
+  </a>
+  <section class="hero" aria-label="本次结论">
+    <div>
+      <h1 class="$tone">$heading</h1>
+      <p class="hero-copy">先看下方三条待办，再查看质检依据。缺项会保留为未检测，修复后请在同一浏览器中复测。</p>
+      <div class="counts" aria-label="质检状态计数">$counts</div>
+    </div>
+    <section class="action-panel" aria-labelledby="actions-title">
+      <h2 id="actions-title">接下来做什么</h2>
+      <ol class="actions">$next_steps</ol>
+    </section>
+  </section>
+  <div class="meta"><span>$action_label</span><span>$browser_context</span><span>$generated_at</span></div>
+  <section aria-labelledby="sites-title">
+    <div class="section-heading"><h2 id="sites-title">检测网站与本次结果</h2><p>点击打开原页面；打开回执本身不会重新检测。</p></div>
+    <div class="sites">$site_cards</div>
+  </section>
+  <section aria-labelledby="checks-title">
+    <div class="section-heading"><h2 id="checks-title">质检清单</h2><p>地区标准：$policy</p></div>
+    <ul class="checks">$check_rows</ul>
+  </section>
+  <details>
+    <summary>补充检测入口、环境记录与注意事项</summary>
+    <div class="more-links">$more_links</div>
+    <p><strong>环境记录：</strong>$timezone_context</p>
+    <p><strong>隐私偏好：</strong>$privacy_context。开关未被自动更改，不代表账号风控结果。</p>
+    $backup
+    <ul>
+      <li>HTML 只反映本次已取得的证据；检测站评分、国家标签和终端出口都不等于 Claude 实际请求路径。地区未通过时先核对标签和路由，不能直接断言封号原因。</li>
+      <li>关键项目未完成时先补测；完成后自行在已确认的同一 profile 登录官方 Claude，核对账号提示。不要把旧 profile 整份复制回来；需要 MCP 时仅核对所需配置。</li>
+      <li>IPv6、系统代理、浏览器扩展和遥测保持原设置。修复只针对已确认问题，先保存原值，改完复测。</li>
+      <li>下面的账号项目尚未代为查看。按实际需要自行检查会话、用量或隐私；受限账号按官方申诉页面处理。</li>
+    </ul>
+    <div class="account-links">
+      <a href="https://claude.ai/" target="_blank" rel="noopener noreferrer">官方 Claude ↗</a>
+      <a href="https://support.claude.com/en/articles/13124001-managing-your-active-sessions" target="_blank" rel="noopener noreferrer">会话检查说明 ↗</a>
+      <a href="https://claude.ai/settings/usage" target="_blank" rel="noopener noreferrer">用量 ↗</a>
+      <a href="https://claude.ai/settings/data-privacy-controls" target="_blank" rel="noopener noreferrer">数据隐私 ↗</a>
+      <a href="https://support.claude.com/en/articles/8241253-safeguards-warnings-and-appeals" target="_blank" rel="noopener noreferrer">申诉与数据导出 ↗</a>
+    </div>
+  </details>
+  <footer>本地 HTML · 完整 IP 已遮蔽 · 未上传配置或备份。本页不验证账号可用性、服务器设备关联，也不保证不会封号。</footer>
+</main>
+</body>
+</html>

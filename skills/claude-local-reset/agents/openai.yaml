@@ -1,0 +1,3 @@
+interface:
+  display_name: "Claude 本地状态重置"
+  short_description: "检查 Claude 网络与本地状态，交付质检回执及首次使用、曾被限制用户的防封号指南"

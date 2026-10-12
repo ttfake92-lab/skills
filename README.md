@@ -49,15 +49,17 @@ npx skills@latest add ttfake92-lab/skills
 
 - **[yyl-disk-cleaner-cat](./skills/yyl-disk-cleaner-cat/SKILL.md)** — macOS disk cleanup with a pixel-art cat. Scans developer caches, system caches, large files, performance metrics, and network diagnostics. Presents an interactive pixel-art web page where you confirm deletions — a blue-white cat physically walks through a hand-drawn apartment, sweeping dust piles in real-time as files are permanently removed. Includes persistent memory across sessions.
 - **[macos-migration](./skills/macos-migration/SKILL.md)** — Two-phase macOS migration assistant. On the old Mac it scans Homebrew packages, App Store / manual apps, npm/uv/pip/go tools, dotfiles, editor extensions, fonts, and launch agents into a JSON manifest; on the new Mac it reads the manifest and restores everything (batch Homebrew install, config files, Library data from Time Machine), then reports what needs manual handling. Requires a full Time Machine backup up front and asks before collecting secrets like SSH keys.
+- **[claude-local-reset](./skills/claude-local-reset/SKILL.md)** — Back up and reset Claude Desktop local state on macOS and Windows, optionally rotate Claude Code local identity, then check exit IP, DNS/WebRTC, proxy and relay leftovers. Delivers an HTML receipt and a risk-reduction guide. It does not unban an account or prove the server forgot the device. Linux is not supported. Install this skill alone with `npx skills add ttfake92-lab/skills --skill claude-local-reset`.
 
 ### New Skill
 
+- `claude-local-reset` has been added for macOS and Windows. It archives allowlisted Claude Desktop state, can rotate Claude Code local identity when asked, and writes an offline HTML receipt. It does not promise to lift an account restriction. Install it alone with `npx skills add ttfake92-lab/skills --skill claude-local-reset`.
 - `yyl-video-prompt` has been added. It merges `AI-video-prompt` and `mx-shell-prompt` into one skill with two modes, short-video and cinematic drama. The two older skills have been removed — if you installed them before, switch to `yyl-video-prompt`.
 - `archival-fragments` and `archival-fragments-lite` have been added — the Archival Fragments visual style, as a full end-to-end film pipeline and as a tool-agnostic style-and-method pack. Now discoverable via `npx skills@latest add ttfake92-lab/skills`.
 
 ### Skills Overview
 
-This repository includes nine skills — six for content creation, one for education/decision support, and two for system tools:
+This repository includes ten skills — six for content creation, one for education/decision support, and three for system tools:
 
 | Skill | What It Does | Best For |
 |------|--------------|----------|
@@ -68,6 +70,7 @@ This repository includes nine skills — six for content creation, one for educa
 | `yyl-benchmark-breakdown` | Teardown competitor content from any link: auto-detect platform, fetch via 4-level fallback, transcribe audio, extract visual frames, output reusable formula + frame-by-frame breakdown + persona analysis. | Content creators doing competitive research, viral video analysis, benchmark building. |
 | `yyl-disk-cleaner-cat` | Scans macOS disk, presents interactive pixel-art cleanup page with real-time cat animation. | Freeing disk space, clearing developer caches, system optimization, network diagnostics. |
 | `macos-migration` | Two-phase macOS migration: scans the old Mac into a JSON manifest, then restores apps, packages, and configs on the new Mac, with a manual-handling diff report. | Getting a new Mac, reinstalling macOS, restoring from Time Machine, moving a full dev setup. |
+| `claude-local-reset` | Archives allowlisted Claude Desktop state on macOS or Windows, optionally rotates Claude Code local identity, and writes an HTML network-check receipt. | Resetting local Claude state, checking proxy or relay leftovers, or walking through the first-use and previously-restricted guide. |
 | `archival-fragments` | Idea or script to finished film: verifies deps, breaks the script into story/visuals/rhythm, chains keyframes, generates shot by shot on MiniMax H3, narrates and assembles. | Explainer shorts, news commentary, paper-collage editorial style, first-last-frame workflows. |
 | `archival-fragments-lite` | Same style and method, no tool lock-in: chain N+1 distinct reference images, generate each shot from two adjacent ones. | Anyone with an image model and a video tool that supports first-and-last-frame. Start here. |
 
@@ -90,6 +93,8 @@ Use **archival-fragments-lite** when you want the look and the method but bring 
 Use **archival-fragments** when you want a finished short film, not just prompts. It handles the whole chain — dependency checks, script writing, story/visual/rhythm breakdown, chained keyframes, shot-by-shot generation on MiniMax H3, narration, and ffmpeg assembly. Its hard constraints exist to prevent the two failure modes that actually happen: every shot looking identical, and abstract graphics the audience cannot decode.
 
 Use **macos-migration** when you're setting up a new Mac or reinstalling macOS. It scans your old system into a JSON manifest, then on the new machine batch-installs Homebrew packages and restores configs and Library data from Time Machine, never overwriting existing files and reporting everything that needs manual handling.
+
+Use **claude-local-reset** when you want a fresh Claude Desktop local state, or a read-only check of exit IP, DNS/WebRTC, proxy and relay leftovers, on macOS or Windows. It keeps a local rollback archive and an HTML receipt. It does not unban an account. Do not use it on Linux.
 
 ### Example Workflow
 
@@ -150,15 +155,17 @@ npx skills@latest add ttfake92-lab/skills
 
 - **[yyl-disk-cleaner-cat](./skills/yyl-disk-cleaner-cat/SKILL.md)** — macOS 磁盘清理小猫。扫描开发者缓存、系统缓存、大文件、性能指标和网络状态，打开一个像素风网页让你勾选确认——确认后一只蓝白小猫在手绘公寓里一间间走、实时打扫灰尘堆。带持续记忆：偏好、永不清理列表、历史清理记录跨会话保留。
 - **[macos-migration](./skills/macos-migration/SKILL.md)** — macOS 系统迁移助手，两阶段设计。旧系统上把 Homebrew 软件、App Store/手动安装的应用、npm/uv/pip/go 工具、dotfiles、编辑器扩展、字体、自启动服务扫描成一份 JSON 清单；新系统上读清单逐步还原（Homebrew 批量安装、配置文件、从 Time Machine 恢复 Library 数据），最后输出需手动处理的差异报告。前置要求先做一次 Time Machine 全量备份，采集私钥等敏感数据前先征求确认。
+- **[claude-local-reset](./skills/claude-local-reset/SKILL.md)** — 在 macOS 与 Windows 上备份重置 Claude Desktop 本地状态，可按要求轮换 Claude Code 本地身份，并检查出口、DNS/WebRTC、代理和中转残留，交付 HTML 质检回执和防封号指南。不承诺解封，也不能证明服务器不再关联这台设备。Linux 不要套用。单独安装：`npx skills add ttfake92-lab/skills --skill claude-local-reset`。
 
 ### 新增说明
 
+- 已新增 `claude-local-reset`，支持 macOS 与 Windows。它归档白名单内的 Claude Desktop 本地状态，在明确要求时处理 Claude Code 本地身份，并生成离线 HTML 回执。不承诺解除账号限制。单独安装：`npx skills add ttfake92-lab/skills --skill claude-local-reset`。
 - 已新增 `yyl-video-prompt`：把 `AI-video-prompt` 和 `mx-shell-prompt` 合并成一个 Skill，分短视频和电影精品两个档位。两个旧 Skill 已从仓库下架，之前装过的话换成 `yyl-video-prompt` 即可。
 - 已新增 `archival-fragments`（档案剪贴风格短片全流程）和 `archival-fragments-lite`（同样的风格与方法，但不绑定工具，推荐大多数人用这个），并加入仓库 skill 清单。现在使用 `npx skills@latest add ttfake92-lab/skills` 时，可以和已有 skill 一起被发现与安装。
 
 ### Skills 概览
 
-这个仓库目前有 9 个 skills：6 个内容创作类 + 1 个教育决策类 + 2 个系统工具类。
+这个仓库目前有 10 个 skills：6 个内容创作类 + 1 个教育决策类 + 3 个系统工具类。
 
 | Skill | 做什么 | 适合场景 |
 |------|--------|----------|
@@ -169,6 +176,7 @@ npx skills@latest add ttfake92-lab/skills
 | `yyl-benchmark-breakdown` | 丢一个链接，自动拆解对标内容：四级回退取数、转写口播、抽视觉帧，输出可复用爆款公式、画面+口播逐段拆解、人设定位。 | 内容创作者做竞品分析、爆款视频拆解、建立对标库。 |
 | `yyl-disk-cleaner-cat` | 扫描 macOS 磁盘，打开像素风交互页确认删除，小猫实时打扫。 | 释放磁盘空间、清理开发者缓存、系统优化、网络诊断。 |
 | `macos-migration` | 两阶段 macOS 迁移：旧系统扫描成 JSON 清单，新系统还原软件、包和配置，并输出需手动处理的差异报告。 | 换新 Mac、重装系统、从 Time Machine 恢复、迁移整套开发环境。 |
+| `claude-local-reset` | 在 macOS 或 Windows 上归档 Claude Desktop 白名单状态，可按要求轮换 Claude Code 本地身份，并生成 HTML 网络质检回执。 | 重置 Claude 本地状态、排查代理或中转残留、走首次使用或曾被限制的指南。 |
 | `archival-fragments` | 从想法或文案到成片：验环境、拆故事拆画面拆节奏、串联关键帧、H3 逐镜生成、配音、变速拼片。 | 解说短片、新闻评论、纸质拼贴编辑风格、首尾帧工作流。 |
 | `archival-fragments-lite` | 同样的风格和方法，但不绑定工具：串联 N+1 张各不相同的参考图，用相邻两张生成一镜。 | 有图片模型 + 支持首尾帧的视频工具就能用。**推荐从这个开始。** |
 
@@ -191,6 +199,8 @@ npx skills@latest add ttfake92-lab/skills
 如果你要的是一条做完的片子而不只是提示词，用 **archival-fragments**。它管的是全链路：验环境、写文案、拆故事拆画面拆节奏、串联关键帧、用 MiniMax H3 逐镜生成、配音、ffmpeg 拼片。它的三条硬约束是为了防两个真实发生过的翻车：整片镜头长得一模一样，以及观众看不懂的抽象图形。
 
 如果你在装新 Mac 或重装系统，用 **macos-migration**。它先把旧系统扫描成一份 JSON 清单，再在新机器上批量安装 Homebrew 软件、从 Time Machine 恢复配置和 Library 数据，全程不覆盖已有文件，并把所有需手动处理的项目列成差异报告。
+
+如果你要在 macOS 或 Windows 上重开一份 Claude Desktop 本地状态，或者只读检查出口、DNS/WebRTC、代理和中转残留，用 **claude-local-reset**。它会留下本机回滚备份和 HTML 回执。它不能解封账号。Linux 不要用。
 
 ### 推荐工作流
 

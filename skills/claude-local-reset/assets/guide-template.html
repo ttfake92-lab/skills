@@ -1,0 +1,353 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="referrer" content="no-referrer">
+<meta http-equiv="Content-Security-Policy" content="default-src 'none'; style-src 'unsafe-inline'; base-uri 'none'; form-action 'none'">
+<title>Claude 防封号指南 · 手动准备与 skill 质检</title>
+<style>
+:root{--paper:#f5f5f0;--ink:#202c29;--muted:#63706b;--line:#dce2d9;--green:#225949;--amber:#76531b}
+*{box-sizing:border-box}html{scroll-padding-top:24px}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;font-size:15px;line-height:1.8}
+main{max-width:920px;margin:0 auto;padding:32px 28px 52px}a{color:var(--green);text-underline-offset:4px}a:focus-visible,summary:focus-visible{outline:3px solid #507569;outline-offset:4px;border-radius:3px}.topbar{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;font-size:12px;margin-bottom:26px}.brand{color:var(--muted);font-weight:700;letter-spacing:1.5px}.demo-banner{padding:11px 16px;border:1px solid #e0c58b;background:#fff5dd;border-radius:10px;color:#715018;font-size:13px;margin-bottom:22px}
+h1{font-size:34px;letter-spacing:-1px;line-height:1.3;margin:0 0 12px}h2{font-size:22px;line-height:1.4;margin:0 0 15px}h3{font-size:16px;margin:0 0 6px}p{margin:8px 0}.intro{font-size:16px;color:var(--muted);margin-bottom:18px}.note{border-left:3px solid #b6c8b9;padding:9px 15px;background:#edf2eb;font-size:13px;color:#4e6055}.note.warn{border-color:#c6aa67;background:#fcf5e6;color:#705522}.routes{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:22px 0 14px}.route{display:block;border:1px solid var(--line);border-radius:12px;background:#fff;padding:18px 20px;text-decoration:none}.route strong{display:block;font-size:18px}.route span{display:block;font-size:13px;color:var(--muted);margin-top:5px}.quick-nav{display:flex;gap:9px 20px;flex-wrap:wrap;font-size:13px;margin:14px 0 28px}.guide-section{border-top:1px solid var(--line);padding-top:26px;margin-top:28px}.section-label{color:var(--muted);font-size:12px;letter-spacing:1px;margin:0 0 7px}.steps{padding-left:25px;margin:14px 0}.steps>li{padding-left:4px;margin-bottom:17px}.steps strong{font-weight:650}.steps p{font-size:14px;color:var(--muted);margin:3px 0}.chip{display:inline-block;font-size:11px;border:1px solid var(--line);border-radius:4px;padding:0 6px;margin-left:7px;color:var(--muted);vertical-align:middle}.chip.tag-off{border-color:#b9d2c2;color:#225949}.chip.tag-com{border-color:#d9c48c;color:#76531b}
+.table-wrap{overflow-x:auto;border:1px solid var(--line);border-radius:10px;margin:15px 0;background:#fff}table{border-collapse:collapse;width:100%;min-width:500px;text-align:left;font-size:13px}th,td{padding:12px 15px;border-bottom:1px solid #e8ece4;vertical-align:top}th{font-weight:650;background:#eef2e9}tbody tr:last-child td{border-bottom:0}td:first-child{width:26%;font-weight:600}.prompt{background:#fff;border:1px solid #cedbd0;border-radius:12px;padding:17px 19px;margin:17px 0}.prompt p{font-size:13px;color:var(--muted);margin:4px 0 11px}.prompt pre{margin:0;background:#eff3ed;border-radius:7px;padding:13px 15px;white-space:pre-wrap;overflow-wrap:anywhere;font-size:13px;line-height:1.9}.prompt code{font-family:ui-monospace,SFMono-Regular,Consolas,monospace}
+.cmd{background:#fff;border:1px solid #cedbd0;border-radius:10px;margin:13px 0}.cmd pre{margin:0;background:#eff3ed;border-radius:8px;padding:12px 14px;white-space:pre-wrap;overflow-wrap:anywhere;font-size:12.5px;line-height:1.85;font-family:ui-monospace,SFMono-Regular,Consolas,monospace}.cmd .cmd-note{font-size:12px;color:var(--muted);margin:0;padding:7px 14px 9px;border-top:1px solid #e8ece4}
+.minor{font-size:13px;color:var(--muted)}.done{background:#e7efe7;border:1px solid #c5d5c9;border-radius:12px;padding:16px 19px;margin:20px 0}.done strong{display:block;font-size:16px}.done p{font-size:14px;margin:5px 0}
+details{border:1px solid var(--line);border-radius:10px;background:#f9faf6;padding:14px 18px;margin:16px 0}summary{cursor:pointer;font-size:14px;font-weight:600}details ul{font-size:13px;color:var(--muted);padding-left:20px}details li{margin:10px 0}code.inline{font-size:12px;background:#edf0e9;border-radius:3px;padding:2px 4px;overflow-wrap:anywhere}.status-list{font-size:14px;padding-left:21px}.status-list li{margin:8px 0}.checklist{list-style:none;padding-left:0;margin:14px 0}.checklist li{position:relative;padding-left:26px;margin:9px 0;font-size:14px}.checklist li::before{content:"□";position:absolute;left:2px;top:0;color:var(--muted)}.sources{display:flex;gap:7px 18px;flex-wrap:wrap;font-size:12px;margin:10px 0}footer{border-top:1px solid var(--line);margin-top:30px;padding-top:15px;font-size:12px;color:var(--muted)}
+@media(max-width:640px){main{padding:24px 18px 36px}h1{font-size:28px}h2{font-size:20px}.routes{grid-template-columns:1fr}.route{padding:15px 17px}.topbar{margin-bottom:20px}.guide-section{margin-top:25px;padding-top:23px}.prompt{padding:15px}.prompt pre{padding:11px 12px}.steps{padding-left:22px}th,td{padding:10px 12px}}
+@media print{body{background:#fff}main{max-width:none;padding:0}.route,.prompt,.steps>li{break-inside:avoid}a{color:inherit}details{display:block}}
+</style>
+</head>
+<body>
+<main>
+  <div class="topbar"><span class="brand">CLAUDE · 使用准备</span><a href="report.html">← 返回本次质检回执</a></div>
+  $demo_banner
+  <header>
+    <h1>Claude 防封号指南</h1>
+    <p class="intro">先按自己的情况准备，再让 skill 检查。账号操作由你完成，环境质检交给 AI。</p>
+    <p class="note">这份指南帮助减少配置错误、识别异常；不能保证账号不被限制，也不能清除服务端记录。先核对<a href="https://www.anthropic.com/supported-countries" target="_blank" rel="noopener noreferrer">官方地区要求</a>，其中包含实际所在地和组织条件，出口 IP 的旗帜通过不代表满足使用资格。账号受限走原账号官方申诉。</p>
+    <p class="note">本页步骤分两类标注：<span class="chip tag-off">官方</span> 可在官方政策或文档查证；<span class="chip tag-com">社区经验</span> 来自社区复盘（以 2026-10 社区长文为主），不是官方规则，也无法保证效果。风控更像一套多维打分系统：时区撕裂、WebRTC/DNS 泄漏、终端代理残留、设备共用任何一项异常都会叠加，单个信号不一定立刻出事，几条叠在一起过了线，号就没了。</p>
+  </header>
+  <nav class="routes" aria-label="按使用经历选择步骤">
+    <a class="route" href="#first-time"><strong>我从未使用过 Claude →</strong><span>确认资格、固定时区与出口、准备专用浏览器；无需清理旧身份。</span></a>
+    <a class="route" href="#previously-banned"><strong>我曾被封号或限制 →</strong><span>先分清是哪种问题，保留资料、申诉并处理退款；环境检查不能解除封禁。</span></a>
+  </nav>
+  <nav class="quick-nav" aria-label="指南目录"><a href="#manual">与 AI 配合的手动准备</a><a href="#environment">环境准备：时区·出口·TUN·自检</a><a href="#account-payment">账号与支付</a><a href="#quality-check">做完后，调用 skill 质检</a><a href="#daily">日常注意事项</a><a href="#checklist">出发前清单</a></nav>
+
+  <section class="guide-section" id="first-time" aria-labelledby="first-title">
+    <p class="section-label">路径 A · 第一次使用</p>
+    <h2 id="first-title">先准备使用环境，再自行注册登录</h2>
+    <ol class="steps">
+      <li><strong>核对使用资格与官方入口。</strong><span class="chip tag-off">官方</span><p>查看上方官方地区页面；条件不满足时，本指南没有提供绕过方案。网页从 <a href="https://claude.ai/" target="_blank" rel="noopener noreferrer">claude.ai</a> 进入，桌面版从 <a href="https://claude.com/download" target="_blank" rel="noopener noreferrer">官方下载页</a> 获取。不要把账号密码输入到不明镜像或代注册页面。</p></li>
+      <li><strong>把时区和出口先固定下来。</strong><span class="chip tag-com">社区经验</span><p>按<a href="#environment">环境准备</a>把电脑和手机的时区改成同一个支持地区（东八区常用 Asia/Taipei），并选定一个固定出口节点。注册、登录、付款、日常使用全程走同一条线路；不要一边注册一边切节点。</p></li>
+      <li><strong>选定日后实际使用的浏览器与 profile。</strong><span class="chip">你来做</span><p>最好单独建一个浏览器资料（Chrome 右上角头像 → 添加），只用来登 Claude；单号不需要指纹浏览器——使用条款禁止的恰是多账号规避。后续检测、验证邮件和登录都使用这个 profile，确认当前是自己的 profile。无需为了首次使用清空浏览器、删除钥匙串或运行本地重置。</p></li>
+      <li><strong>完成登录前自检，再做一次质检。</strong><span class="chip">AI 检查</span><p>先做<a href="#environment">登录前 5 项自检</a>，再复制<a href="#quality-check">质检提示词</a>。只做检查；缺失项目会标为未检测。关键网络项未通过时先排查，不能把绿色分数当作注册保证。</p></li>
+      <li><strong>自行完成注册、验证与首次登录。</strong><span class="chip">你来做</span><p>在官方页面按提示操作，邮箱、验证码、密码和付款信息由你输入。验证邮件要在同一个代理环境、同一个专用浏览器里点开——环境配得再干净，在日常浏览器里点一下 Claude 的链接，真实 IP 就交出去了。登录后确认账号和服务提示；网络回执不验证账号是否可用。</p></li>
+      <li><strong>注册后先按订阅节奏走。</strong><span class="chip tag-com">社区经验</span><p>新号前几天用 Free 正常聊、写点小东西，不要立刻绑卡、开 Max 或接 CLI 高并发；具体节奏见<a href="#account-payment">账号与支付</a>。后续切换网络或浏览器配置时，按实际变化重新检查。</p></li>
+    </ol>
+  </section>
+
+  <section class="guide-section" id="previously-banned" aria-labelledby="banned-title">
+    <p class="section-label">路径 B · 曾被封号或限制</p>
+    <h2 id="banned-title">先分清是哪种问题，再决定处理顺序</h2>
+    <div class="table-wrap">
+      <table aria-label="先区分问题类型"><thead><tr><th scope="col">你看到的</th><th scope="col">通常是</th><th scope="col">先做什么</th></tr></thead><tbody>
+        <tr><td>回复突然变短、复杂问题答得敷衍、明显变慢（俗称“降智”）</td><td>出口可能已被标记，还没到封号</td><td>按<a href="#environment">环境自检</a>先查出口 IP；是机房归属就先换出口，别急着换号</td></tr>
+        <tr><td>额度用完、五小时 / 每周限制</td><td>限额，不是封号</td><td>查 <a href="https://claude.ai/settings/usage" target="_blank" rel="noopener noreferrer">Usage</a> 的重置时间，等到再继续</td></tr>
+        <tr><td>服务繁忙、系统错误</td><td>平台故障</td><td>看<a href="https://status.anthropic.com/" target="_blank" rel="noopener noreferrer">官方状态页</a>，稍后重试</td></tr>
+        <tr><td>清 Cookie 后仍提示 disabled / restricted</td><td>账号被限制</td><td>走下面的申诉流程</td></tr>
+        <tr><td>提示违反 usage policy / 登录地区不受支持</td><td>条款或地区问题</td><td>申诉并处理退款；不要在同一环境秒开新号</td></tr>
+      </tbody></table>
+    </div>
+    <ol class="steps">
+      <li><strong>记录原始提示，确认遇到了哪种问题。</strong><span class="chip">你来做</span><p>保留提示文字、发生时间与官方邮件。明确的封禁或停用通知需要走账号处理流程。官方透明度报告显示申诉推翻比例很低，环境做在前面比事后申诉划算。</p></li>
+      <li><strong>使用原账号走官方申诉。</strong><span class="chip tag-off">官方</span><p>按<a href="https://support.claude.com/en/articles/8241253-safeguards-warnings-and-appeals" target="_blank" rel="noopener noreferrer">官方申诉说明</a>登录原受限账号，在受限页面打开申诉表。申诉只写事实：账号邮箱、提示原文、开始时间（带时区）、用的是网页 / Claude Code / API；简短可核查，别编故事。同一页可先导出账号数据，再决定是否删除。只是收到警告、还没封：按官方说明邮件说明情况。不要把创建新账号或删除本地 ID 当作解除封禁步骤。</p></li>
+      <li><strong>立刻处理退款。</strong><span class="chip">你来做</span><p>App Store 订阅去 <a href="https://reportaproblem.apple.com" target="_blank" rel="noopener noreferrer">reportaproblem.apple.com</a> 申请；官网订阅走 claude.ai 左下角头像 → Get help → Send us a message → Claude Refund Request。申请退款不会自动取消续费，记得同时取消。官方政策是除条款规定外付款不退，违规封号基本不退，所以付款方式的选择见<a href="#account-payment">账号与支付</a>。</p></li>
+      <li><strong>申诉期间可以做只读排查。</strong><span class="chip">AI 检查</span><p>复制下方提示词：AI 可检查配置和网络，并交付回执；不会代你提交申诉、登录或清理。本地归档与服务端账号状态分别记录，不能用“文件已处理”替代“账号已恢复”。</p></li>
+      <li><strong>恢复后，仅修复仍存在的具体问题。</strong><span class="chip">按需执行</span><p>如果账号已恢复，却仍有旧登录缓存或客户端故障，先让 AI 预览候选路径和影响。保存备份、退出相关 Claude 会话，再明确选定要修复的范围。仅检查时不要执行重置；不要把旧登录存储整份复制回新状态。也不要马上用同一台没清理过的电脑开新号硬冲——用新号绕过封禁本身就是条款违规。</p></li>
+    </ol>
+    <div class="prompt">
+      <h3>曾被限制：先做只读排查</h3>
+      <p>在安装了此 skill 的 AI 工具中发送。原账号申诉由你自行处理。</p>
+      <pre><code>$$claude-local-reset
+我曾遇到 Claude 账号限制。请先只读排查本地配置与网络，保留现有账号和文件，不执行重置或修复。使用我实际登录 Claude 的本地浏览器及 profile；无法确认的项目标为未检测。完成后生成含防封号指南入口的 HTML 质检回执，并在当前工具允许时打开。</code></pre>
+    </div>
+  </section>
+
+  <section class="guide-section" id="manual" aria-labelledby="manual-title">
+    <p class="section-label">两条路径都适用</p>
+    <h2 id="manual-title">与 AI 配合的手动准备</h2>
+    <ol class="steps">
+      <li><strong>说明现在的实际网络状态。</strong><p>让 AI 知道是直连、系统代理还是 TUN，以及预期出口国家（知道才填）。保持检测期间的网络状态一致；不要一边测试一边切节点。时区与出口的长期设置见<a href="#environment">环境准备</a>，那是为了消除环境自相矛盾的主动配置，不是为了对齐检测页旗帜的临时伪装。未知项可以让 AI 检查。</p></li>
+      <li><strong>打开正确的浏览器与 profile。</strong><p>关闭其他用途的检测窗口，保留实际使用 Claude 的窗口。告诉 AI“用当前这个浏览器和 profile 检查”。登录授权、验证码和系统权限弹窗由你处理；检测页无需授予麦克风或摄像头权限。</p></li>
+      <li><strong>用过中转时，说明你现在想走哪条路径。</strong><p>如果曾用镜像、Claude Code Router 或自定义网关，告诉 AI 你是要使用官方服务，还是保留合法且主动配置的网关。AI 检查 <code class="inline">ANTHROPIC_BASE_URL</code> 等路由候选，并脱敏报告。自定义地址存在只表示需要核对，不能直接认定违规；但把订阅长期接到第三方入口，属于社区复盘里明确的高发被封情形，见<a href="#daily">日常注意事项</a>。</p></li>
+      <li><strong>修复前记下原值，修复后新开终端。</strong><p>只有确认某条配置是残留，才针对该条处理；先保存原文件和网络设置。不整份删除 <code class="inline">~/.claude/settings.json</code>、shell 文件或浏览器数据。修改 shell 配置后，旧终端仍可能保留变量，需要在新终端复测。</p></li>
+    </ol>
+    <details>
+      <summary>检测失败时怎么处理：DNS、WebRTC、IPv6 与代理</summary>
+      <ul>
+        <li><strong>DNS：</strong>先核对检测确实完成，再检查所用网络工具的 DNS 开关、路由与接管配置。Mihomo/Clash 用户可检查 TUN 中的 <code class="inline">dns-hijack</code> 是否按实际配置生效；“开了 TUN”不能替代测试。公共 DNS 的地理标签可能与出口不同，先核对路径。</li>
+        <li><strong>WebRTC：</strong>让 AI 比较检测页的公网候选与出口，不把私有地址或 mDNS 当成真实公网泄漏。需要修改浏览器设置时先记原值；不自动安装过时扩展。关闭 WebRTC 可能影响通话，且测试禁用会记为“未检测”，不能冒充“已完成且未泄漏”。</li>
+        <li><strong>IPv6：</strong>只在确认 IPv6 未被预期路径接管时决定修复范围。优先核对现有工具的 IPv6 配置；选择关闭系统 IPv6 时须针对实际 Wi-Fi/网线服务并保存原值。单次 IPv6 查询失败不证明它已关闭，也不证明没有泄漏。</li>
+        <li><strong>系统代理：</strong>macOS 的代理值为 <code class="inline">1</code> 表示开启。如果你主动用系统代理，它可能是正确配置；不能一律关闭。纯 TUN 或直连模式下出现开启值，再核对是否为残留。</li>
+        <li><strong>中转与配置：</strong>请 AI 列出具体文件位置、已脱敏的路由类型和建议改动。明确要修复的项目后再执行，保留其他键、hooks、MCP 和项目配置；切回官方路径不能只凭删除一行就宣告成功。</li>
+      </ul>
+    </details>
+    <div class="table-wrap">
+      <table aria-label="用户与 AI 的分工"><thead><tr><th scope="col">谁来做</th><th scope="col">实际动作</th></tr></thead><tbody>
+        <tr><td>AI 自动完成</td><td>只读配置检查；在可控制的正确本地浏览器里读取检测结果；脱敏、判定状态、生成回执和指南；在当前工具允许时打开 HTML。</td></tr>
+        <tr><td>你手动完成</td><td>确认使用资格、改时区与选定出口、选择实际浏览器、输入账号凭据、注册登录、提交申诉、处理退款或付款，决定具体修复范围。</td></tr>
+        <tr><td>条件触发才执行</td><td>本地状态重置、代理或配置修改、浏览器设置调整、IPv6 处理；先明确问题、影响和备份，再执行并复测。</td></tr>
+      </tbody></table>
+    </div>
+  </section>
+
+  <section class="guide-section" id="environment" aria-labelledby="env-title">
+    <p class="section-label">第一条防线 · 环境（社区经验为主）</p>
+    <h2 id="env-title">环境准备：固定比纯净重要</h2>
+    <p class="note">社区复盘的共识：泄漏和跳节点比 IP 类型更常出事。天天在机场里切节点，IP 标签再漂亮也白搭；把设备、时区和出口固定下来，比花大钱买家宽有用。本节的步骤多数为社区经验，skill 质检只读取和记录这些状态，不会自动修改。</p>
+
+    <h3>1. 时区：电脑和手机改成同一个支持地区</h3>
+    <ol class="steps">
+      <li><strong>Mac：</strong>系统设置 → 通用 → 日期与时间，关掉“使用你的当前位置自动设定时区”，手动搜 Taipei / 台北；再去 系统设置 → 隐私与安全性 → 定位服务 → 系统服务（详细信息），关掉“设定时区”。很多人漏这步——不关的话 Wi-Fi 定位会把时区拽回上海。</li>
+      <li><strong>iPhone：</strong>设置 → 通用 → 日期与时间，关掉“自动设置”，时区选台北；再到 设置 → 隐私与安全性 → 定位服务 → 系统服务，关掉“设定时区”。</li>
+      <li><strong>Windows：</strong>设置 → 时间和语言 → 日期和时间，关闭“自动设置时区”，选择 (UTC+08:00) 台北。</li>
+    </ol>
+    <div class="cmd"><pre>readlink /etc/localtime
+# 结尾应为 Asia/Taipei
+
+node -e "console.log(Intl.DateTimeFormat().resolvedOptions().timeZone)"
+# 应输出 Asia/Taipei（未装 Node 可跳过）</pre></div>
+    <p class="minor">为什么选台北：台湾在<a href="https://www.anthropic.com/supported-countries" target="_blank" rel="noopener noreferrer">官方支持名单</a>里，Asia/Taipei 又和北京时间同属东八区，作息不用改（选择理由为社区经验）。两端要对齐——电脑说自己在台北、手机说自己在上海，本身就是一对矛盾信号。改时区是为了消除环境自相矛盾，不是官方要求。</p>
+
+    <h3>2. 出口 IP：先学会认机房 IP，再谈纯净</h3>
+    <div class="table-wrap">
+      <table aria-label="五个基础词"><thead><tr><th scope="col">词</th><th scope="col">人话解释</th><th scope="col">为什么重要</th></tr></thead><tbody>
+        <tr><td>出口 IP</td><td>网站看到的你的 IP，也就是代理节点的 IP</td><td>Claude 用它判断你在哪个国家</td></tr>
+        <tr><td>ASN 类型</td><td>这个 IP 归谁管：ISP / Residential 是家庭宽带，Hosting 是机房</td><td>机房 IP 往往成百上千人共用，风控更敏感</td></tr>
+        <tr><td>TUN 模式</td><td>代理软件装一张虚拟网卡，接管全部流量</td><td>不靠程序自觉读代理设置，终端里的 Claude Code 也走同一个出口</td></tr>
+        <tr><td>系统代理</td><td>代理软件在系统设置里登记一个 127.0.0.1 之类的地址</td><td>程序可以不理它，还会留下用了代理的痕迹</td></tr>
+        <tr><td>WebRTC / DNS 泄漏</td><td>浏览器或系统绕过代理直接暴露真实 IP，或用国内 DNS 解析</td><td>挂着境外节点却漏出国内 IP，是很多人真正被封的原因</td></tr>
+      </tbody></table>
+    </div>
+    <p>判断方法：打开 <a href="https://ipinfo.io/" target="_blank" rel="noopener noreferrer">ipinfo.io ↗</a> 或 <a href="https://ping0.cc" target="_blank" rel="noopener noreferrer">ping0.cc ↗</a>，看 country、city、org。机房 IP 像群租房的门牌号，一个地址后面挤着几千号人；住宅 IP 像你自己家的门牌号。看到 org / ASN 类型写着 Hosting、某某 Cloud，先换出口，别急着登 Claude。换成住宅 IP 后再查一次，ISP 一栏应是真实的家庭宽带运营商名字。</p>
+    <div class="table-wrap">
+      <table aria-label="社区常见出口方案对比"><thead><tr><th scope="col">方案</th><th scope="col">适合谁</th><th scope="col">优点</th><th scope="col">坑</th></tr></thead><tbody>
+        <tr><td>固定一个机场节点</td><td>先活下来</td><td>零成本</td><td>机房 IP、多人共用，只算最低配</td></tr>
+        <tr><td>订阅式静态住宅 IP</td><td>大多数新手</td><td>ASN 为 ISP，订阅链接直接导入代理客户端</td><td>不同档位 IP 质量不同，买完要自己验</td></tr>
+        <tr><td>代理式静态住宅 IP</td><td>愿意多折腾一步</td><td>便宜、独享、可选国家多</td><td>只给 SOCKS5 / HTTP 账号，要配链式代理；需要 KYC</td></tr>
+        <tr><td>自建 VPS 独享出口</td><td>会 SSH、能自己搭</td><td>出口只有你一个人用</td><td>仍是机房 IP（Hosting），风险高于住宅</td></tr>
+        <tr><td>独立电脑 + 固定家宽</td><td>重度用户</td><td>最稳</td><td>成本最高</td></tr>
+      </tbody></table>
+    </div>
+    <ul class="status-list">
+      <li><strong>固定单节点：</strong>只留这一个节点，关掉“自动选择 / 按延迟自动切换”。延迟低不代表要轮询。</li>
+      <li><strong>买完先验：</strong>在 ping0.cc / ipinfo.io 确认国家对、类型是 ISP 不是 Hosting；不好用先找商家换，别默认每个节点都能过 Claude。</li>
+      <li><strong>全程同线路：</strong>注册、登录、付款、日常使用都走这一条出口。</li>
+      <li><strong>自建 VPS 避开国内大厂的海外区：</strong>IP 显示在境外，hostname 和 ASN 却还带着国内大厂，是明显的矛盾信号。</li>
+    </ul>
+    <p class="minor">适用边界：普通机场看视频、刷网页完全够用。你是重度 AI 用户、想认真养主力号，这一层才值得花钱。社区方案没有官方背书，本指南不推荐具体商家，选哪家自己验。</p>
+
+    <h3>3. 代理客户端：开 TUN，关系统代理</h3>
+    <p>为什么一定要 TUN：系统代理靠程序自觉遵守，程序可以不理；TUN 用虚拟网卡接管所有 TCP / UDP 流量，终端里的 Claude Code 也走同一出口，不用做任何配置。Mac / Windows 社区常用 <a href="https://github.com/clash-verge-rev/clash-verge-rev" target="_blank" rel="noopener noreferrer">Clash Verge Rev ↗</a>（只从 GitHub 官方仓库下载）；Surge 用户打开“增强模式”，系统代理保持关闭，效果相同。</p>
+    <ol class="steps">
+      <li>导入订阅：“订阅”页粘贴链接并导入，点选这个配置。</li>
+      <li>先用系统代理跑通一次：浏览器能打开 ipinfo.io，说明订阅没问题。</li>
+      <li>“设置”里安装“服务模式”（会要求输入电脑密码），这是不开管理员身份也能开 TUN 的前提。</li>
+      <li>打开“TUN 模式”，然后关掉“系统代理”，避免两套代理叠在一起。</li>
+      <li>“代理”页切到“全局”，选中固定节点；用 Claude 期间不建议规则模式，分流规则写错就会漏。</li>
+      <li>新开一个终端窗口再做下面的自检——老窗口可能还带着旧的代理变量。</li>
+    </ol>
+
+    <h3>4. 登录 Claude 前的 5 项自检</h3>
+    <p class="minor">每次换节点、重装系统、换电脑之后都完整做一遍；任何一项不过，先别登录。这些检查项与<a href="#quality-check">skill 质检</a>对应，可以让 AI 代查并生成回执。</p>
+    <ol class="steps">
+      <li><strong>查出口 IP。</strong><p>浏览器打开 ipinfo.io / ping0.cc，或在终端运行 <code class="inline">curl -s ipinfo.io</code>。看 country、city、org：国家固定，城市别每次变，org 不是一眼能认出的机房。</p></li>
+      <li><strong>查 WebRTC 泄漏。</strong><p>打开 <a href="https://browserleaks.com/webrtc" target="_blank" rel="noopener noreferrer">browserleaks.com/webrtc ↗</a>，页面里不能出现你的国内真实 IP。开了 TUN 一般不会漏；还漏就检查浏览器 WebRTC 设置。</p></li>
+      <li><strong>查 DNS 泄漏。</strong><p>打开 <a href="https://browserleaks.com/dns" target="_blank" rel="noopener noreferrer">browserleaks.com/dns ↗</a>，结果里不应出现中国的 DNS 服务器。TUN 默认接管 DNS；仍看到国内 DNS，就检查客户端的 DNS 与劫持配置。</p></li>
+      <li><strong>查系统代理残留。</strong>
+        <div class="cmd"><pre># macOS：期望三行都是 0；出现 1 说明系统代理还开着
+scutil --proxy | grep -E "HTTPEnable|HTTPSEnable|SOCKSEnable"
+
+# Windows 不要运行 scutil。让 skill 读取 WinINet 开关；
+# 也可以在「设置 → 网络和 Internet → 代理」里看“使用代理服务器”是否打开。</pre></div>
+      </li>
+      <li><strong>清掉终端里的代理与中转残留。</strong>
+        <div class="cmd"><pre>env | grep -iE "proxy|anthropic|claude"
+grep -iE "proxy|ANTHROPIC" ~/.zshrc ~/.bashrc ~/.profile ~/.zshenv
+# macOS hosts
+grep -iE "anthropic|claude" /etc/hosts
+# Windows hosts（PowerShell，先备份再改）
+# Select-String -Path "$$env:SystemRoot\System32\drivers\etc\hosts" -Pattern "anthropic|claude"
+npm config get proxy
+npm config get https-proxy
+git config --global --get http.proxy
+git config --global --get https.proxy
+cat ~/.claude/settings.json
+cat ~/.claude/settings.local.json</pre>
+        <p class="cmd-note">重点找 ANTHROPIC_BASE_URL 与 hosts 里的 anthropic/claude 域名行：用过镜像站、Claude Code Router 或各种中转的，这两处常有残留。shell 与 settings 里找到就删掉那一行；hosts 的修改需要管理员权限，动手前先备份原行。Windows 还要看 PowerShell 配置里的 <code class="inline">$$env:HTTPS_PROXY</code> 与 <code class="inline">$$env:ANTHROPIC_BASE_URL</code>。改完新开终端复测。</p></div>
+      </li>
+    </ol>
+    <details>
+      <summary>可选加固：关闭 IPv6（先保存原值，可随时恢复）</summary>
+      <ul>
+        <li>不少代理配置只接管 IPv4，IPv6 可能直连漏出去。确认未接管后再决定是否关闭，须针对实际的 Wi-Fi / 网线服务操作。</li>
+        <li>macOS 关闭：<code class="inline">networksetup -setv6off Wi-Fi</code>（网线改为 Ethernet）；恢复：<code class="inline">networksetup -setv6automatic Wi-Fi</code>。Windows 不要套用这条命令；若确认要关，在对应网卡属性里取消“Internet 协议版本 6”，并先记下原来是否勾选。skill 默认不改 IPv6，此步为你手动决定。</li>
+        <li>单次 IPv6 查询失败不能证明已关闭，也没有证明不泄漏；改动后复测。</li>
+      </ul>
+    </details>
+
+    <h3>5. 设备纪律：一号、一人、一台设备</h3>
+    <ul class="status-list">
+      <li>一个号、一个人、一台常用电脑；同事想借也不借——同一台设备登多个账号，是这轮封号潮里最扎眼的特征之一。</li>
+      <li>浏览器单独建一个资料，只用来登 Claude；单号不需要指纹浏览器。</li>
+      <li>Claude Code 授权时用下面的命令登录，把它给出的授权链接复制到专用浏览器里打开，免得默认浏览器带着别的环境去授权：
+        <div class="cmd"><pre># macOS / Linux 终端
+BROWSER=false claude
+
+# Windows PowerShell
+$$env:BROWSER = "false"; claude</pre></div>
+      </li>
+      <li>定期去 claude.ai → Settings → Account 按官方说明查看活动会话，发现陌生登录由你决定是否终止（会让相应设备登出）。入口见<a href="https://support.claude.com/en/articles/13124001-managing-your-active-sessions" target="_blank" rel="noopener noreferrer">官方会话说明 ↗</a>。</li>
+      <li>手机端能不用就不用，减少设备分叉；这是社区复盘的经验，不是官方要求。</li>
+    </ul>
+  </section>
+
+  <section class="guide-section" id="account-payment" aria-labelledby="pay-title">
+    <p class="section-label">第二条防线 · 账号与支付（社区经验为主）</p>
+    <h2 id="pay-title">账号与支付：账单信用常常比 IP 更重</h2>
+    <h3>1. 邮箱与手机号</h3>
+    <ul class="status-list">
+      <li>用你自己能长期控制的 Gmail / Outlook / Proton，别用一次性邮箱，也别买二手谷歌邮箱——它可能已经和一批被封的号绑过。</li>
+      <li>验证邮件要在同一个代理环境、同一个专用浏览器里点开。注册阶段翻车最多的就是这一步。</li>
+      <li>手机号：国内号、接码平台号能过注册，但社区反馈后续容易被标记；有条件用你能长期控制的支持地区号码。</li>
+    </ul>
+    <h3>2. 订阅节奏：按周走，别一天登顶</h3>
+    <p class="minor">新号加新卡直接开 Max，是风控里最显眼的一类。社区观察到的窗口大致在注册或充值后 24～72 小时；额度进度条变黄就停——这条经验来自被封过多个号的人，做起来一分钱不花。</p>
+    <div class="table-wrap">
+      <table aria-label="订阅节奏"><thead><tr><th scope="col">时间</th><th scope="col">做什么</th><th scope="col">别做什么</th></tr></thead><tbody>
+        <tr><td>第 1～3 天</td><td>Free，每天正常聊几次、写点小东西</td><td>立刻绑卡、开 Max、接 CLI 高并发</td></tr>
+        <tr><td>第 4～7 天</td><td>出口仍然固定，再开 Pro</td><td>网页虚拟卡、多设备乱登</td></tr>
+        <tr><td>第 2～3 周</td><td>真不够用再升 Max，周额度留余量</td><td>升级当天就把进度条拉满</td></tr>
+        <tr><td>第一次续费后</td><td>按真实工作量用</td><td>仍然不共享、不接第三方</td></tr>
+      </tbody></table>
+    </div>
+    <h3>3. 付款渠道：先想清楚号没了钱找谁退</h3>
+    <div class="table-wrap">
+      <table aria-label="付款渠道对比"><thead><tr><th scope="col">渠道</th><th scope="col">优点</th><th scope="col">翻车点</th><th scope="col">被封后找谁</th></tr></thead><tbody>
+        <tr><td>官网绑卡</td><td>便宜</td><td>虚拟卡、U 卡、账单国家和 IP 对不上</td><td>Anthropic，违规封号基本不退</td></tr>
+        <tr><td>App Store 内购</td><td>苹果当账单中间层</td><td>价格更高，要美区 Apple ID</td><td>reportaproblem.apple.com，Anthropic 退不了这笔</td></tr>
+        <tr><td>Google Play</td><td>安卓能走</td><td>退款窗口短</td><td>先看订单时间，再决定找 Google 还是 Anthropic</td></tr>
+        <tr><td>官方礼品订阅</td><td>不自动续费</td><td>别一口气囤好几个月</td><td>按礼品规则</td></tr>
+        <tr><td>代充 / 拼车</td><td>看起来便宜</td><td>黑卡、连坐、没人能帮你</td><td>别走：使用政策明确禁止</td></tr>
+      </tbody></table>
+    </div>
+    <p class="minor">社区对支付方式的排序：支持地区实体信用卡，其次有门槛的正规卡，再次礼品卡内购，最后才是无门槛虚拟卡。账单地址、卡发行国、出口 IP、系统时区尽量落在同一个国家。</p>
+    <h3>4. 第一次开会员：能走 App Store 就走 App Store</h3>
+    <ol class="steps">
+      <li>准备一个能正常付款的 Apple ID（社区常用美区 ID + 官方礼品卡，账单国家和出口尽量一致）。</li>
+      <li>iPhone 下载官方 Claude App，用同一个 Anthropic 账号登录。</li>
+      <li>在 App 里升级到 Pro / Max，走苹果内购，不要跳回网页绑卡。</li>
+      <li>订阅成功后，电脑端用同一账号登录。</li>
+    </ol>
+    <p class="minor">贵一点，但号没了至少还能找苹果退款。同一个苹果账号第一次申请退款往往有戏，再封就不一定了，别把退款当成稳定现金流。</p>
+    <h3>5. 隐私开关</h3>
+    <p>打开 <a href="https://claude.ai/settings/data-privacy-controls" target="_blank" rel="noopener noreferrer">claude.ai 的隐私设置</a>，按你的意愿关掉帮助改进 Claude 的开关。按官方文档，关掉后会话保留 30 天，开着是 5 年。它防不了封号，只是少交一份样本。</p>
+  </section>
+
+  <section class="guide-section" id="quality-check" aria-labelledby="qa-title">
+    <p class="section-label">准备完成后的下一步</p>
+    <h2 id="qa-title">复制这段话，让 skill 做质检</h2>
+    <div class="prompt">
+      <h3>第一次使用 / 手动准备完成：只检查</h3>
+      <p>不用运行终端命令。将下面的文字发给已安装此 skill 的 AI；若工具没有快捷引用，第一行改为“使用 claude-local-reset skill”。skill 收到后若先询问任务范围（清除使用痕迹还是只做网络检查），这段话本身就是回答：只做检查、不清理任何使用痕迹。</p>
+      <pre><code>$$claude-local-reset
+我已完成指南里的手动准备。请只做网络与环境质检，不重置本地状态、不修改配置。使用我实际使用 Claude 的本地浏览器及 profile，检查 IPLeak、BrowserLeaks DNS、Net.Coffee 的 DNS 与 WebRTC UDP，以及 BrowserLeaks WebRTC；同时检查出口、系统代理、终端与中转配置。按不出现 CN/HK 和已知预期出口判定，缺项、禁用或无法控制浏览器的项目如实标未检测。完成后生成有检测网站跳转、下一步和防封号指南入口的 HTML 回执，并在当前工具允许时自动打开。</code></pre>
+    </div>
+    <p class="minor">如果知道，可补一句“我使用 TUN / 系统代理 / 直连，预期出口国家是……，检测使用……浏览器”。AI 没有本地浏览器控制能力时，会提供待测入口；你在同一 profile 手动测试后提供对应结果，不能用远端抓取代替本机实测。上面的登录前 5 项自检与这里的质检清单对应，skill 会代查终端侧项目并生成回执。</p>
+    <div class="table-wrap">
+      <table aria-label="质检清单与通过要求"><thead><tr><th scope="col">检查项目 / 跳转</th><th scope="col">怎样才算通过</th></tr></thead><tbody>
+        <tr><td><a href="https://ipleak.net/" target="_blank" rel="noopener noreferrer">IPLeak ↗</a></td><td>检测已完成，有有效公网出口和国家标签；不出现 🇨🇳 CN 或 🇭🇰 HK；已知预期出口时国家一致。只看测试区域，页脚装饰旗帜不算结果。</td></tr>
+        <tr><td><a href="https://browserleaks.com/dns" target="_blank" rel="noopener noreferrer">BrowserLeaks DNS ↗</a></td><td>DNS 测试已完成，有解析器结果，不出现 CN/HK 标签。这是你的地区标准；标签本身不能证明 DNS 完全没有泄漏。</td></tr>
+        <tr><td><a href="https://ip.net.coffee/claude/" target="_blank" rel="noopener noreferrer">Net.Coffee Claude ↗</a></td><td>“DNS 泄露”和“WebRTC UDP 泄露”分别完成，且两项都明确未报告泄漏。一项通过不能替代另一项。</td></tr>
+        <tr><td><a href="https://browserleaks.com/webrtc" target="_blank" rel="noopener noreferrer">BrowserLeaks WebRTC ↗</a></td><td>测试可用，公网候选经核对与预期路径相符；结果矛盾时待核实。空白、关闭 WebRTC 或仅有私有地址不能直接判全通过。</td></tr>
+        <tr><td><a href="https://ipinfo.io/" target="_blank" rel="noopener noreferrer">出口与 IPv6 ↗</a></td><td>分清浏览器与终端的请求出口；国家、城市、运营商只用于排查。IP 稳定性需要多次记录，单次检测不判通过；IPv6 未测单独保留。</td></tr>
+        <tr><td>系统代理与终端配置</td><td>按实际路由模式判读；检查已覆盖的环境变量、shell、Claude Code 设置和 npm/Git 代理。未覆盖、自定义网关或查询失败保留待核实/未检测。</td></tr>
+      </tbody></table>
+    </div>
+    <ul class="status-list">
+      <li><strong>通过：</strong>只代表这次、这个浏览器或已覆盖配置满足该项标准。仍需自行确认登录提示和使用资格。</li>
+      <li><strong>未通过：</strong>先按回执的具体下一步处理，修复后复测；不要把未通过直接解释成封号原因。</li>
+      <li><strong>待核实：</strong>有结果但依据不足、模式未定或存在矛盾，需要确认实际路径。</li>
+      <li><strong>未检测：</strong>页面未完成、没有权限、浏览器不能控制或项目未执行；保留入口，补测后再生成回执。</li>
+    </ul>
+    <div class="prompt">
+      <h3>修复之后：再生成一份新回执</h3>
+      <pre><code>$$claude-local-reset
+我已处理上次回执指出的问题。请先确认改动的是哪一项，在同一实际浏览器及 profile 复测受影响项目，并生成新的完整 HTML 回执。其余项目只沿用仍有效且环境未变化的记录；过期或缺失的项目标未检测，不覆盖旧回执、不修改其他设置。</code></pre>
+    </div>
+    <p class="minor">换了出口、网络模式或浏览器配置后，旧网络结果不再代表当前环境，应重做所有受影响检查。随附生成器会拒绝超过一小时或无法确认来源的旧记录，不把“已执行命令”当作“全部通过”。</p>
+    <div class="done"><strong>看完指南，回到本次清单决定下一步</strong><p>手动准备不会自动改变回执状态。只有实际复测后生成的新回执，才会更新通过与未通过项。</p><a href="report.html">返回本次质检回执 →</a></div>
+  </section>
+
+  <section class="guide-section" id="daily" aria-labelledby="daily-title">
+    <p class="section-label">第三、四条防线 · 开始使用之后</p>
+    <h2 id="daily-title">日常需要你留意的事情</h2>
+    <ol class="steps">
+      <li><strong>保存账号通知，留意陌生会话。</strong><span class="chip tag-off">官方入口</span><p>在 Settings → Account 中按<a href="https://support.claude.com/en/articles/13124001-managing-your-active-sessions" target="_blank" rel="noopener noreferrer">官方会话说明</a>查看活动会话。发现不认识的设备时由你决定是否退出该会话；这会让相应设备登出。密码、token、cookie 不共享给他人或提交到检测站。</p></li>
+      <li><strong>触顶就等，别绕。</strong><p>用量受限时查看 <a href="https://claude.ai/settings/usage" target="_blank" rel="noopener noreferrer">Usage</a> 的重置时间，按<a href="https://support.claude.com/en/articles/9797557-usage-limit-best-practices" target="_blank" rel="noopener noreferrer">官方用量说明</a>处理。限额不等于封号，换号绕过限制才像滥用。社区经验补充：新号前两周收着点用、额度变黄就停（见<a href="#account-payment">订阅节奏</a>）——这些是社区复盘，不是官方规则。</p></li>
+      <li><strong>只用官方客户端，不把订阅接到第三方工具。</strong><span class="chip tag-com">社区经验</span><p>日常用 claude.ai、官方桌面端、官方 Claude Code。把 Pro / Max 的登录授权接到第三方 CLI 工具或中转，是这轮封号潮里明确的高发情形；要用第三方工具，按量走官方 API 另算。长期中转的残留清不掉时，服务端一看请求就知道你没走官方。</p></li>
+      <li><strong>网络变更后检查，资料另存备份。</strong><p>更换网络工具、出口或浏览器设置后再运行检查。项目和重要成果保存在自己的工作目录，代码放本地 Git，别让项目只存在 Claude 的云会话里。本地状态归档可能包含凭据和会话，保留在私有目录，不上传公开空间。</p></li>
+      <li><strong>内容别碰红线，语言不用担心。</strong><p>反编译、大规模渗透、勒索代码这类，别拿个人订阅硬刚。中文提问本身不是封号原因（社区复盘不支持这个说法），但别在系统提示或 CLAUDE.md 里写自己人在哪个城市——提示词会随请求发出去。</p></li>
+      <li><strong>Claude Code 遥测开关（可选）。</strong><span class="chip tag-off">官方开关</span><p>在 <code class="inline">~/.claude/settings.json</code> 的 env 里可关闭非必要上报，均为官方文档开关：</p>
+        <div class="cmd"><pre>{
+  "env": {
+    "DISABLE_TELEMETRY": "1",
+    "CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC": "1"
+  }
+}</pre>
+        <p class="cmd-note">副作用（官方文档写明）：会同时关掉功能旗标，Remote Control 可能用不了，属正常现象。这是隐私偏好，不等于“防封通过”。不要把 ANTHROPIC_BASE_URL 指到第三方，不要改客户端二进制、不要用魔改版。详情见官方数据使用说明（页脚入口）。</p></div></li>
+    </ol>
+    <details>
+      <summary>这些说法，可以少信（社区流传 vs 可查证程度）</summary>
+      <div class="table-wrap">
+        <table aria-label="少信的说法"><thead><tr><th scope="col">说法</th><th scope="col">怎么看</th></tr></thead><tbody>
+          <tr><td>中文提问、中文输入法决定生死</td><td>无公开证据；语言不是判决指标，网络指纹和调用频率才是。别把地理位置写进提示即可。</td></tr>
+          <tr><td>充得越多越容易封</td><td>不成立；高档订阅叠加虚拟卡和新号才危险，免费号也有第二天被封的。</td></tr>
+          <tr><td>研究员号、数学论文号更稳</td><td>未验证；别把新号的第一件事设计成表演。</td></tr>
+          <tr><td>找人代过身份验证</td><td>欺诈。官方报告点名：疑似在不受支持地区运行的账号可能被要求本人真实证件验证，不通过就封，环境配得再好也绕不过去。</td></tr>
+          <tr><td>拼车、低价成品号、封号包换</td><td>使用政策明确禁止，拼车会一锅端，成品号支付链出事全员连坐。</td></tr>
+          <tr><td>家宽、老 Gmail、固定时区有官方背书</td><td>都没有。官方可查的封号理由只有：反复违反使用政策、从不支持的地点创建账号、违反服务条款。</td></tr>
+        </tbody></table>
+      </div>
+    </details>
+  </section>
+
+  <section class="guide-section" id="checklist" aria-labelledby="checklist-title">
+    <p class="section-label">每次换环境打一遍勾</p>
+    <h2 id="checklist-title">出发前清单</h2>
+    <p class="minor">复制到备忘录，每次换节点、换电脑、重装系统后逐项核对；与 skill 回执的判定一一对应。</p>
+    <ul class="checklist">
+      <li>电脑和手机时区一致（支持地区），自动设定时区已关。</li>
+      <li>出口国家、城市与上次一致；ASN 类型不是 Hosting。</li>
+      <li>WebRTC 没有泄漏真实 IP；DNS 不是国内服务器。</li>
+      <li>系统代理为 0（或与预期路由模式相符），走的是 TUN。</li>
+      <li>没有 ANTHROPIC_BASE_URL，没有残留的代理环境变量。</li>
+      <li>这个号只在这一台设备、这一个浏览器资料里登录。</li>
+      <li>Active sessions 里没有陌生设备。</li>
+      <li>没有把这个订阅接到第三方客户端。</li>
+      <li>本周额度见黄，没有继续硬刷。</li>
+      <li>代码在本地 Git，不只在 Claude 的云会话里。</li>
+    </ul>
+    <div class="done"><strong>做完清单，让 skill 生成一份回执留档</strong><p>清单自查是主观勾选；回执记录的是检测到的真实状态。两者对得上，环境才算固定下来。</p><a href="report.html">返回本次质检回执 →</a></div>
+  </section>
+
+  <footer>
+    <p>指南资料核对：2026-10-12（macOS 与 Windows 共用脚本；官方项与社区经验项分别标注）· 关联回执生成：$generated_at。政策、页面与客户端版本可能变化，执行时以官方当前说明及实际观察为准。</p>
+    <div class="sources"><a href="https://www.anthropic.com/supported-countries" target="_blank" rel="noopener noreferrer">官方地区要求 ↗</a><a href="https://support.claude.com/en/articles/8241253-safeguards-warnings-and-appeals" target="_blank" rel="noopener noreferrer">申诉与数据导出 ↗</a><a href="https://claude.com/download" target="_blank" rel="noopener noreferrer">客户端下载 ↗</a><a href="https://code.claude.com/docs/en/env-vars" target="_blank" rel="noopener noreferrer">环境变量说明 ↗</a><a href="https://code.claude.com/docs/en/data-usage" target="_blank" rel="noopener noreferrer">数据使用说明 ↗</a><a href="https://support.claude.com/en/articles/12386328-request-a-refund-for-a-paid-claude-plan" target="_blank" rel="noopener noreferrer">退款说明 ↗</a></div>
+    <p>本地离线页面，没有自动登录、检测或上传；外部网站仅在你点击链接后打开。随附脚本支持 macOS 与 Windows，Linux 和未核实的安装方式不要套用。文中社区经验步骤无法保证效果，也不能替代官方政策。</p>
+  </footer>
+</main>
+</body>
+</html>
