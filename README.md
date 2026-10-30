@@ -34,6 +34,8 @@ npx skills@latest add ttfake92-lab/skills
 
 #### Content Creation
 
+- **[yyl-vertical-video](./skills/yyl-vertical-video/SKILL.md)** — Script to 1080×1920 split-screen talking-head reels: animated graphics above, a speaker card with a pop-out cutout below, word-aligned captions, audio mixing, and QA. Includes references, scripts, and the film module. Requires the video-agent workspace dependencies listed in the skill, including `lighttrail`, `talking-head-reel`, and shared service scripts.
+
 - **[yyl-video-prompt](./skills/yyl-video-prompt/SKILL.md)** — Director-style AI video prompts. Picks a mode from the script's style, then splits any script, story, voiceover, or one-line idea into ready-to-submit segment prompts. Short-video mode has two styles, one-take and multi-shot, benchmarked on a viral short and a multi-shot narrative example; cinematic-drama mode handles slow, performance-driven scenes with an eight-dimension acting formula and FACS action units. Every segment covers reference-image binding, time-coded action, camera language, sound design, and hard constraints. Works with Seedance 2.0/2.5, Jimeng/Dreamina, LibTV, and more. Replaces `AI-video-prompt` and `mx-shell-prompt`.
 - **[yyl-remotion-video](./skills/yyl-remotion-video/SKILL.md)** — Build 16:9 Remotion video projects from scripts, articles, notes, or outlines. Creates frame-driven React/TypeScript animations, estimates duration without synthesizing audio, renders still checks, and exports mp4 with built-in themes plus a dark 3D luxury gallery template.
 - **[yyl-video-thumbnail](./skills/yyl-video-thumbnail/SKILL.md)** — Generate high-CTR video thumbnails for Bilibili, YouTube, and Douyin/TikTok. Uses pop-out technique: darkened original photo as base, yellow-highlighted title text, and cutout subject overlaid at full brightness. Ships with three templates (popout poster, UI command panel, film-edit style) and auto-generates 16:9 / 4:3 / 3:4 ratios.
@@ -59,10 +61,11 @@ npx skills@latest add ttfake92-lab/skills
 
 ### Skills Overview
 
-This repository includes ten skills — six for content creation, one for education/decision support, and three for system tools:
+This repository includes eleven skills — seven for content creation, one for education/decision support, and three for system tools:
 
 | Skill | What It Does | Best For |
 |------|--------------|----------|
+| `yyl-vertical-video` | Produces vertical split-screen talking-head reels with animated graphics, pop-out speaker cards, captions, audio mixing, and QA. | Knowledge and opinion reels in the video-agent workspace; requires the external dependencies listed in the skill. |
 | `yyl-video-prompt` | Turns scripts or ideas into segment-by-segment video prompts, choosing short-video or cinematic-drama mode from the script's style. | Seedance 2.0/2.5, Jimeng, multi-image reference, one-take and multi-shot shorts, performance-driven drama scenes. |
 | `yyl-remotion-video` | Turns scripts, articles, notes, or outlines into Remotion projects that can render mp4. | Frame-accurate explainers, product demos, command-line films, silent clips for post-production voiceover. |
 | `yyl-video-thumbnail` | Generates high-CTR video thumbnails with pop-out technique — darkened base, yellow keyword text, full-brightness cutout subject. | Bilibili, YouTube, Douyin/TikTok covers, AI tool demos, command-line film posters. |
@@ -140,6 +143,8 @@ npx skills@latest add ttfake92-lab/skills
 
 #### 内容创作
 
+- **[yyl-vertical-video](./skills/yyl-vertical-video/SKILL.md)** — 把口播脚本做成 1080×1920 竖屏分屏短视频：上方代码动效、下方人物出框卡片，包含字级字幕对齐、混音和质检。附参考说明、脚本与渲染模块；运行仍需 Skill 中列出的 video-agent 工作区依赖，包括 `lighttrail`、`talking-head-reel` 和共用服务脚本。
+
 - **[yyl-video-prompt](./skills/yyl-video-prompt/SKILL.md)** — 导演式 AI 视频提示词。先按脚本风格选档位，再把脚本、故事、口播稿或一句想法拆成能直接提交生成的分段提示词。短视频档分一镜到底和多分镜两种写法，以一条爆款短视频和一个多分镜叙事案例为标杆；电影精品档面向慢节奏的表演戏，用八维表演公式和 AU 面部编码。每段都写参考图绑定、秒级动作、镜头语言、声音设计和硬约束。适用 Seedance 2.0/2.5、即梦、LibTV 等。合并并取代了原来的 `AI-video-prompt` 和 `mx-shell-prompt`。
 - **[yyl-remotion-video](./skills/yyl-remotion-video/SKILL.md)** — Remotion 视频制作。把口播稿、文章、资料摘要或明确大纲做成 16:9、逐帧可控、可直接导出 mp4 的视频项目。内置三套主题和深色 3D 高端画廊模板，不在流程内合成音频，适合后期统一配音。
 - **[yyl-video-thumbnail](./skills/yyl-video-thumbnail/SKILL.md)** — 视频封面生成。用 pop-out 技法做 B站/YouTube/抖音高点击率封面：底层压暗原图保留环境、中层黄色关键词标题、顶层全亮抠图人物原位叠回。支持 popout 深色海报、ui 命令面板、paper 胶片编辑三套模板，自动输出 16:9/4:3/3:4 三种比例。
@@ -165,10 +170,11 @@ npx skills@latest add ttfake92-lab/skills
 
 ### Skills 概览
 
-这个仓库目前有 10 个 skills：6 个内容创作类 + 1 个教育决策类 + 3 个系统工具类。
+这个仓库目前有 11 个 skills：7 个内容创作类 + 1 个教育决策类 + 3 个系统工具类。
 
 | Skill | 做什么 | 适合场景 |
 |------|--------|----------|
+| `yyl-vertical-video` | 脚本到竖屏分屏口播：代码动效、人物出框、字幕、混音与质检。 | video-agent 工作区中的知识 / 观点短视频；需另备 Skill 列出的外部依赖。 |
 | `yyl-video-prompt` | 把脚本或想法拆成逐段可提交的视频提示词，按脚本风格自动选短视频档或电影精品档。 | Seedance 2.0/2.5、即梦、多图参考、一镜到底和多分镜短视频、靠表演推进的剧情戏。 |
 | `yyl-remotion-video` | 把口播稿、文章、资料摘要或明确大纲做成可渲染 mp4 的 Remotion 项目。 | 逐帧可控讲解视频、产品 demo、命令行电影、后期统一配音的视频片段。 |
 | `yyl-video-thumbnail` | 用 pop-out 技法生成视频封面：压暗原图 + 黄色关键词 + 全亮抠图人物。 | B站/YouTube/抖音封面、AI 工具 demo 封面、命令行电影海报。 |
